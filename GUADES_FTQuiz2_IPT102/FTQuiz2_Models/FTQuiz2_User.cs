@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Models
 {
-    /// <summary>dbo.Users. Navigation collections (Posts, Visits) are added in Phase 04.</summary>
+    /// <summary>dbo.Users.</summary>
     public class FTQuiz2_User
     {
         public int UserId { get; set; }              // INT IDENTITY PK
@@ -18,5 +19,15 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Models
         public string Status { get; set; }           // VARCHAR(10) NOT NULL, default 'Active'
         public DateTime CreatedAt { get; set; }      // DATETIME2(0) NOT NULL, default SYSDATETIME()
         public DateTime? LastLoginAt { get; set; }   // DATETIME2(0) NULL
+
+        // Inverse ends of FK_Posts_Author and FK_PageVisits_User (the only two relationships).
+        public virtual ICollection<FTQuiz2_Post> Posts { get; set; }
+        public virtual ICollection<FTQuiz2_PageVisit> Visits { get; set; }
+
+        public FTQuiz2_User()
+        {
+            Posts = new HashSet<FTQuiz2_Post>();
+            Visits = new HashSet<FTQuiz2_PageVisit>();
+        }
     }
 }

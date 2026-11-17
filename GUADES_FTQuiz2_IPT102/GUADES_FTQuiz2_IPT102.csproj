@@ -130,7 +130,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="FTQuiz2_Helpers\FTQuiz2_AppSettings.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_Education.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_GalleryItem.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_Hobby.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_PageVisit.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_PersonalInfo.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_Post.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_Project.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_Skill.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_User.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
