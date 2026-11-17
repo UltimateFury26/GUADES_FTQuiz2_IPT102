@@ -172,6 +172,7 @@
     <Compile Include="FTQuiz2_Security\FTQuiz2_NoticeFilter.cs" />
     <Compile Include="FTQuiz2_Security\FTQuiz2_RequireAdminAttribute.cs" />
     <Compile Include="FTQuiz2_Security\FTQuiz2_RequireLoginAttribute.cs" />
+    <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ChromeViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -218,6 +219,20 @@
     <Content Include="FTQuiz2_Content\FTQuiz2_Portfolio.css" />
     <Content Include="FTQuiz2_Scripts\FTQuiz2_Portfolio.js" />
     <Content Include="App_Data\.gitkeep" />
+    <Content Include="FTQuiz2_Media\dclc.jpg" />
+    <Content Include="FTQuiz2_Media\gallery-1.jpg" />
+    <Content Include="FTQuiz2_Media\gallery-2.jpg" />
+    <Content Include="FTQuiz2_Media\gallery-3.jpg" />
+    <Content Include="FTQuiz2_Media\headshot.jpg" />
+    <Content Include="FTQuiz2_Media\interest-1.jpg" />
+    <Content Include="FTQuiz2_Media\interest-2.jpg" />
+    <Content Include="FTQuiz2_Uploads\42697be7060b479e806cc6760c420936.jpg" />
+    <Content Include="FTQuiz2_Uploads\d302badd3d12468e9dc79e8566deee1d.jpg" />
+    <Content Include="Views\Shared\_FTQuiz2_AuthLayout.cshtml" />
+    <Content Include="Views\Shared\_FTQuiz2_Chrome.cshtml" />
+    <Content Include="Views\Shared\_FTQuiz2_ContactModal.cshtml" />
+    <Content Include="Views\Shared\_FTQuiz2_Layout.cshtml" />
+    <Content Include="Views\Shared\_FTQuiz2_Notices.cshtml" />
     <Content Include="FTQuiz2_Uploads\.gitkeep" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

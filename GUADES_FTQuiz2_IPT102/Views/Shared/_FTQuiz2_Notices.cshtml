@@ -1,0 +1,12 @@
+@{
+    // Fed by FTQuiz2_NoticeFilter (?notice= and TempData). The site shell shows it where
+    // Site.Master showed its "no access" alert; the Login view renders it itself where the
+    // source Login page showed its message. Class names match Portfolio.css / Portfolio.js
+    // (.alert-success auto-dismisses), so do not rename them.
+    string text = ViewBag.FTQuiz2_NoticeText as string;
+    string kind = (ViewBag.FTQuiz2_NoticeKind as string) ?? "error";
+}
+@if (!string.IsNullOrWhiteSpace(text))
+{
+    <div class="@("alert alert-" + kind)" role="alert">@text</div>
+}

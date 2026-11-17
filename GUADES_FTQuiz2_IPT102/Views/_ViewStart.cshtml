@@ -1,3 +1,13 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+@{
+    // Login, Signup and Error use the centered-card shell (Auth.Master); every other page uses
+    // the signed-in shell (Site.Master). A view can still override Layout itself.
+    string controllerName = Convert.ToString(ViewContext.RouteData.Values["controller"]);
+    bool isPublicPage =
+        string.Equals(controllerName, "FTQuiz2_Login", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(controllerName, "FTQuiz2_Signup", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(controllerName, "FTQuiz2_Error", StringComparison.OrdinalIgnoreCase);
+
+    Layout = isPublicPage
+        ? "~/Views/Shared/_FTQuiz2_AuthLayout.cshtml"
+        : "~/Views/Shared/_FTQuiz2_Layout.cshtml";
 }
