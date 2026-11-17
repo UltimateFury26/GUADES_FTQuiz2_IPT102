@@ -1,0 +1,32 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_PinModalViewModel
+@* Pin detail modal (announcement, project, school, skill). Lines are built, and hidden when empty, in FTQuiz2_HomeViewModel. *@
+<div class="modal-overlay" id="@Model.Id">
+    <div class="modal-box">
+        <button type="button" class="modal-close" data-close>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12" /><path d="M18 6 6 18" /></svg>
+        </button>
+        <h3>@Model.Title</h3>
+        @foreach (var line in Model.Lines)
+        {
+            if (line.CssClass != null)
+            {
+                <p class="@line.CssClass">@line.Text</p>
+            }
+            else if (line.Label != null)
+            {
+                <p><strong>@line.Label</strong> @line.Text</p>
+            }
+            else
+            {
+                <p>@line.Text</p>
+            }
+        }
+        @if (!string.IsNullOrEmpty(Model.LinkUrl))
+        {
+            <a href="@Model.LinkUrl" target="_blank" rel="noopener" class="modal-link">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 4h6v6" /><path d="M20 4 10 14" /><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5" /></svg>
+                @Model.LinkText
+            </a>
+        }
+    </div>
+</div>

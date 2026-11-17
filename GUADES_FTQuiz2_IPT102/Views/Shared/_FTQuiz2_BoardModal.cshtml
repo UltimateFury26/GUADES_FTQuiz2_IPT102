@@ -1,0 +1,16 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_BoardHeaderViewModel
+@* Top of a board overlay: close button, back button and the title block (same markup in all six boards).
+   Razor partials cannot wrap a body, so the overlay div and its pin grid stay in Home/Index.cshtml. *@
+<button type="button" class="modal-close" data-close>
+    <svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12" /><path d="M18 6 6 18" /></svg>
+</button>
+<div class="board-overlay-header">
+    <button type="button" class="board-back" data-close>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg>
+    </button>
+    <div>
+        <h3 class="board-overlay-title">@Model.Title</h3>
+        <p class="board-overlay-sub">@Model.CountText</p>
+        <p class="board-overlay-desc">@Model.Description</p>
+    </div>
+</div>
