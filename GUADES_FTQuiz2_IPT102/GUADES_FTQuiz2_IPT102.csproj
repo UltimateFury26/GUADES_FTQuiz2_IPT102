@@ -128,6 +128,15 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_EducationConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_GalleryItemConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_HobbyConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PageVisitConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PersonalInfoConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PostConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_ProjectConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_SkillConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_UserConfiguration.cs" />
     <Compile Include="FTQuiz2_Helpers\FTQuiz2_AppSettings.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_Education.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_GalleryItem.cs" />
