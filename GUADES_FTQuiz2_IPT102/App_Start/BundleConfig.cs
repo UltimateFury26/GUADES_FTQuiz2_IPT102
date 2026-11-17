@@ -25,6 +25,13 @@ namespace GUADES_FTQuiz2_IPT102
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            // ---- FTQuiz2 application assets (filled in Phase 13; admin layer added in Phase 14) ----
+            bundles.Add(new StyleBundle("~/FTQuiz2_Content/css")
+                        .Include("~/FTQuiz2_Content/FTQuiz2_Portfolio.css"));
+
+            bundles.Add(new ScriptBundle("~/FTQuiz2_Scripts/js")
+                        .Include("~/FTQuiz2_Scripts/FTQuiz2_Portfolio.js"));
         }
     }
 }

@@ -128,6 +128,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="FTQuiz2_Helpers\FTQuiz2_AppSettings.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -171,6 +172,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
+    <Content Include="FTQuiz2_Content\FTQuiz2_Portfolio.css" />
+    <Content Include="FTQuiz2_Scripts\FTQuiz2_Portfolio.js" />
+    <Content Include="FTQuiz2_Uploads\.gitkeep" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -187,6 +191,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <None Include="FTQuiz2_Data\.gitkeep" />
+    <None Include="FTQuiz2_Media\.gitkeep" />
+    <None Include="FTQuiz2_Models\.gitkeep" />
+    <None Include="FTQuiz2_Security\.gitkeep" />
+    <None Include="FTQuiz2_ViewModels\.gitkeep" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
