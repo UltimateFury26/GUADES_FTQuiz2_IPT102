@@ -1,0 +1,107 @@
+/* ===========================================================
+   FTQuiz2_Admin.css
+   Guard layer for the admin pages and My Account. Loaded AFTER
+   FTQuiz2_Portfolio.css (bundle ~/FTQuiz2_Content/admin) and scoped
+   to body.FTQuiz2_admin / body.FTQuiz2_account, so it cannot reach
+   the public pages.
+
+   NOT a redesign: every declaration below is copied verbatim from
+   the Web Forms Portfolio.css (same property, same value). It only
+   restates the layout-critical properties, so a reset or stylesheet
+   that loads earlier cannot flatten them. Only properties that no
+   other Portfolio.css rule overrides (any selector, any media query)
+   are restated, so the cascade result is identical to the source.
+   =========================================================== */
+
+body.FTQuiz2_admin .form-label,
+body.FTQuiz2_account .form-label {
+    display: block;
+}
+
+body.FTQuiz2_admin .form-input,
+body.FTQuiz2_account .form-input {
+    display: block;
+    width: 100%;
+}
+
+body.FTQuiz2_admin .tab-link {
+    padding: 8px 18px;
+    border-radius: 999px;
+}
+
+body.FTQuiz2_admin .data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+body.FTQuiz2_admin .data-table th {
+    padding: 12px 16px;
+}
+
+body.FTQuiz2_admin .data-table td {
+    padding: 12px 16px;
+}
+
+body.FTQuiz2_admin .account-toggle,
+body.FTQuiz2_account .account-toggle {
+    align-items: center;
+    gap: 10px;
+}
+
+body.FTQuiz2_admin .account-initial,
+body.FTQuiz2_account .account-initial {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.FTQuiz2_admin .account-dropdown,
+body.FTQuiz2_account .account-dropdown {
+    position: absolute;
+    min-width: 200px;
+}
+
+body.FTQuiz2_admin .account-item,
+body.FTQuiz2_account .account-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 12px;
+}
+
+body.FTQuiz2_admin .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+}
+
+body.FTQuiz2_admin .bar-col {
+    flex: 1 0 34px;
+}
+
+body.FTQuiz2_admin .bar-track {
+    height: 150px;
+}
+
+body.FTQuiz2_account .settings-grid {
+    display: grid;
+    max-width: 560px;
+}
+
+body.FTQuiz2_account .settings-card {
+    padding: 24px;
+}
+
+body.FTQuiz2_account .readonly-field {
+    padding: 0 16px;
+}
+
+/* The only new element in the port: the Log out form that replaces the
+   asp:LinkButton. It must not add any space around the button. */
+body.FTQuiz2_admin .account-logout-form,
+body.FTQuiz2_account .account-logout-form {
+    margin: 0;
+}

@@ -1,4 +1,4 @@
-@using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
+﻿@using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 @{
     // Port of Site.Master: signed-in shell (icon rail, top bar, footer, Contact modal).
     FTQuiz2_ChromeViewModel chrome = FTQuiz2_ChromeViewModel.ForRequest();
@@ -15,9 +15,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     @Styles.Render("~/FTQuiz2_Content/css")
+    @Styles.Render("~/FTQuiz2_Content/admin")
     @RenderSection("FTQuiz2_Head", required: false)
 </head>
-<body>
+<body class="@(ViewBag.FTQuiz2_BodyClass as string)">
     @Html.Partial("_FTQuiz2_Chrome", chrome)
 
     <!-- MAIN BODY -->
