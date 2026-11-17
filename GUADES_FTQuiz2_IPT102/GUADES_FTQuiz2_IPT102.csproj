@@ -153,6 +153,25 @@
     <Compile Include="FTQuiz2_Models\FTQuiz2_Project.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_Skill.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_User.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_ContentRepository.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Db.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_PostRepository.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_ReportRepository.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Results.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_UserRepository.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_VisitRepository.cs" />
+    <Compile Include="FTQuiz2_Helpers\FTQuiz2_ImagePath.cs" />
+    <Compile Include="FTQuiz2_Helpers\FTQuiz2_PasswordHash.cs" />
+    <Compile Include="FTQuiz2_Helpers\FTQuiz2_UrlGuard.cs" />
+    <Compile Include="FTQuiz2_Security\FTQuiz2_AdminController.cs" />
+    <Compile Include="FTQuiz2_Security\FTQuiz2_BaseController.cs" />
+    <Compile Include="FTQuiz2_Security\FTQuiz2_Constants.cs" />
+    <Compile Include="FTQuiz2_Security\FTQuiz2_CurrentUser.cs" />
+    <Compile Include="FTQuiz2_Security\FTQuiz2_FormsAuthService.cs" />
+    <Compile Include="FTQuiz2_Security\FTQuiz2_GuestController.cs" />
+    <Compile Include="FTQuiz2_Security\FTQuiz2_NoticeFilter.cs" />
+    <Compile Include="FTQuiz2_Security\FTQuiz2_RequireAdminAttribute.cs" />
+    <Compile Include="FTQuiz2_Security\FTQuiz2_RequireLoginAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -198,6 +217,7 @@
     <Content Include="Web.config" />
     <Content Include="FTQuiz2_Content\FTQuiz2_Portfolio.css" />
     <Content Include="FTQuiz2_Scripts\FTQuiz2_Portfolio.js" />
+    <Content Include="App_Data\.gitkeep" />
     <Content Include="FTQuiz2_Uploads\.gitkeep" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
