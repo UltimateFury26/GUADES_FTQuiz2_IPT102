@@ -135,11 +135,13 @@
     <Compile Include="Controllers\FTQuiz2_Admin\FTQuiz2_ManageUsersController.cs" />
     <Compile Include="Controllers\FTQuiz2_Admin\FTQuiz2_ManageContentController.cs" />
     <Compile Include="Controllers\FTQuiz2_Admin\FTQuiz2_ManagePostsController.cs" />
+    <Compile Include="Controllers\FTQuiz2_Admin\FTQuiz2_ReportsController.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_HomeViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_LoginViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ManageUsersViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ContentPageViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ManagePostsViewModel.cs" />
+    <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ReportsViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_MyAccountViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_PartialViewModels.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_SignupViewModel.cs" />
@@ -269,6 +271,7 @@
     <Content Include="Views\FTQuiz2_Login\Index.cshtml" />
     <Content Include="Views\FTQuiz2_ManageUsers\Index.cshtml" />
     <Content Include="Views\FTQuiz2_ManagePosts\Index.cshtml" />
+    <Content Include="Views\FTQuiz2_Reports\Index.cshtml" />
     <Content Include="Views\FTQuiz2_ManageContent\Index.cshtml" />
     <Content Include="Views\FTQuiz2_ManageContent\_FTQuiz2_PersonalInfoEditor.cshtml" />
     <Content Include="Views\FTQuiz2_ManageContent\_FTQuiz2_EducationEditor.cshtml" />
