@@ -2161,3 +2161,34 @@ a.pill-btn {
     pointer-events: none;
     z-index: 50;
 }
+
+/* ---- Phase 22 / D-01 + D-05: the password eye icon is driven by a class, not by inline styles ---- */
+.password-toggle .icon-eye {
+    display: block;
+}
+
+.password-toggle.is-visible .icon-eye {
+    display: none;
+}
+
+.password-toggle.is-visible .icon-eye-off {
+    display: block;
+}
+
+/* ---- Phase 22 / D-02: the column that holds the file input + hint next to the avatar ---- */
+.avatar-controls {
+    flex: 1 1 auto;
+    min-width: 0;          /* a long file name shrinks instead of pushing the row wider than its card */
+}
+
+    .avatar-controls .form-file,
+    .avatar-controls .form-hint {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+@media (max-width: 720px) {
+    .avatar-controls {
+        width: 100%;
+    }
+}

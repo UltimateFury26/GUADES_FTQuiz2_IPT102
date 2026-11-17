@@ -176,16 +176,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!input) { return; }
 
-        var eyeIcon = btn.querySelector(".icon-eye");
-        var eyeOffIcon = btn.querySelector(".icon-eye-off");
-
         btn.addEventListener("click", function () {
             var isHidden = input.type === "password";
             input.type = isHidden ? "text" : "password";
             btn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
 
-            if (eyeIcon) { eyeIcon.style.display = isHidden ? "none" : ""; }
-            if (eyeOffIcon) { eyeOffIcon.style.display = isHidden ? "" : "none"; }
+            // D-01: the icon state is a class (see .password-toggle.is-visible in the CSS), because
+            // clearing an inline display lets the stylesheet's display:none win and hides both icons.
+            btn.classList.toggle("is-visible", isHidden);
         });
     });
 
