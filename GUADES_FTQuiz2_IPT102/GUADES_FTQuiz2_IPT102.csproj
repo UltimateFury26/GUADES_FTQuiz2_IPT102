@@ -133,9 +133,11 @@
     <Compile Include="Controllers\FTQuiz2_MyAccountController.cs" />
     <Compile Include="Controllers\FTQuiz2_SignupController.cs" />
     <Compile Include="Controllers\FTQuiz2_Admin\FTQuiz2_ManageUsersController.cs" />
+    <Compile Include="Controllers\FTQuiz2_Admin\FTQuiz2_ManageContentController.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_HomeViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_LoginViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ManageUsersViewModel.cs" />
+    <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ContentPageViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_MyAccountViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_PartialViewModels.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_SignupViewModel.cs" />
@@ -173,6 +175,7 @@
     <Compile Include="FTQuiz2_Data\FTQuiz2_UserRepository.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_VisitRepository.cs" />
     <Compile Include="FTQuiz2_Helpers\FTQuiz2_ImagePath.cs" />
+    <Compile Include="FTQuiz2_Helpers\FTQuiz2_FileUploader.cs" />
     <Compile Include="FTQuiz2_Helpers\FTQuiz2_PasswordHash.cs" />
     <Compile Include="FTQuiz2_Helpers\FTQuiz2_UrlGuard.cs" />
     <Compile Include="FTQuiz2_Security\FTQuiz2_AdminController.cs" />
@@ -263,6 +266,13 @@
     <Content Include="Views\FTQuiz2_Error\Index.cshtml" />
     <Content Include="Views\FTQuiz2_Login\Index.cshtml" />
     <Content Include="Views\FTQuiz2_ManageUsers\Index.cshtml" />
+    <Content Include="Views\FTQuiz2_ManageContent\Index.cshtml" />
+    <Content Include="Views\FTQuiz2_ManageContent\_FTQuiz2_PersonalInfoEditor.cshtml" />
+    <Content Include="Views\FTQuiz2_ManageContent\_FTQuiz2_EducationEditor.cshtml" />
+    <Content Include="Views\FTQuiz2_ManageContent\_FTQuiz2_SkillsEditor.cshtml" />
+    <Content Include="Views\FTQuiz2_ManageContent\_FTQuiz2_HobbiesEditor.cshtml" />
+    <Content Include="Views\FTQuiz2_ManageContent\_FTQuiz2_ProjectsEditor.cshtml" />
+    <Content Include="Views\FTQuiz2_ManageContent\_FTQuiz2_GalleryEditor.cshtml" />
     <Content Include="Views\FTQuiz2_MyAccount\Index.cshtml" />
     <Content Include="Views\FTQuiz2_Signup\Index.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_BoardModal.cshtml" />

@@ -1,0 +1,87 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_PersonalInfoEditorViewModel
+
+@* Port of Admin/Controls/PersonalInfoEditor.ascx: one profile row, one form, no list. *@
+@using (Html.BeginForm("SavePersonalInfo", "FTQuiz2_ManageContent", FormMethod.Post,
+    new { @class = "editor-card", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <h2>Personal Information</h2>
+    <p class="editor-intro">This is the website owner's profile. Every signed-in user sees it on Home. It is not the login account.</p>
+
+    if (!string.IsNullOrWhiteSpace(Model.Message))
+    {
+        <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error")" role="alert">@Model.Message</div>
+    }
+
+    <div class="form-field">
+        <label class="form-label" for="FullName">Full name</label>
+        @Html.TextBoxFor(m => m.FullName, new { @class = "form-input", maxlength = 100 })
+        @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "form-error" })
+    </div>
+
+    <div class="form-field">
+        <label class="form-label" for="Tagline">Tagline</label>
+        @Html.TextBoxFor(m => m.Tagline, new { @class = "form-input", maxlength = 200 })
+        <p class="form-hint">One short line under the name, such as your course.</p>
+    </div>
+
+    <div class="form-field">
+        <label class="form-label" for="Bio">Bio</label>
+        @Html.TextAreaFor(m => m.Bio, 6, 20, new { @class = "form-input form-textarea", maxlength = 2000 })
+        <p class="form-hint">Up to 2000 characters.</p>
+    </div>
+
+    <div class="form-row">
+        <div class="form-field">
+            <label class="form-label" for="Email">Contact email</label>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-input", maxlength = 100, type = "email", autocapitalize = "none", spellcheck = "false" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "form-error" })
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" for="Phone">Contact phone</label>
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-input", maxlength = 20, type = "tel" })
+            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "form-error" })
+        </div>
+    </div>
+
+    <div class="form-field">
+        <label class="form-label" for="Address">Address</label>
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-input", maxlength = 250 })
+    </div>
+
+    <div class="form-row">
+        <div class="form-field">
+            <label class="form-label" for="GitHubUrl">GitHub link</label>
+            @Html.TextBoxFor(m => m.GitHubUrl, new { @class = "form-input", maxlength = 250, type = "url", placeholder = "https://github.com/username" })
+            @Html.ValidationMessageFor(m => m.GitHubUrl, "", new { @class = "form-error" })
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" for="LinkedInUrl">LinkedIn link</label>
+            @Html.TextBoxFor(m => m.LinkedInUrl, new { @class = "form-input", maxlength = 250, type = "url", placeholder = "https://www.linkedin.com/in/username" })
+            @Html.ValidationMessageFor(m => m.LinkedInUrl, "", new { @class = "form-error" })
+        </div>
+    </div>
+
+    <div class="form-field">
+        <span class="form-label">Profile photo</span>
+        <div class="avatar-edit">
+            @if (!string.IsNullOrEmpty(Model.CurrentPhotoUrl))
+            {
+                <img class="avatar-preview" src="@Model.CurrentPhotoUrl" alt="Current profile photo" />
+            }
+            else
+            {
+                <div class="avatar-preview avatar-placeholder">No photo</div>
+            }
+            <div class="avatar-controls">
+                <input type="file" name="photo" class="form-file" accept=".jpg,.jpeg,.png,.gif" />
+                <p class="form-hint">JPG, PNG or GIF, up to 5 MB. Leave empty to keep the current photo.</p>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="pill-btn pill-btn-primary settings-submit">Save changes</button>
+}
