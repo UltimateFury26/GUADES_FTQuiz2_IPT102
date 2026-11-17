@@ -138,6 +138,12 @@
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_SkillConfiguration.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_UserConfiguration.cs" />
     <Compile Include="FTQuiz2_Helpers\FTQuiz2_AppSettings.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_PortfolioDbContext.cs" />
+    <Compile Include="FTQuiz2_Migrations\202611172202304_FTQuiz2_Baseline.cs" />
+    <Compile Include="FTQuiz2_Migrations\202611172202304_FTQuiz2_Baseline.Designer.cs">
+      <DependentUpon>202611172202304_FTQuiz2_Baseline.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FTQuiz2_Migrations\Configuration.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_Education.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_GalleryItem.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_Hobby.cs" />
@@ -208,13 +214,11 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <None Include="FTQuiz2_Data\.gitkeep" />
     <None Include="FTQuiz2_Media\.gitkeep" />
     <None Include="FTQuiz2_Models\.gitkeep" />
     <None Include="FTQuiz2_Security\.gitkeep" />
     <None Include="FTQuiz2_ViewModels\.gitkeep" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -242,6 +246,15 @@
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\jquery-3.7.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.0.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FTQuiz2_Migrations\202611172202304_FTQuiz2_Baseline.resx">
+      <DependentUpon>202611172202304_FTQuiz2_Baseline.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
