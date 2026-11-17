@@ -1,8 +1,36 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using GUADES_FTQuiz2_IPT102.FTQuiz2_Models;
 
 namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
 {
+    /// <summary>
+    /// The columns usp_User_GetById and usp_Admin_GetUsers actually return. EF's SqlQuery requires the
+    /// result set to contain every property of the target type, and these procedures deliberately do
+    /// NOT return PasswordHash / PasswordSalt, so they cannot be read straight into FTQuiz2_User.
+    /// </summary>
+    internal class FTQuiz2_UserRow
+    {
+        public int UserId { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Role { get; set; }
+        public string Status { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? LastLoginAt { get; set; }
+
+        public FTQuiz2_User ToUser()
+        {
+            return new FTQuiz2_User
+            {
+                UserId = UserId, Username = Username, Email = Email, Phone = Phone,
+                Role = Role, Status = Status, CreatedAt = CreatedAt, LastLoginAt = LastLoginAt
+            };
+        }
+    }
+
     /// <summary>
     /// One-for-one port of source Data/UserRepository.cs (9 methods).
     /// Every method stays on its original stored procedure (ADR-001).
@@ -37,8 +65,9 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
         // null when the user does not exist (source: Rows.Count == 0 -> null)
         public FTQuiz2_User GetById(int userId)
         {
-            return _db.QueryFirstOrDefault<FTQuiz2_User>("usp_User_GetById",
+            FTQuiz2_UserRow row = _db.QueryFirstOrDefault<FTQuiz2_UserRow>("usp_User_GetById",
                 FTQuiz2_Db.P("@UserId", userId));
+            return row == null ? null : row.ToUser();
         }
 
         // 0 = OK, 1 = email taken, 2 = not found, 3 = invalid
@@ -62,9 +91,9 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
         // Newest first (ordering is done inside the procedure). Null/blank search or status = no filter.
         public List<FTQuiz2_User> GetUsers(string search, string status)
         {
-            return _db.Query<FTQuiz2_User>("usp_Admin_GetUsers",
+            return _db.Query<FTQuiz2_UserRow>("usp_Admin_GetUsers",
                 FTQuiz2_Db.P("@Search", search),
-                FTQuiz2_Db.P("@Status", status));
+                FTQuiz2_Db.P("@Status", status)).Select(r => r.ToUser()).ToList();
         }
 
         // 0 = OK, 1 = not found, 2 = cannot act on self, 3 = cannot act on admin,
