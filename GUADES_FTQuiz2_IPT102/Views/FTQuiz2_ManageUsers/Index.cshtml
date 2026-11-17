@@ -1,0 +1,140 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ManageUsersViewModel
+@{
+    // Port of Admin/ManageUsers.aspx (Site.Master shell comes from _ViewStart; the controller sets the
+    // FTQuiz2_admin body class). Portfolio.js looks up #litCount, #pnlResults, #userNoMatches,
+    // #userSearchInput and #userStatusFilter by id and reads the row data-* attributes, so those
+    // ids and the lowercase data-username / data-email / data-phone / data-status stay exactly as written.
+    ViewBag.Title = "Manage Users";
+    string listUrl = Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManageUsers");
+    string sortArg = Model.SortField;
+    string dirArg = Model.SortField == null ? null : (Model.SortAsc ? "asc" : "desc");
+
+    string[][] columns =
+    {
+        new[] { "ID", "UserId" },
+        new[] { "Username", "Username" },
+        new[] { "Email", "Email" },
+        new[] { "Phone", "Phone" },
+        new[] { "Role", "Role" },
+        new[] { "Status", "Status" },
+        new[] { "Joined", "CreatedAt" },
+        new[] { "Last login", "LastLoginAt" }
+    };
+}
+
+<div class="admin-head">
+    <div>
+        <h1 class="admin-title">Manage Users</h1>
+        <p class="admin-sub">Registered accounts only. The website's own content is managed under Content.</p>
+    </div>
+    <span class="admin-count"><span id="litCount">@Model.CountText</span></span>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+    <div class="@("alert alert-" + Model.MessageKind)" role="alert">@Model.Message</div>
+}
+
+<!-- SEARCH AND FILTER: filters the table below as you type, with no page reload -->
+<div class="filter-bar">
+    <input type="text" id="userSearchInput" class="form-input filter-input" maxlength="100"
+           placeholder="Search username, email or phone" aria-label="Search users"
+           autocomplete="off" spellcheck="false" />
+    <select id="userStatusFilter" class="form-input filter-select" aria-label="Filter by status">
+        <option value="">All statuses</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+    </select>
+</div>
+
+@if (Model.Loaded && Model.Users.Count > 0)
+{
+    <!-- USERS TABLE -->
+    <div id="pnlResults" class="table-scroll">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    @foreach (string[] col in columns)
+                    {
+                        <th scope="col"><a class="@Model.SortHeaderClass(col[1])" href="@(listUrl + "?sort=" + col[1] + "&dir=" + Model.NextDir(col[1]))">@Model.SortHeaderText(col[0], col[1])</a></th>
+                    }
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    bool isSelf = user.UserId == Model.CurrentUserId;
+                    bool isAdminRow = user.Role == "Admin";
+                    bool locked = isSelf || isAdminRow;
+                    bool isActive = user.Status == "Active";
+                    string reason = isSelf ? "You can't change your own account." : "Admin accounts can't be changed or deleted.";
+
+                    <tr data-username="@user.Username" data-email="@user.Email"
+                        data-phone="@user.Phone" data-status="@user.Status">
+                        <td>@user.UserId</td>
+                        <td class="cell-strong">@user.Username @if (isSelf) { <span class="you-tag">you</span> }</td>
+                        <td class="cell-wrap">@user.Email</td>
+                        <td>@user.Phone</td>
+                        <td><span class="@Model.RoleBadgeClass(user.Role)">@user.Role</span></td>
+                        <td><span class="@Model.StatusBadgeClass(user.Status)">@user.Status</span></td>
+                        <td>@Model.FormatDate(user.CreatedAt)</td>
+                        <td>@Model.FormatLastLogin(user.LastLoginAt)</td>
+                        <td class="cell-actions">
+                            @if (locked)
+                            {
+                                <button type="button" class="row-btn" disabled title="@reason">@(isActive ? "Deactivate" : "Reactivate")</button>
+                                <button type="button" class="row-btn row-btn-danger" disabled title="@reason">Delete</button>
+                            }
+                            else
+                            {
+                                using (Html.BeginForm("SetStatus", "FTQuiz2_ManageUsers", FormMethod.Post, new { @class = "inline-form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="userId" value="@user.UserId" />
+                                    <input type="hidden" name="status" value="@(isActive ? "Inactive" : "Active")" />
+                                    <input type="hidden" name="sort" value="@sortArg" />
+                                    <input type="hidden" name="dir" value="@dirArg" />
+                                    if (isActive)
+                                    {
+                                        <button type="submit" class="row-btn"
+                                                data-confirm="Deactivate @user.Username? They won't be able to log in until you reactivate them."
+                                                onclick="return confirm(this.getAttribute('data-confirm'));">Deactivate</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="row-btn">Reactivate</button>
+                                    }
+                                }
+
+                                using (Html.BeginForm("Delete", "FTQuiz2_ManageUsers", FormMethod.Post, new { @class = "inline-form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="userId" value="@user.UserId" />
+                                    <input type="hidden" name="sort" value="@sortArg" />
+                                    <input type="hidden" name="dir" value="@dirArg" />
+                                    <button type="submit" class="row-btn row-btn-danger"
+                                            data-confirm="Delete @user.Username permanently? This can't be undone."
+                                            onclick="return confirm(this.getAttribute('data-confirm'));">Delete</button>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else if (Model.Loaded)
+{
+    <!-- EMPTY STATE: no users in the database at all -->
+    <div class="empty-state">
+        <p class="empty-title">No users found</p>
+        <p class="empty-text">Once someone signs up, they will appear here.</p>
+    </div>
+}
+
+<!-- NO MATCHES: there are users, but none match the current search/filter (client-side only) -->
+<p id="userNoMatches" class="empty-text" style="display:none">
+    No users match your search. Try a different search, or choose &ldquo;All statuses&rdquo;.
+</p>

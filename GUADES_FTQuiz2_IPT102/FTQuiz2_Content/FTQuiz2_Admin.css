@@ -105,3 +105,11 @@ body.FTQuiz2_admin .account-logout-form,
 body.FTQuiz2_account .account-logout-form {
     margin: 0;
 }
+
+/* Manage Users (Phase 18): the Deactivate/Reactivate and Delete buttons are each a POST form in
+   the MVC port (they were two asp:Buttons). Keep the forms inline so the buttons sit side by side
+   in .cell-actions exactly as the source rendered them. */
+body.FTQuiz2_admin .inline-form {
+    display: inline;
+    margin: 0;
+}
