@@ -129,6 +129,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="FTQuiz2_Helpers\FTQuiz2_AppSettings.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_Education.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_PersonalInfo.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_User.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
