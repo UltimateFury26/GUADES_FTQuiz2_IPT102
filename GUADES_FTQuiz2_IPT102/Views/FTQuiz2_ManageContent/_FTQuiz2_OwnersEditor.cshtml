@@ -6,144 +6,209 @@
     string addUrl = Url.Action("Index", "FTQuiz2_ManageContent", new { tab = "owners", add = "1" });
 }
 
-<div class="editor-head">
-    <div>
-        <h2 class="editor-title">Owners Information</h2>
-        <p class="editor-intro">The owners or company representatives shown on the Owners / Company page. Use only verified information; a record in [brackets] is shown as a placeholder.</p>
+<section class="owners-editor" aria-labelledby="owners-editor-title">
+    <header class="owners-editor-head">
+        <div class="owners-editor-heading-copy">
+            <span class="owners-editor-eyebrow">PEOPLE &amp; COMPANY</span>
+            <h2 id="owners-editor-title" class="owners-editor-title">Owners Information</h2>
+            <p class="owners-editor-intro">Manage the people and company representatives featured on the public Owners / Company page. Keep names, roles, biographies, and photos accurate and approved for publication.</p>
+        </div>
+        <div class="owners-editor-head-action">
+            <span class="owners-editor-count">@Model.Items.Count record@(Model.Items.Count == 1 ? "" : "s")</span>
+            @if (!Model.ShowForm)
+            {
+                <a class="pill-btn pill-btn-primary" href="@addUrl">Add owner</a>
+            }
+        </div>
+    </header>
+
+    <div class="owners-editor-guidance" role="note">
+        <span class="owners-editor-guidance-mark" aria-hidden="true">i</span>
+        <div>
+            <strong>Publish verified information</strong>
+            <p>Complete only details that are confirmed for public use. Records containing bracketed placeholder text are marked for completion.</p>
+        </div>
     </div>
-    @if (!Model.ShowForm)
+
+    @if (!string.IsNullOrWhiteSpace(Model.Message))
     {
-        <a class="pill-btn pill-btn-primary" href="@addUrl">Add owner</a>
+        <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error") owners-editor-alert" role="alert">@Model.Message</div>
     }
-</div>
 
-@if (!string.IsNullOrWhiteSpace(Model.Message))
-{
-    <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error")" role="alert">@Model.Message</div>
-}
-
-@if (Model.ShowForm)
-{
-    <!-- ADD / EDIT FORM -->
-    using (Html.BeginForm("SaveOwner", "FTQuiz2_ManageContent", FormMethod.Post,
-        new { @class = "editor-card editor-form", enctype = "multipart/form-data" }))
+    @if (Model.ShowForm)
     {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.OwnerId)
-        <h2>@(Model.IsEdit ? "Edit owner" : "Add an owner")</h2>
+        <!-- ADD / EDIT FORM -->
+        using (Html.BeginForm("SaveOwner", "FTQuiz2_ManageContent", FormMethod.Post,
+            new { @class = "editor-card editor-form owners-form-card", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.OwnerId)
 
-        <div class="form-row">
-            <div class="form-field">
-                <label class="form-label" for="FullName">Full name</label>
-                @Html.TextBoxFor(m => m.FullName, new { @class = "form-input", maxlength = 100 })
-                @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "form-error" })
+            <div class="owners-form-heading">
+                <div>
+                    <span class="owners-form-kicker">OWNER RECORD</span>
+                    <h3>@(Model.IsEdit ? "Edit owner details" : "Add an owner")</h3>
+                    <p>Fields marked optional can be left blank when the information is unavailable or not approved for display.</p>
+                </div>
+                <span class="owners-form-step">@(Model.IsEdit ? "EDITING" : "NEW RECORD")</span>
             </div>
 
-            <div class="form-field">
-                <label class="form-label" for="Position">Position (optional)</label>
-                @Html.TextBoxFor(m => m.Position, new { @class = "form-input", maxlength = 100 })
-                @Html.ValidationMessageFor(m => m.Position, "", new { @class = "form-error" })
+            <section class="owners-form-section" aria-labelledby="owners-identity-title">
+                <div class="owners-form-section-heading">
+                    <span class="owners-section-number">01</span>
+                    <div>
+                        <h4 id="owners-identity-title">Identity and role</h4>
+                        <p>Introduce the person and their relationship to the business.</p>
+                    </div>
+                </div>
+                <div class="owners-form-grid">
+                    <div class="form-field">
+                        <label class="form-label" for="FullName">Full name <span class="owners-required">Required</span></label>
+                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-input", maxlength = 100, autocomplete = "name", placeholder = "Enter the person's full name" })
+                        @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "form-error" })
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label" for="Position">Position <span class="owners-optional">Optional</span></label>
+                        @Html.TextBoxFor(m => m.Position, new { @class = "form-input", maxlength = 100, placeholder = "e.g. Founder or Managing Director" })
+                        @Html.ValidationMessageFor(m => m.Position, "", new { @class = "form-error" })
+                    </div>
+                </div>
+            </section>
+
+            <section class="owners-form-section" aria-labelledby="owners-profile-title">
+                <div class="owners-form-section-heading">
+                    <span class="owners-section-number">02</span>
+                    <div>
+                        <h4 id="owners-profile-title">Profile and contact</h4>
+                        <p>Add a concise biography and an approved contact address if appropriate.</p>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label class="form-label" for="Bio">Details / biography <span class="owners-optional">Optional</span></label>
+                    @Html.TextAreaFor(m => m.Bio, 4, 20, new { @class = "form-input form-textarea", maxlength = 1000, placeholder = "Write a short, factual introduction (up to 1,000 characters)." })
+                    @Html.ValidationMessageFor(m => m.Bio, "", new { @class = "form-error" })
+                    <p class="form-hint">Up to 1,000 characters. Avoid unverified titles, achievements, or personal details.</p>
+                </div>
+                <div class="form-field owners-email-field">
+                    <label class="form-label" for="Email">Email address <span class="owners-optional">Optional</span></label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-input", maxlength = 100, type = "email", autocapitalize = "none", spellcheck = "false", autocomplete = "email", placeholder = "name@example.com" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "form-error" })
+                    <p class="form-hint">Only include an address that is approved for public display.</p>
+                </div>
+            </section>
+
+            <section class="owners-form-section" aria-labelledby="owners-media-title">
+                <div class="owners-form-section-heading">
+                    <span class="owners-section-number">03</span>
+                    <div>
+                        <h4 id="owners-media-title">Photo and display order</h4>
+                        <p>Choose an appropriate image and control where this record appears.</p>
+                    </div>
+                </div>
+                <div class="owners-photo-panel">
+                    <div class="owners-photo-preview">
+                        @if (!string.IsNullOrEmpty(Model.CurrentPhotoUrl))
+                        {
+                            <img class="photo-preview" src="@Model.CurrentPhotoUrl" alt="Current owner photo" />
+                        }
+                        else
+                        {
+                            <span class="owners-photo-placeholder" aria-hidden="true">PHOTO</span>
+                        }
+                    </div>
+                    <div class="owners-photo-controls">
+                        <label class="form-label" for="photo">Profile photo <span class="owners-optional">Optional</span></label>
+                        <input id="photo" type="file" name="photo" class="form-file" accept=".jpg,.jpeg,.png,.gif" />
+                        <p class="form-hint">@Model.PhotoHint</p>
+                        @if (!string.IsNullOrEmpty(Model.CurrentPhotoUrl))
+                        {
+                            <p class="owners-current-photo-note">A new upload replaces the current photo. Leave this empty to keep it.</p>
+                        }
+                    </div>
+                </div>
+                <div class="form-field owners-order-field">
+                    <label class="form-label" for="SortOrder">Display order <span class="owners-optional">Optional</span></label>
+                    @Html.TextBoxFor(m => m.SortOrder, new { @class = "form-input", maxlength = 4, inputmode = "numeric", placeholder = "e.g. 1" })
+                    @Html.ValidationMessageFor(m => m.SortOrder, "", new { @class = "form-error" })
+                    <p class="form-hint">Use a whole number from 0 to 9999. Lower numbers appear first. Leave blank to use the existing default behavior.</p>
+                </div>
+            </section>
+
+            <div class="editor-actions owners-form-actions">
+                <a class="pill-btn pill-btn-secondary" href="@listUrl">Cancel</a>
+                <button type="submit" class="pill-btn pill-btn-primary">@(Model.IsEdit ? "Save changes" : "Save owner")</button>
             </div>
-        </div>
-
-        <div class="form-field">
-            <label class="form-label" for="Bio">Details (optional)</label>
-            @Html.TextAreaFor(m => m.Bio, 4, 20, new { @class = "form-input form-textarea", maxlength = 1000 })
-            @Html.ValidationMessageFor(m => m.Bio, "", new { @class = "form-error" })
-            <p class="form-hint">Up to 1000 characters.</p>
-        </div>
-
-        <div class="form-field">
-            <label class="form-label" for="Email">Email (optional)</label>
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-input", maxlength = 100, type = "email", autocapitalize = "none", spellcheck = "false" })
-            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "form-error" })
-        </div>
-
-        <div class="form-field">
-            <span class="form-label">Photo (optional)</span>
-            <div class="avatar-edit">
-                @if (!string.IsNullOrEmpty(Model.CurrentPhotoUrl))
-                {
-                    <div><img class="photo-preview" src="@Model.CurrentPhotoUrl" alt="Current photo" /></div>
-                }
-                <div class="avatar-controls">
-                    <input type="file" name="photo" class="form-file" accept=".jpg,.jpeg,.png,.gif" />
-                    <p class="form-hint">@Model.PhotoHint</p>
+        }
+    }
+    else if (!Model.LoadFailed && Model.Items.Count > 0)
+    {
+        <!-- OWNER RECORDS -->
+        <section class="owners-records" aria-labelledby="owners-records-title">
+            <div class="owners-records-heading">
+                <div>
+                    <span class="owners-form-kicker">PUBLISHED DIRECTORY</span>
+                    <h3 id="owners-records-title">Owner records</h3>
+                    <p>Review the information currently available to the public Owners / Company page.</p>
                 </div>
             </div>
-        </div>
-
-        <div class="form-field form-field-narrow">
-            <label class="form-label" for="SortOrder">Display order (optional)</label>
-            @Html.TextBoxFor(m => m.SortOrder, new { @class = "form-input", maxlength = 4, inputmode = "numeric" })
-            @Html.ValidationMessageFor(m => m.SortOrder, "", new { @class = "form-error" })
-            <p class="form-hint">Lower numbers come first. Empty puts a new owner last, or keeps the current position when editing.</p>
-        </div>
-
-        <div class="editor-actions">
-            <button type="submit" class="pill-btn pill-btn-primary">Save owner</button>
-            <a class="pill-btn pill-btn-secondary" href="@listUrl">Cancel</a>
+            <div class="table-scroll owners-table-scroll">
+                <table class="data-table owners-data-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Photo</th>
+                            <th scope="col">Name and position</th>
+                            <th scope="col">Details</th>
+                            <th scope="col">Order</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            string thumb = FTQuiz2_ContentFormat.ThumbUrl(item.PhotoPath);
+                            bool placeholder = FTQuiz2_BusinessFormat.IsPlaceholder(item.FullName) || FTQuiz2_BusinessFormat.IsPlaceholder(item.Bio);
+                            <tr>
+                                <td>
+                                    @if (thumb.Length == 0) { <span class="thumb thumb-empty owners-table-thumb-empty"></span> }
+                                    else { <img class="thumb owners-table-thumb" src="@thumb" alt="" /> }
+                                </td>
+                                <td class="cell-strong cell-wrap owners-name-cell">
+                                    @item.FullName
+                                    @if (placeholder) { <span class="badge badge-user">Needs completion</span> }
+                                    <p class="post-meta">@FTQuiz2_ContentFormat.OrDash(item.Position)</p>
+                                </td>
+                                <td class="cell-wrap owners-bio-cell">@FTQuiz2_ContentFormat.Preview(item.Bio, 100)</td>
+                                <td class="owners-order-cell">@item.SortOrder</td>
+                                <td class="cell-actions owners-actions-cell">
+                                    @using (Html.BeginForm("Index", "FTQuiz2_ManageContent", FormMethod.Get, new { @class = "inline-form" }))
+                                    {
+                                        <input type="hidden" name="tab" value="owners" />
+                                        <input type="hidden" name="edit" value="@item.OwnerId" />
+                                        <button type="submit" class="row-btn">Edit</button>
+                                    }
+                                    @using (Html.BeginForm("DeleteOwner", "FTQuiz2_ManageContent", FormMethod.Post, new { @class = "inline-form" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.OwnerId" />
+                                        <button type="submit" class="row-btn row-btn-danger"
+                                                data-confirm="@("Delete " + item.FullName + "? This can't be undone.")"
+                                                onclick="return confirm(this.getAttribute('data-confirm'));">Delete</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    }
+    else if (!Model.LoadFailed)
+    {
+        <div class="empty-state owners-empty-state">
+            <span class="owners-empty-mark" aria-hidden="true">+</span>
+            <p class="empty-title">No owner records yet</p>
+            <p class="empty-text">Add the first verified owner or company representative to populate the public Owners / Company page.</p>
+            <a class="pill-btn pill-btn-primary" href="@addUrl">Add first owner</a>
         </div>
     }
-}
-else if (!Model.LoadFailed && Model.Items.Count > 0)
-{
-    <!-- LIST -->
-    <div class="table-scroll">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th scope="col">Photo</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Details</th>
-                    <th scope="col">Order</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Items)
-                {
-                    string thumb = FTQuiz2_ContentFormat.ThumbUrl(item.PhotoPath);
-                    bool placeholder = FTQuiz2_BusinessFormat.IsPlaceholder(item.FullName) || FTQuiz2_BusinessFormat.IsPlaceholder(item.Bio);
-                    <tr>
-                        <td>
-                            @if (thumb.Length == 0) { <span class="thumb thumb-empty"></span> }
-                            else { <img class="thumb" src="@thumb" alt="" /> }
-                        </td>
-                        <td class="cell-strong cell-wrap">
-                            @item.FullName
-                            @if (placeholder) { <span class="badge badge-user">Needs completion</span> }
-                            <p class="post-meta">@FTQuiz2_ContentFormat.OrDash(item.Position)</p>
-                        </td>
-                        <td class="cell-wrap">@FTQuiz2_ContentFormat.Preview(item.Bio, 80)</td>
-                        <td>@item.SortOrder</td>
-                        <td class="cell-actions">
-                            @using (Html.BeginForm("Index", "FTQuiz2_ManageContent", FormMethod.Get, new { @class = "inline-form" }))
-                            {
-                                <input type="hidden" name="tab" value="owners" />
-                                <input type="hidden" name="edit" value="@item.OwnerId" />
-                                <button type="submit" class="row-btn">Edit</button>
-                            }
-                            @using (Html.BeginForm("DeleteOwner", "FTQuiz2_ManageContent", FormMethod.Post, new { @class = "inline-form" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="id" value="@item.OwnerId" />
-                                <button type="submit" class="row-btn row-btn-danger"
-                                        data-confirm="@("Delete " + item.FullName + "? This can't be undone.")"
-                                        onclick="return confirm(this.getAttribute('data-confirm'));">Delete</button>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
-else if (!Model.LoadFailed)
-{
-    <!-- EMPTY STATE -->
-    <div class="empty-state">
-        <p class="empty-title">No owner records yet</p>
-        <p class="empty-text">Click &ldquo;Add owner&rdquo; to create the first one. The Owners / Company page needs at least one record.</p>
-    </div>
-}
+</section>
