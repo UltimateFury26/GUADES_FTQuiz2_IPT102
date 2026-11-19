@@ -150,6 +150,7 @@
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_ProjectConfiguration.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_SkillConfiguration.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_UserConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_ProductRepository.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_BusinessProfile.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_ContactInfo.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_OwnerInfo.cs" />
@@ -262,6 +263,7 @@
     <Content Include="Views\Shared\_FTQuiz2_AuthLayout.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_Chrome.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_ContactModal.cshtml" />
+    <Content Include="Views\Shared\_FTQuiz2_ProductModal.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_Layout.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_Notices.cshtml" />
     <Content Include="FTQuiz2_Uploads\.gitkeep" />

@@ -1,12 +1,12 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ChromeViewModel
 
-<!-- CONTACT MODAL (owner's details, from the database) -->
-<div class="modal-overlay" id="contactModal">
+<!-- CONTACT MODAL (business contact information, from the database) -->
+<div class="modal-overlay" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
     <div class="modal-box">
-        <button type="button" class="modal-close" data-close>
+        <button type="button" class="modal-close" data-close aria-label="Close">
             <svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12" /><path d="M18 6 6 18" /></svg>
         </button>
-        <h3>Contact</h3>
+        <h3 id="contactModalTitle">Contact @Model.OwnerName</h3>
         @if (Model.Email.Length > 0)
         {
             <div class="contact-row">
@@ -27,6 +27,10 @@
                 <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12z" /><circle cx="12" cy="10" r="2.5" /></svg>
                 <span>@Model.Address</span>
             </div>
+        }
+        @if (Model.Email.Length == 0 && Model.PhoneDisplay.Length == 0 && Model.Address.Length == 0)
+        {
+            <p>Contact details have not been added yet. Please check back soon.</p>
         }
     </div>
 </div>

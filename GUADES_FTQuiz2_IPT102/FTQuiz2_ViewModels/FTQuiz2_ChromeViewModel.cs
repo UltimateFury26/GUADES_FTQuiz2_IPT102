@@ -2,30 +2,26 @@ using System;
 using System.Text.RegularExpressions;
 using System.Web;
 using GUADES_FTQuiz2_IPT102.FTQuiz2_Data;
-using GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers;
 using GUADES_FTQuiz2_IPT102.FTQuiz2_Models;
 using GUADES_FTQuiz2_IPT102.FTQuiz2_Security;
 
 namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 {
     /// <summary>
-    /// Everything Site.Master / Site.Master.cs supplied to the shell: owner details from the
-    /// database, the logged-in account, and which rail link is active. Loaded at most once per
-    /// request (ForRequest) and only by the signed-in layout, so Login/Signup/Error never touch
-    /// the database for chrome (the source Auth.Master did not either).
+    /// Everything the shared shell needs: the business name and contact details from the database,
+    /// the logged-in account, and which header link is active. Loaded at most once per request
+    /// (ForRequest) and only by the signed-in layout, so Login/Signup/Error never touch the database
+    /// for chrome.
     /// </summary>
     public class FTQuiz2_ChromeViewModel
     {
         private const string ItemsKey = "FTQuiz2_ChromeViewModel";
 
-        // Defaults mirror Site.Master.cs, so none of these is ever null.
-        public string OwnerName { get; private set; }
-        public string Initials { get; private set; }
+        // Defaults, so none of these is ever null.
+        public string OwnerName { get; private set; }      // the business name
         public string Email { get; private set; }
         public string PhoneDisplay { get; private set; }
         public string Address { get; private set; }
-        public string GitHubUrl { get; private set; }
-        public string LinkedInUrl { get; private set; }
 
         public string AccountName { get { return FTQuiz2_CurrentUser.Username; } }
         public string AccountRole { get { return FTQuiz2_CurrentUser.Role; } }
@@ -33,13 +29,10 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 
         private FTQuiz2_ChromeViewModel()
         {
-            OwnerName = "Portfolio";
-            Initials = "P";
+            OwnerName = "Mogu Mogu";
             Email = string.Empty;
             PhoneDisplay = string.Empty;
             Address = string.Empty;
-            GitHubUrl = string.Empty;
-            LinkedInUrl = string.Empty;
         }
 
         /// <summary>The shared model for this request (loaded on first use).</summary>
@@ -49,24 +42,32 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
             FTQuiz2_ChromeViewModel model = ctx != null ? ctx.Items[ItemsKey] as FTQuiz2_ChromeViewModel : null;
             if (model != null) { return model; }
 
-            model = From(new FTQuiz2_ContentRepository().GetPersonalInfo());
+            using (var db = new FTQuiz2_Db())
+            {
+                var business = new FTQuiz2_BusinessRepository(db);
+                model = From(business.GetBusinessProfile(), business.GetContactInfo());
+            }
+
             if (ctx != null) { ctx.Items[ItemsKey] = model; }
             return model;
         }
 
-        /// <summary>Port of SiteMaster.LoadOwner. A missing PersonalInfo row keeps the defaults.</summary>
-        public static FTQuiz2_ChromeViewModel From(FTQuiz2_PersonalInfo info)
+        /// <summary>A missing profile or contact row keeps the defaults.</summary>
+        public static FTQuiz2_ChromeViewModel From(FTQuiz2_BusinessProfile profile, FTQuiz2_ContactInfo contact)
         {
             FTQuiz2_ChromeViewModel model = new FTQuiz2_ChromeViewModel();
-            if (info == null) { return model; }
 
-            model.OwnerName = info.FullName;
-            model.Initials = GetInitials(info.FullName);
-            model.Email = info.Email ?? string.Empty;
-            model.PhoneDisplay = FormatPhone(info.Phone);
-            model.Address = info.Address ?? string.Empty;
-            model.GitHubUrl = FTQuiz2_UrlGuard.SafeHttpUrl(info.GitHubUrl);
-            model.LinkedInUrl = FTQuiz2_UrlGuard.SafeHttpUrl(info.LinkedInUrl);
+            if (profile != null && !string.IsNullOrWhiteSpace(profile.BusinessName))
+            {
+                model.OwnerName = profile.BusinessName;
+            }
+
+            if (contact != null)
+            {
+                model.Email = contact.Email ?? string.Empty;
+                model.PhoneDisplay = FormatPhone(contact.Phone);
+                model.Address = contact.Address ?? string.Empty;
+            }
             return model;
         }
 
@@ -80,13 +81,7 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
             }
         }
 
-        /// <summary>The board search box only makes sense on Home (source: IsCurrentPage Home.aspx).</summary>
-        public bool ShowSearch
-        {
-            get { return IsHome(); }
-        }
-
-        /// <summary>" active" for the Home rail link, otherwise "".</summary>
+        /// <summary>" active" for the Home header link, otherwise "".</summary>
         public string HomeActiveClass()
         {
             return IsHome() ? " active" : string.Empty;
@@ -95,7 +90,7 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
         /// <summary>
         /// " active" when the current request is served by the given controller (My Account and the
         /// admin pages). Matching the controller, not the URL, keeps the link active on that page's
-        /// POST actions too, like a Web Forms postback.
+        /// POST actions too.
         /// </summary>
         public string ActiveClass(string controllerName)
         {
@@ -118,17 +113,6 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
             HttpContext ctx = HttpContext.Current;
             if (ctx == null || ctx.Request == null || ctx.Request.RequestContext == null) { return string.Empty; }
             return Convert.ToString(ctx.Request.RequestContext.RouteData.Values[key]) ?? string.Empty;
-        }
-
-        /// <summary>First letter of the first and last words, e.g. "Mark Rafael L. Guades" gives "MG".</summary>
-        private static string GetInitials(string name)
-        {
-            string[] words = (name ?? string.Empty).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (words.Length == 0) { return "P"; }
-
-            string first = words[0].Substring(0, 1);
-            string last = words.Length > 1 ? words[words.Length - 1].Substring(0, 1) : string.Empty;
-            return (first + last).ToUpperInvariant();
         }
 
         /// <summary>Shows an 11-digit number as 0924 016 9431. Anything else is shown as stored.</summary>
