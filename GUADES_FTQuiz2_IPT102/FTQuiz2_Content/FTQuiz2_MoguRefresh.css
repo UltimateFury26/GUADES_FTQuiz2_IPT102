@@ -2836,3 +2836,151 @@ body.FTQuiz2_admin svg:not([data-mg-icon]) {
     text-transform: uppercase;
 }
 .mm-story-page__feature--no-media { grid-template-columns: minmax(0, 1fr) !important; }
+
+
+/* ================================================================
+   CHANGES 8-13 — flavor pages, About Us, password UX and report contrast
+   ================================================================ */
+
+/* 8. Mogu Mogu Manila-style flavor carousel. */
+.mm-flavors-page { padding: clamp(24px, 4vw, 48px) 0 clamp(38px, 5vw, 64px); }
+.mm-flavors-heading { text-align: center; margin: 0 auto clamp(24px, 3vw, 38px); padding: 0 18px; }
+.mm-flavors-heading__eyebrow, .mm-flavor-slide__eyebrow, .mm-aboutus-hero__eyebrow, .mm-aboutus-section-heading__eyebrow {
+    margin: 0 0 9px; color: #078ec7; font-size: 11px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase;
+}
+.mm-flavors-heading__title { margin: 0; color: #17216c; font-family: var(--mg-font-display); font-size: clamp(30px, 4vw, 46px); line-height: 1.05; text-transform: uppercase; }
+.mm-flavors-heading__lead { max-width: 620px; margin: 12px auto 0; color: #68708d; font-size: 14px; line-height: 1.7; }
+.mm-flavor-carousel {
+    position: relative; display: grid; grid-template-columns: 52px minmax(0, 1fr) 52px; align-items: center;
+    max-width: 1180px; margin: 0 auto; padding: 0 12px; background: #f0e2ec;
+}
+.mm-flavor-carousel__viewport { min-width: 0; }
+.mm-flavor-slide { min-height: 430px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: clamp(20px, 4vw, 54px); padding: clamp(28px, 4vw, 48px) clamp(12px, 2vw, 24px) 54px; }
+.mm-flavor-slide[hidden] { display: none !important; }
+.mm-flavor-slide:nth-child(4n + 2) { background: #e6f6fb; }
+.mm-flavor-slide:nth-child(4n + 3) { background: #fff0d8; }
+.mm-flavor-slide:nth-child(4n + 4) { background: #eaf4e7; }
+.mm-flavor-slide__visual { display: grid; place-items: center; min-height: 310px; text-decoration: none; }
+.mm-flavor-slide__visual img { display: block; width: min(100%, 330px); height: 330px; object-fit: contain; }
+.mm-flavor-slide__placeholder { display: grid; place-items: center; width: 220px; height: 280px; border-radius: 34px; background: rgba(255,255,255,.8); color: #17216c; font-family: var(--mg-font-display); font-size: 80px; font-weight: 900; }
+.mm-flavor-slide__copy { max-width: 500px; padding: 8px clamp(4px, 2vw, 24px); }
+.mm-flavor-slide__eyebrow { color: #e9004d; }
+.mm-flavor-slide__copy h2 { margin: 0; color: #17216c; font-family: var(--mg-font-display); font-size: clamp(38px, 5vw, 58px); font-weight: 900; line-height: .98; text-transform: uppercase; }
+.mm-flavor-slide__copy h3 { margin: 9px 0 12px; color: #222; font-family: var(--mg-font-display); font-size: clamp(18px, 2.2vw, 24px); font-weight: 700; }
+.mm-flavor-slide__description { max-width: 48ch; margin: 0; color: #555; font-size: 15px; line-height: 1.7; }
+.mm-flavor-slide__link { display: inline-flex; align-items: center; gap: 10px; margin-top: 24px; color: #e9004d; font-size: 13px; font-weight: 900; letter-spacing: .08em; text-decoration: none; text-transform: uppercase; }
+.mm-flavor-slide__link span { font-size: 20px; transition: transform .2s ease; }
+.mm-flavor-slide__link:hover span { transform: translateX(5px); }
+.mm-flavor-carousel__arrow { display: grid; place-items: center; z-index: 2; width: 42px; height: 42px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #303030; cursor: pointer; }
+.mm-flavor-carousel__arrow:hover { background: rgba(255,255,255,.65); color: #078ec7; }
+.mm-flavor-carousel__arrow svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.mm-flavor-carousel__footer { position: absolute; left: 50%; bottom: 18px; display: flex; align-items: center; gap: 22px; transform: translateX(-50%); }
+.mm-flavor-carousel__count { color: #777; font-size: 11px; font-weight: 800; white-space: nowrap; }
+.mm-flavor-carousel__dots { display: flex; align-items: center; gap: 9px; }
+.mm-flavor-carousel__dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: #c5b9c3; cursor: pointer; }
+.mm-flavor-carousel__dot.is-active { background: #17216c; transform: scale(1.12); }
+.mm-flavor-carousel__dot:focus-visible, .mm-flavor-carousel__arrow:focus-visible { outline: 3px solid #078ec7; outline-offset: 3px; }
+.mm-flavor-fallback { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+.mm-flavor-fallback a { color: #17216c; font-weight: 800; }
+
+/* 9. Product detail follows the official flavor page's product-led layout. */
+.mm-product-page { padding-bottom: clamp(36px, 5vw, 64px); }
+.mm-product-page .mm-detail { max-width: 1120px; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(28px, 5vw, 66px); margin: 16px auto clamp(48px, 6vw, 78px); padding: clamp(22px, 4vw, 42px); border-radius: 0; background: transparent; box-shadow: none; }
+.mm-product-page .mm-detail__media { min-height: 360px; padding: 22px; border: 0; border-radius: 14px; background: #ead9e7; box-shadow: none; }
+.mm-product-page .mm-detail__media img { width: 100%; height: 360px; object-fit: contain; }
+.mm-product-page .mm-detail__body { max-width: 620px; }
+.mm-product-page .mm-detail__eyebrow { margin: 0 0 12px; color: #e9004d; font-size: 11px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+.mm-product-page .mm-detail__title { margin: 0; color: #17216c; font-family: var(--mg-font-display); font-size: clamp(42px, 5vw, 62px); font-weight: 900; line-height: .98; letter-spacing: -.035em; text-transform: uppercase; }
+.mm-product-page .mm-detail__title::after { display: none; }
+.mm-product-page .mm-detail__subheading { margin: 10px 0 16px; color: #252525; font-family: var(--mg-font-display); font-size: 19px; font-weight: 800; }
+.mm-product-page .mm-detail__text { max-width: 56ch; margin: 0; color: #5f6681; font-size: 15px; line-height: 1.75; }
+.mm-detail__flavors { margin: 28px 0 24px; }
+.mm-detail__field-label { display: block; margin-bottom: 10px; color: #078ec7; font-size: 11px; font-weight: 900; letter-spacing: .1em; }
+.mm-detail__flavor-list { display: flex; flex-wrap: wrap; gap: 10px; }
+.mm-detail__flavor-choice { display: grid; place-items: center; width: 62px; height: 72px; padding: 5px; border: 1px solid #cbd5df; border-radius: 8px; background: #fff; text-decoration: none; }
+.mm-detail__flavor-choice img { width: 100%; height: 100%; object-fit: contain; }
+.mm-detail__flavor-choice > span { color: #17216c; font-family: var(--mg-font-display); font-size: 23px; font-weight: 900; }
+.mm-detail__flavor-choice.is-current { border: 2px solid #00aeea; background: #f4fcff; }
+.mm-product-page .mm-detail .mm-actions { gap: 12px; margin-top: 0; }
+.mm-product-page .mm-detail-related { max-width: 1120px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 28px); }
+.mm-product-page .mm-detail-related .mm-section__head { text-align: left; }
+
+/* 10. One About Us page: official-style company introduction, contact channels and people directory. */
+.mm-aboutus-page { padding-bottom: clamp(28px, 4vw, 54px); }
+.mm-aboutus-hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: center; gap: clamp(24px, 4vw, 54px); margin: 0 0 clamp(42px, 6vw, 74px); padding: clamp(22px, 4vw, 44px); background: #e8f7fd; }
+.mm-aboutus-hero__visual { min-height: 260px; overflow: hidden; background: #55b7df; }
+.mm-aboutus-hero__visual img { display: block; width: 100%; height: 100%; min-height: 260px; max-height: 370px; object-fit: cover; }
+.mm-aboutus-hero__fallback { display: grid; place-items: center; min-height: 260px; color: #fff; font-family: var(--mg-font-display); font-size: clamp(38px, 6vw, 70px); font-weight: 900; }
+.mm-aboutus-hero__copy { max-width: 580px; }
+.mm-aboutus-hero__eyebrow { color: #e9004d; }
+.mm-aboutus-hero__copy h1 { margin: 0 0 14px; color: #17216c; font-family: var(--mg-font-display); font-size: clamp(34px, 4.5vw, 58px); font-weight: 900; line-height: .98; text-transform: uppercase; }
+.mm-aboutus-hero__tagline { margin: 0 0 12px; color: #078ec7; font-size: 17px; font-weight: 800; }
+.mm-aboutus-hero__story { margin: 0 0 22px; color: #5f6681; font-size: 14px; line-height: 1.8; white-space: pre-line; }
+.mm-aboutus-contact-section { padding: 0 clamp(8px, 3vw, 30px) clamp(40px, 5vw, 62px); }
+.mm-aboutus-section-heading { max-width: 700px; margin: 0 auto 28px; text-align: center; }
+.mm-aboutus-section-heading--left { max-width: none; margin-left: 0; text-align: left; }
+.mm-aboutus-section-heading h2 { margin: 0 0 8px; color: #222; font-family: var(--mg-font-display); font-size: clamp(28px, 3.5vw, 40px); line-height: 1.05; text-transform: uppercase; }
+.mm-aboutus-section-heading > p:last-child { margin: 0; color: #68708d; font-size: 14px; line-height: 1.65; }
+.mm-aboutus-contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; max-width: 1060px; margin: 0 auto; }
+.mm-aboutus-contact-card { min-width: 0; min-height: 112px; padding: 20px 22px; border: 1px solid #e8e2d8; border-left: 4px solid #ffd33d; border-radius: 12px; background: #fff; }
+.mm-aboutus-contact-card__label { display: block; margin-bottom: 10px; color: #078ec7; font-size: 10px; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+.mm-aboutus-contact-card a, .mm-aboutus-contact-card > span:last-child { color: #333; font-size: 14px; font-weight: 800; line-height: 1.55; overflow-wrap: anywhere; text-decoration: none; }
+.mm-aboutus-contact-card a:hover { color: #e9004d; }
+.mm-aboutus-team-section { padding: clamp(28px, 4vw, 48px) clamp(8px, 3vw, 30px); background: #fffaf3; }
+.mm-aboutus-team-section .mm-aboutus-section-heading { max-width: 1060px; }
+.mm-aboutus-team { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; max-width: 1060px; margin: 0 auto; }
+.mm-aboutus-person { align-items: start; border: 1px solid #eee5da; border-radius: 18px; background: #fff; box-shadow: 0 8px 22px rgba(21,31,109,.045); }
+.mm-aboutus-person__avatar { width: 76px; height: 76px; border-radius: 50%; background: #e8f7fd; color: #17216c; }
+.mm-aboutus-person__status { display: inline-block; margin: 0 0 8px; color: #e9004d; font-size: 9px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.mm-aboutus-person__name { font-size: 21px; }
+.mm-aboutus-person--placeholder { border-style: dashed; }
+.mm-aboutus-cta { margin: clamp(30px, 4vw, 48px) 0 0; border-radius: 18px; background: #17216c; }
+
+/* 11. Admin upload helper copy: use plain, consistent separators rather than stray glyphs. */
+body.FTQuiz2_admin .brand-media-upload-field .form-hint { letter-spacing: 0; }
+
+/* 12. Password checklist: clearly distinguish required checks from optional strength improvements. */
+.pwd-rules li[data-rule="length"]::after,
+.pwd-rules li[data-rule="letter"]::after,
+.pwd-rules li[data-rule="number"]::after { content: "REQUIRED"; margin-left: auto; color: #8b6c24; font-size: 9px; font-weight: 900; letter-spacing: .08em; }
+.pwd-rules li[data-rule="mixed"]::after,
+.pwd-rules li[data-rule="symbol"]::after { content: "BONUS"; margin-left: auto; color: #078ec7; font-size: 9px; font-weight: 900; letter-spacing: .08em; }
+.pwd-rules li.is-met { color: #17623f; }
+.pwd-rules li.is-met::before { border-color: #17623f; background: #17623f; }
+.password-toggle { z-index: 2; }
+.password-toggle:focus-visible { outline: 3px solid rgba(0,174,234,.55); outline-offset: 2px; }
+
+/* 13. The first statistic in each report section uses a readable dark foreground. */
+body.FTQuiz2_admin .reports-stat-card.reports-stat-primary { background: #fff8df !important; border-color: #e6c54c !important; }
+body.FTQuiz2_admin .reports-stat-card.reports-stat-primary .stat-value,
+body.FTQuiz2_admin .reports-stat-card.reports-stat-primary .stat-label,
+body.FTQuiz2_admin .reports-stat-card.reports-stat-primary .reports-stat-caption { color: #17216c !important; }
+body.FTQuiz2_admin .reports-stat-card.reports-stat-primary .reports-stat-caption { opacity: .78; }
+
+@media (max-width: 820px) {
+    .mm-flavor-slide { min-height: 360px; }
+    .mm-product-page .mm-detail { grid-template-columns: 1fr; }
+    .mm-product-page .mm-detail__media { min-height: 300px; }
+    .mm-product-page .mm-detail__media img { height: 300px; }
+    .mm-aboutus-hero { grid-template-columns: 1fr; }
+    .mm-aboutus-hero__visual { order: 0; }
+}
+@media (max-width: 600px) {
+    .mm-flavor-carousel { grid-template-columns: 34px minmax(0, 1fr) 34px; padding: 0 4px; }
+    .mm-flavor-slide { grid-template-columns: 1fr; gap: 4px; min-height: 0; padding: 18px 12px 62px; }
+    .mm-flavor-slide__visual { min-height: 230px; }
+    .mm-flavor-slide__visual img { height: 230px; }
+    .mm-flavor-slide__copy { padding: 0 6px; text-align: center; }
+    .mm-flavor-slide__description { margin: 0 auto; }
+    .mm-flavor-slide__link { margin-top: 15px; }
+    .mm-flavor-carousel__arrow { width: 32px; height: 32px; }
+    .mm-flavor-carousel__footer { bottom: 14px; gap: 12px; }
+    .mm-flavor-carousel__dots { gap: 6px; }
+    .mm-product-page .mm-detail { padding: 16px 4px; }
+    .mm-product-page .mm-detail__media { min-height: 260px; }
+    .mm-product-page .mm-detail__media img { height: 260px; }
+    .mm-product-page .mm-detail .mm-actions { flex-direction: column; align-items: stretch; }
+    .mm-product-page .mm-detail .mm-actions .pill-btn { justify-content: center; }
+    .mm-aboutus-hero { padding: 18px; }
+    .mm-aboutus-team { grid-template-columns: 1fr; }
+}

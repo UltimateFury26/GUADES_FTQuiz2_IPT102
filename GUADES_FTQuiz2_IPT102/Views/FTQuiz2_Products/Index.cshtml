@@ -1,64 +1,80 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ProductsIndexViewModel
 @{
-    // Product catalogue: published products only, in display order, straight from SQL Server.
-    // Catalogue only: no cart, price or checkout.
-    ViewBag.Title = "Products";
+    // Published products only. The carousel follows the Mogu Mogu Manila flavor presentation;
+    // every slide still links to this project's own product details page.
+    ViewBag.Title = "Mogu Mogu Flavors";
 }
 
-<div class="mm-products-page" data-mg-reveal>
-    <header class="mm-page-head">
-        <div>
-            <p class="mm-page-head__kicker">Pick your flavour</p>
-            <h1 class="mm-page-head__title">@Model.BusinessName products</h1>
-            <p class="mm-page-head__lead">
-                Real fruit juice, real nata de coco cubes, and a bottle that is honestly more
-                of a snack than a drink. Chill it, shake it, chew it.
-            </p>
-        </div>
-        @if (Model.Products.Count > 0)
-        {
-            <p class="mm-products-count">@Model.Products.Count @(Model.Products.Count == 1 ? "flavour" : "flavours")</p>
-        }
+<div class="mm-flavors-page" data-mg-flavor-carousel>
+    <header class="mm-flavors-heading">
+        <p class="mm-flavors-heading__eyebrow">Find your favourite</p>
+        <h1 class="mm-flavors-heading__title">Mogu Mogu Flavors</h1>
+        <p class="mm-flavors-heading__lead">Real fruit flavour, chewy nata de coco, and a little something to make every sip more fun.</p>
     </header>
 
-    <section class="mm-section" aria-label="Product list">
-        @if (Model.Products.Count == 0)
-        {
-            <p class="mm-empty">Our products are being updated. Please check back soon.</p>
-        }
-        else
-        {
-            <div class="mm-product-grid">
-                @foreach (var product in Model.Products)
+    @if (Model.Products.Count == 0)
+    {
+        <p class="mm-empty">Our products are being updated. Please check back soon.</p>
+    }
+    else
+    {
+        <section class="mm-flavor-carousel" aria-label="Browse Mogu Mogu flavors">
+            <button class="mm-flavor-carousel__arrow mm-flavor-carousel__arrow--prev" type="button" data-flavor-prev aria-label="Previous flavor">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+            </button>
+
+            <div class="mm-flavor-carousel__viewport">
+                @for (int i = 0; i < Model.Products.Count; i++)
                 {
-                    <article class="mm-product">
-                        <a class="mm-product__btn" href="@Url.Action("Details", "FTQuiz2_Products", new { id = product.ProductId })" aria-label="View details of @product.Name">
-                            <span class="mm-product__media">
-                                @if (product.ImageUrl.Length > 0)
-                                {
-                                    <img src="@product.ImageUrl" alt="@product.Name" loading="lazy" decoding="async" />
-                                }
-                                else
-                                {
-                                    <span class="mm-product__ph" aria-hidden="true">@product.PlaceholderLetter</span>
-                                }
-                            </span>
-                            <span class="mm-product__body">
-                                @if (product.Flavor.Length > 0)
-                                {
-                                    <span class="mm-badge">@product.Flavor</span>
-                                }
-                                <span class="mm-product__name">@product.Name</span>
-                                @if (product.ShortDescription.Length > 0)
-                                {
-                                    <span class="mm-product__desc">@product.ShortDescription</span>
-                                }
-                                <span class="mm-product__more">View details</span>
-                            </span>
+                    var product = Model.Products[i];
+                    <article class="mm-flavor-slide @(i == 0 ? "is-active" : "")" data-flavor-slide aria-hidden="@(i == 0 ? "false" : "true")" @(i == 0 ? null : "hidden")>
+                        <a class="mm-flavor-slide__visual" href="@Url.Action("Details", "FTQuiz2_Products", new { id = product.ProductId })" aria-label="View @product.Name details">
+                            @if (product.ImageUrl.Length > 0)
+                            {
+                                <img src="@product.ImageUrl" alt="@product.Name bottle" decoding="async" />
+                            }
+                            else
+                            {
+                                <span class="mm-flavor-slide__placeholder" aria-hidden="true">@product.PlaceholderLetter</span>
+                            }
                         </a>
+                        <div class="mm-flavor-slide__copy">
+                            <p class="mm-flavor-slide__eyebrow">Mogu Mogu Flavors</p>
+                            <h2>@(product.Flavor.Length > 0 ? product.Flavor : product.Name)</h2>
+                            <h3>WITH NATA DE COCO</h3>
+                            @if (product.ShortDescription.Length > 0)
+                            {
+                                <p class="mm-flavor-slide__description">@product.ShortDescription</p>
+                            }
+                            <a class="mm-flavor-slide__link" href="@Url.Action("Details", "FTQuiz2_Products", new { id = product.ProductId })">Discover this flavor <span aria-hidden="true">&rarr;</span></a>
+                        </div>
                     </article>
                 }
             </div>
-        }
-    </section>
+
+            <button class="mm-flavor-carousel__arrow mm-flavor-carousel__arrow--next" type="button" data-flavor-next aria-label="Next flavor">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+            </button>
+
+            <div class="mm-flavor-carousel__footer">
+                <span class="mm-flavor-carousel__count"><span data-flavor-current>01</span><span aria-hidden="true"> / </span>@Model.Products.Count</span>
+                <div class="mm-flavor-carousel__dots" role="group" aria-label="Choose a flavor">
+                    @for (int i = 0; i < Model.Products.Count; i++)
+                    {
+                        var product = Model.Products[i];
+                        <button type="button" class="mm-flavor-carousel__dot @(i == 0 ? "is-active" : "")" data-flavor-dot="@i" aria-label="Show @product.Flavor" aria-pressed="@(i == 0 ? "true" : "false")"></button>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <noscript>
+            <div class="mm-flavor-fallback">
+                @foreach (var product in Model.Products)
+                {
+                    <a href="@Url.Action("Details", "FTQuiz2_Products", new { id = product.ProductId })">@product.Name</a>
+                }
+            </div>
+        </noscript>
+    }
 </div>

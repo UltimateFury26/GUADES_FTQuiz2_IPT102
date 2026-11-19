@@ -151,13 +151,13 @@
                             <span class="pwd-strength-label" data-strength-label></span>
                         </div>
                         <ul class="pwd-rules" data-pwd-rules>
-                            <li data-rule="length">At least 8 characters</li>
-                            <li data-rule="upper">One uppercase letter</li>
-                            <li data-rule="lower">One lowercase letter</li>
-                            <li data-rule="number">One number</li>
-                            <li data-rule="symbol">One symbol (optional, but stronger)</li>
+                            <li data-rule="length">At least 8 characters (required)</li>
+                            <li data-rule="letter">At least one letter (required)</li>
+                            <li data-rule="number">At least one number (required)</li>
+                            <li data-rule="mixed">Mix uppercase and lowercase (stronger)</li>
+                            <li data-rule="symbol">Add a symbol (stronger)</li>
                         </ul>
-                        <p class="form-hint settings-password-hint">At least 8 characters, with a letter and a number.</p>
+                        <p class="form-hint settings-password-hint">Required: 8+ characters, at least one letter and one number. Uppercase/lowercase variety and a symbol make it stronger.</p>
                         @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "form-error" })
                     </div>
 

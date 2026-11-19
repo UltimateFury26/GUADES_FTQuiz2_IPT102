@@ -68,64 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 5000);
     });
 
-    // ---- Password show/hide ("eye") toggle, used on every password field ----
-    document.querySelectorAll(".password-toggle").forEach(function (btn) {
-        var field = btn.closest(".password-field");
-        var input = field ? field.querySelector("input") : null;
-
-        if (!input) { return; }
-
-        btn.addEventListener("click", function () {
-            var isHidden = input.type === "password";
-            input.type = isHidden ? "text" : "password";
-            btn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
-
-            // D-01: the icon state is a class (see .password-toggle.is-visible in the CSS), because
-            // clearing an inline display lets the stylesheet's display:none win and hides both icons.
-            btn.classList.toggle("is-visible", isHidden);
-        });
-    });
-
-    // ---- Password strength meter (shown only under a "new password" field) ----
-    function passwordStrengthScore(value) {
-        var score = 0;
-        if (value.length >= 8) { score++; }
-        if (value.length >= 12) { score++; }
-        if (/[a-z]/.test(value) && /[A-Z]/.test(value)) { score++; }
-        if (/[0-9]/.test(value)) { score++; }
-        if (/[^A-Za-z0-9]/.test(value)) { score++; }
-        return Math.min(score, 4);
-    }
-
-    var strengthLabels = ["Very weak", "Weak", "Fair", "Good", "Strong"];
-
-    document.querySelectorAll("[data-strength-for]").forEach(function (meter) {
-        var input = document.getElementById(meter.getAttribute("data-strength-for"));
-        var fill = meter.querySelector("[data-strength-fill]");
-        var label = meter.querySelector("[data-strength-label]");
-
-        if (!input || !fill || !label) { return; }
-
-        function update() {
-            var value = input.value;
-
-            if (!value) {
-                fill.className = "pwd-strength-fill";
-                fill.style.width = "0%";
-                label.textContent = "";
-                return;
-            }
-
-            var score = passwordStrengthScore(value);
-            fill.className = "pwd-strength-fill pwd-strength-" + score;
-            fill.style.width = ((score + 1) / 5 * 100) + "%";
-            label.textContent = strengthLabels[score];
-        }
-
-        input.addEventListener("input", update);
-        update();
-    });
-
     // ---- Manage Users: automatic (as-you-type) search and status filter ----
     // Every user is already rendered in the table; this only shows or hides rows,
     // so there is no round trip to the server while searching.

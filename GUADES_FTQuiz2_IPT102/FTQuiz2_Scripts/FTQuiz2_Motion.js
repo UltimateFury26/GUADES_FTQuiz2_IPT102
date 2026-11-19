@@ -213,13 +213,10 @@
         nums.forEach(function (n) { io.observe(n); });
     }
 
-    /* ----------------------------------------------------- password UX (port) */
-    /* Ported from GUADES_Quiz_IPT102-main Portfolio.js and then tightened:
-         - the score is rule based, not character-class counting
-         - obvious patterns (password, qwerty, 1234, aaaaaa) are capped at "Weak"
-         - the checklist, the confirm note and the caps-lock hint all agree with it
-         - the show/hide eye is driven by inline display, so no stylesheet
-           specificity war can leave the icon stuck on one state. */
+    /* ----------------------------------------------------- password UX */
+    /* One handler owns every password toggle and strength meter. The required
+       checks mirror the server validator exactly: 8+ characters, a letter and a
+       number. Upper/lowercase variety and a symbol are optional strength boosts. */
 
     var COMMON_PASSWORDS = [
         "password", "passw0rd", "12345678", "123456789", "qwerty", "qwertyui",
@@ -229,11 +226,16 @@
 
     function passwordRules(value) {
         var v = value || "";
+        var upper = /[A-Z]/.test(v);
+        var lower = /[a-z]/.test(v);
+        var number = /[0-9]/.test(v);
         return {
             length: v.length >= 8,
-            upper: /[A-Z]/.test(v),
-            lower: /[a-z]/.test(v),
-            number: /[0-9]/.test(v),
+            letter: upper || lower,
+            upper: upper,
+            lower: lower,
+            mixed: upper && lower,
+            number: number,
             symbol: /[^A-Za-z0-9]/.test(v)
         };
     }
@@ -263,11 +265,11 @@
         var score = 0;
 
         if (r.length) { score++; }
+        // This is the same minimum accepted by the server-side RegularExpression.
+        if (r.letter && r.number) { score++; }
         if (v.length >= 12) { score++; }
-
-        var classes = (r.lower ? 1 : 0) + (r.upper ? 1 : 0) + (r.number ? 1 : 0) + (r.symbol ? 1 : 0);
-        if (classes >= 3) { score++; }
-        if (classes === 4) { score++; }
+        if (r.mixed) { score++; }
+        if (r.symbol) { score++; }
 
         // A single repeated character or a well-known password never deserves more than
         // "Weak", however long it is. A straight run ("abcdefgh", "12345678") is capped at
@@ -399,11 +401,12 @@
                 var input = meter ? document.getElementById(meter.getAttribute("data-strength-for")) : null;
                 if (!input || !input.value) { return; }
 
-                if (passwordStrengthScore(input.value) < 2) {
+                var rules = passwordRules(input.value);
+                if (!rules.length || !rules.letter || !rules.number) {
                     e.preventDefault();
                     input.focus();
                     var label = meter.querySelector("[data-strength-label]");
-                    if (label) { label.textContent = "Too weak - add length, numbers or symbols"; }
+                    if (label) { label.textContent = "Use 8+ characters, including a letter and a number"; }
                 }
             });
         });
@@ -462,6 +465,55 @@
         });
     }
 
+    /* --------------------------------------------------- flavor carousel */
+    function initFlavorCarousel() {
+        document.querySelectorAll("[data-mg-flavor-carousel]").forEach(function (carousel) {
+            var slides = Array.prototype.slice.call(carousel.querySelectorAll("[data-flavor-slide]"));
+            var dots = Array.prototype.slice.call(carousel.querySelectorAll("[data-flavor-dot]"));
+            var previous = carousel.querySelector("[data-flavor-prev]");
+            var next = carousel.querySelector("[data-flavor-next]");
+            var currentLabel = carousel.querySelector("[data-flavor-current]");
+            if (slides.length < 2) {
+                if (previous) { previous.hidden = true; }
+                if (next) { next.hidden = true; }
+                dots.forEach(function (dot) { dot.hidden = true; });
+                return;
+            }
+
+            var active = 0;
+            function show(index) {
+                active = (index + slides.length) % slides.length;
+                slides.forEach(function (slide, i) {
+                    var selected = i === active;
+                    slide.hidden = !selected;
+                    slide.classList.toggle("is-active", selected);
+                    slide.setAttribute("aria-hidden", selected ? "false" : "true");
+                });
+                dots.forEach(function (dot, i) {
+                    var selected = i === active;
+                    dot.classList.toggle("is-active", selected);
+                    dot.setAttribute("aria-pressed", selected ? "true" : "false");
+                });
+                if (currentLabel) { currentLabel.textContent = String(active + 1).padStart(2, "0"); }
+            }
+
+            if (previous) { previous.addEventListener("click", function () { show(active - 1); }); }
+            if (next) { next.addEventListener("click", function () { show(active + 1); }); }
+            dots.forEach(function (dot) {
+                dot.addEventListener("click", function () {
+                    var index = parseInt(dot.getAttribute("data-flavor-dot"), 10);
+                    if (!isNaN(index)) { show(index); }
+                });
+            });
+
+            carousel.addEventListener("keydown", function (e) {
+                if (e.key === "ArrowLeft") { show(active - 1); }
+                if (e.key === "ArrowRight") { show(active + 1); }
+            });
+            show(0);
+        });
+    }
+
     /* ------------------------------------------------------- smooth anchor nav */
     function initAnchors() {
         document.addEventListener("click", function (e) {
@@ -488,6 +540,7 @@
         initPasswords();
         initForms();
         initProductFilter();
+        initFlavorCarousel();
         initAnchors();
     });
 })();

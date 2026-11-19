@@ -1,6 +1,7 @@
-﻿@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ProductDetailsViewModel
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ProductDetailsViewModel
 @{
-    // One published product. The controller only gets here for a valid, published product id.
+    // Product information is limited to the published fields stored for this product.
+    // No sizes, prices or checkout options are shown because the catalogue has no such data.
     ViewBag.Title = Model.Product.Name;
 }
 
@@ -15,7 +16,7 @@
         <div class="mm-detail__media">
             @if (Model.Product.ImageUrl.Length > 0)
             {
-                <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" decoding="async" />
+                <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name bottle" decoding="async" />
             }
             else
             {
@@ -24,25 +25,56 @@
         </div>
 
         <div class="mm-detail__body">
-            <p class="mm-page-head__kicker">@(Model.Product.Flavor.Length > 0 ? Model.Product.Flavor + " flavour" : "The line-up")</p>
-            <h1 class="mm-detail__title" id="productTitle">@Model.Product.Name</h1>
+            <p class="mm-detail__eyebrow">Mogu Mogu Flavors</p>
+            <h1 class="mm-detail__title" id="productTitle">@(Model.Product.Flavor.Length > 0 ? Model.Product.Flavor : Model.Product.Name)</h1>
+            <p class="mm-detail__subheading">WITH NATA DE COCO</p>
             @if (Model.Description.Length > 0)
             {
-                <p class="mm-prose mm-detail__text">@Model.Description</p>
+                <p class="mm-detail__text">@Model.Description</p>
             }
+
+            <div class="mm-detail__flavors" aria-label="Choose another flavor">
+                <span class="mm-detail__field-label">Explore flavors</span>
+                <div class="mm-detail__flavor-list">
+                    <span class="mm-detail__flavor-choice is-current" aria-current="page" aria-label="Current flavor: @Model.Product.Name">
+                        @if (Model.Product.ImageUrl.Length > 0)
+                        {
+                            <img src="@Model.Product.ImageUrl" alt="" />
+                        }
+                        else
+                        {
+                            <span>@Model.Product.PlaceholderLetter</span>
+                        }
+                    </span>
+                    @foreach (var product in Model.OtherProducts)
+                    {
+                        <a class="mm-detail__flavor-choice" href="@Url.Action("Details", "FTQuiz2_Products", new { id = product.ProductId })" aria-label="View @product.Name">
+                            @if (product.ImageUrl.Length > 0)
+                            {
+                                <img src="@product.ImageUrl" alt="" loading="lazy" />
+                            }
+                            else
+                            {
+                                <span>@product.PlaceholderLetter</span>
+                            }
+                        </a>
+                    }
+                </div>
+            </div>
+
             <div class="mm-actions">
-                <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">Back to all products</a>
-                <a class="pill-btn pill-btn-secondary" href="@Url.Action("AboutUs", "Home")">About us</a>
+                <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">Browse all flavors</a>
+                <a class="pill-btn pill-btn-secondary" href="@Url.Action("AboutUs", "Home")">Contact us</a>
             </div>
         </div>
     </section>
 
     @if (Model.OtherProducts.Count > 0)
     {
-        <section class="mm-section mm-products-page" aria-labelledby="moreTitle">
+        <section class="mm-section mm-products-page mm-detail-related" aria-labelledby="moreTitle">
             <div class="mm-section__head">
                 <p class="mm-section__kicker">Keep chewing</p>
-                <h2 class="mm-section__title" id="moreTitle">Other @Model.BusinessName drinks</h2>
+                <h2 class="mm-section__title" id="moreTitle">Other Mogu Mogu drinks</h2>
             </div>
             <div class="mm-product-grid">
                 @foreach (var product in Model.OtherProducts)

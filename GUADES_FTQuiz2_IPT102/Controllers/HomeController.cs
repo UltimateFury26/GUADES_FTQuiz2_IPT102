@@ -12,8 +12,8 @@ namespace GUADES_FTQuiz2_IPT102.Controllers
     /// Mogu Mogu homepage. Login is required and the account is re-checked as Active on every request
     /// (FTQuiz2_RequireLogin + FTQuiz2_BaseController). All content comes from SQL Server through the
     /// repositories; the view only draws the view model.
-    /// Home also serves the Our Story (About) and Contact pages, which read the business profile and the
-    /// contact information record. Only Index counts as a visit, so the visit report is unchanged.
+    /// Home also serves Our Story (About) and the combined About Us page. Only Index counts as a visit,
+    /// so the visit report is unchanged.
     /// </summary>
     [FTQuiz2_RequireLogin]
     public class HomeController : FTQuiz2_BaseController
@@ -68,38 +68,51 @@ namespace GUADES_FTQuiz2_IPT102.Controllers
         // are real http/https addresses and the email only when it is safe for a mailto: link.
         public ActionResult AboutUs()
         {
-            var model = new FTQuiz2_AboutUsViewModel
-            {
-                BusinessName = FTQuiz2_ChromeViewModel.ForRequest().OwnerName
-            };
+            var model = new FTQuiz2_AboutUsViewModel();
 
-            var business = new FTQuiz2_BusinessRepository();
-
-            FTQuiz2_ContactInfo contact = business.GetContactInfo();
-            if (contact != null)
+            // Load the profile, contact channels and people with one short-lived database context.
+            using (var db = new FTQuiz2_Db())
             {
-                model.Email = FTQuiz2_BusinessFormat.SafeEmail(contact.Email);
-                model.PhoneDisplay = (contact.Phone ?? string.Empty).Trim();
-                model.PhoneHref = FTQuiz2_HomeViewModel.ToPhoneHref(contact.Phone);
-                model.Address = (contact.Address ?? string.Empty).Trim();
-                model.FacebookUrl = FTQuiz2_UrlGuard.SafeHttpUrl(contact.FacebookUrl);
-                model.InstagramUrl = FTQuiz2_UrlGuard.SafeHttpUrl(contact.InstagramUrl);
-            }
-
-            List<FTQuiz2_OwnerInfo> owners = business.GetOwners();
-            foreach (FTQuiz2_OwnerInfo owner in owners)
-            {
-                model.Owners.Add(new FTQuiz2_OwnerCardView
+                var business = new FTQuiz2_BusinessRepository(db);
+                FTQuiz2_BusinessProfile profile = business.GetBusinessProfile();
+                if (profile != null)
                 {
-                    OwnerId = owner.OwnerId,
-                    FullName = owner.FullName,
-                    Position = owner.Position ?? string.Empty,
-                    Bio = owner.Bio ?? string.Empty,
-                    Email = FTQuiz2_BusinessFormat.SafeEmail(owner.Email),
-                    PhotoUrl = FTQuiz2_ImagePath.Resolve(owner.PhotoPath),
-                    IsPlaceholder = FTQuiz2_BusinessFormat.IsPlaceholder(owner.FullName)
-                        || FTQuiz2_BusinessFormat.IsPlaceholder(owner.Bio)
-                });
+                    if (!string.IsNullOrWhiteSpace(profile.BusinessName)) { model.BusinessName = profile.BusinessName.Trim(); }
+                    model.Tagline = (profile.Tagline ?? string.Empty).Trim();
+                    model.BrandStory = (profile.BrandStory ?? string.Empty).Trim();
+                    model.HeroImageUrl = FTQuiz2_ImagePath.Resolve(profile.HeroImagePath);
+                }
+                if (model.HeroImageUrl.Length == 0)
+                {
+                    model.HeroImageUrl = FTQuiz2_ImagePath.Resolve("FTQuiz2_Media/Brand/mogu-mogu-hero.jpg");
+                }
+
+                FTQuiz2_ContactInfo contact = business.GetContactInfo();
+                if (contact != null)
+                {
+                    model.Email = FTQuiz2_BusinessFormat.SafeEmail(contact.Email);
+                    model.PhoneDisplay = (contact.Phone ?? string.Empty).Trim();
+                    model.PhoneHref = FTQuiz2_HomeViewModel.ToPhoneHref(contact.Phone);
+                    model.Address = (contact.Address ?? string.Empty).Trim();
+                    model.FacebookUrl = FTQuiz2_UrlGuard.SafeHttpUrl(contact.FacebookUrl);
+                    model.InstagramUrl = FTQuiz2_UrlGuard.SafeHttpUrl(contact.InstagramUrl);
+                }
+
+                List<FTQuiz2_OwnerInfo> owners = business.GetOwners();
+                foreach (FTQuiz2_OwnerInfo owner in owners)
+                {
+                    model.Owners.Add(new FTQuiz2_OwnerCardView
+                    {
+                        OwnerId = owner.OwnerId,
+                        FullName = owner.FullName,
+                        Position = owner.Position ?? string.Empty,
+                        Bio = owner.Bio ?? string.Empty,
+                        Email = FTQuiz2_BusinessFormat.SafeEmail(owner.Email),
+                        PhotoUrl = FTQuiz2_ImagePath.Resolve(owner.PhotoPath),
+                        IsPlaceholder = FTQuiz2_BusinessFormat.IsPlaceholder(owner.FullName)
+                            || FTQuiz2_BusinessFormat.IsPlaceholder(owner.Bio)
+                    });
+                }
             }
 
             ViewBag.Title = "About Us";

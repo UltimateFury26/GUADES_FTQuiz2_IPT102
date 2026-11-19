@@ -186,6 +186,11 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
     public class FTQuiz2_AboutUsViewModel
     {
         public string BusinessName { get; set; }
+        public string Tagline { get; set; }
+        public string BrandStory { get; set; }
+        public string HeroImageUrl { get; set; }
+
+        public bool HasBrandStory { get { return BrandStory.Length > 0 && !FTQuiz2_BusinessFormat.IsPlaceholder(BrandStory); } }
 
         // ---- contact information (usp_ContactInfo_Get) ----
         public string Email { get; set; }
@@ -201,6 +206,9 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
         public FTQuiz2_AboutUsViewModel()
         {
             BusinessName = "Mogu Mogu";
+            Tagline = string.Empty;
+            BrandStory = string.Empty;
+            HeroImageUrl = string.Empty;
             Email = string.Empty;
             PhoneDisplay = string.Empty;
             PhoneHref = string.Empty;
