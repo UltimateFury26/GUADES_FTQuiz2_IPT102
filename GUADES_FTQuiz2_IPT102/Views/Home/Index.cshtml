@@ -38,9 +38,11 @@
     }
 </section>
 
+<div class="mm-home">
+
 <!-- FEATURED PRODUCTS -->
 <section class="mm-section" id="products" aria-labelledby="productsTitle">
-    <div class="mm-section__head">
+    <div class="mm-section__head mm-section__head--center">
         <span class="mm-eyebrow">Products</span>
         <h2 class="mm-section__title" id="productsTitle">Featured products</h2>
     </div>
@@ -151,7 +153,7 @@
 
 <!-- CONTACT PREVIEW -->
 <section class="mm-section" id="contact" aria-labelledby="contactTitle">
-    <div class="mm-section__head">
+    <div class="mm-section__head mm-section__head--center">
         <span class="mm-eyebrow">Contact</span>
         <h2 class="mm-section__title" id="contactTitle">Get in touch</h2>
     </div>
@@ -196,5 +198,9 @@
         <p class="mm-empty">Contact details will be available soon.</p>
     }
 
-    <a class="pill-btn pill-btn-primary" href="@Url.Action("Contact", "Home")">Contact us</a>
+    <div class="mm-actions">
+        <a class="pill-btn pill-btn-primary" href="@Url.Action("Contact", "Home")">Contact us</a>
+    </div>
 </section>
+
+</div>
