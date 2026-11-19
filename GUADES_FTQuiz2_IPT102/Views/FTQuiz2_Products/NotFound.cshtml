@@ -1,0 +1,14 @@
+@{
+    // Shown (with a 404 status) for an unknown, invalid or unpublished product id.
+    ViewBag.Title = "Product not found";
+}
+
+<header class="mm-page-head">
+    <span class="mm-eyebrow">Products</span>
+    <h1 class="mm-page-head__title">Product not found</h1>
+    <p class="mm-page-head__lead">That product doesn&rsquo;t exist or isn&rsquo;t available right now.</p>
+</header>
+
+<div class="mm-actions">
+    <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">See all products</a>
+</div>

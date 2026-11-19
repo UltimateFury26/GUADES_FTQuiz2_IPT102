@@ -12,6 +12,8 @@ namespace GUADES_FTQuiz2_IPT102.Controllers
     /// Mogu Mogu homepage. Login is required and the account is re-checked as Active on every request
     /// (FTQuiz2_RequireLogin + FTQuiz2_BaseController). All content comes from SQL Server through the
     /// repositories; the view only draws the view model.
+    /// Home also serves the Our Story (About) and Contact pages, which read the business profile and the
+    /// contact information record. Only Index counts as a visit, so the visit report is unchanged.
     /// </summary>
     [FTQuiz2_RequireLogin]
     public class HomeController : FTQuiz2_BaseController
@@ -34,6 +36,55 @@ namespace GUADES_FTQuiz2_IPT102.Controllers
             RecordVisit();
 
             ViewBag.Title = "Home";
+            return View(model);
+        }
+
+        // Our Story: the business profile record (usp_BusinessProfile_Get). Empty parts are hidden by the view.
+        public ActionResult About()
+        {
+            var model = new FTQuiz2_AboutViewModel();
+            FTQuiz2_BusinessProfile profile = new FTQuiz2_BusinessRepository().GetBusinessProfile();
+
+            if (profile != null)
+            {
+                model.BusinessName = string.IsNullOrWhiteSpace(profile.BusinessName) ? model.BusinessName : profile.BusinessName;
+                model.Tagline = profile.Tagline ?? string.Empty;
+                model.BrandStory = (profile.BrandStory ?? string.Empty).Trim();
+                model.Mission = profile.Mission ?? string.Empty;
+                model.Vision = profile.Vision ?? string.Empty;
+
+                // The About picture; the hero picture stands in when no About picture is set.
+                string about = FTQuiz2_ImagePath.Resolve(profile.AboutImagePath);
+                model.ImageUrl = about.Length > 0 ? about : FTQuiz2_ImagePath.Resolve(profile.HeroImagePath);
+            }
+
+            ViewBag.Title = "Our Story";
+            return View(model);
+        }
+
+        // Contact: the contact information record (usp_ContactInfo_Get). Display only; there is no
+        // contact form, so nothing here pretends to send a message. Links are only kept when they are
+        // real http/https addresses and the email only when it is safe for a mailto: link.
+        public ActionResult Contact()
+        {
+            var model = new FTQuiz2_ContactViewModel
+            {
+                BusinessName = FTQuiz2_ChromeViewModel.ForRequest().OwnerName
+            };
+
+            FTQuiz2_ContactInfo contact = new FTQuiz2_BusinessRepository().GetContactInfo();
+
+            if (contact != null)
+            {
+                model.Email = FTQuiz2_BusinessFormat.SafeEmail(contact.Email);
+                model.PhoneDisplay = (contact.Phone ?? string.Empty).Trim();
+                model.PhoneHref = FTQuiz2_HomeViewModel.ToPhoneHref(contact.Phone);
+                model.Address = (contact.Address ?? string.Empty).Trim();
+                model.FacebookUrl = FTQuiz2_UrlGuard.SafeHttpUrl(contact.FacebookUrl);
+                model.InstagramUrl = FTQuiz2_UrlGuard.SafeHttpUrl(contact.InstagramUrl);
+            }
+
+            ViewBag.Title = "Contact";
             return View(model);
         }
 

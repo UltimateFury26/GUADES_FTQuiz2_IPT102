@@ -851,3 +851,250 @@ body.FTQuiz2_admin .tab-link.active {
         animation: none !important;
     }
 }
+
+/* ===========================================================
+   BUSINESS PAGES (Phase 4): Our Story, Products, Product details,
+   Contact, Owners / Company. Reuses the Phase 3 classes above
+   (.mm-section, .mm-product*, .mm-story*, .mm-highlight*,
+   .mm-contact-list*, .mm-empty, .mm-badge, .mm-eyebrow).
+   =========================================================== */
+
+/* Footer now carries five links: let them wrap instead of overflowing. */
+.mm-footer__links {
+    flex-wrap: wrap;
+    gap: 8px 20px;
+}
+
+/* ---------- Page heading ---------- */
+
+.mm-page-head {
+    max-width: 760px;
+    padding: 8px 0 0;
+}
+
+.mm-page-head__title {
+    margin: 6px 0 0;
+    font-size: clamp(30px, 5vw, 46px);
+    font-weight: 900;
+    color: var(--mm-ink);
+    overflow-wrap: anywhere;
+}
+
+.mm-page-head__lead {
+    max-width: 62ch;
+    margin: 12px 0 0;
+    font-size: 18px;
+    color: var(--mm-ink-soft);
+}
+
+/* Keeps line breaks the administrator typed; long unbroken text wraps instead of widening the page. */
+.mm-prose {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.mm-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+/* A visible "this is placeholder content" label (never presented as a verified fact). */
+.mm-note {
+    display: inline-block;
+    margin: 12px 0 0;
+    padding: 8px 14px;
+    border: 2px dashed var(--mm-secondary);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    color: var(--mm-ink-soft);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.mm-badge--note {
+    background: #fff;
+    border: 2px dashed var(--mm-secondary);
+}
+
+/* ---------- Product cards that are links (Products page) ---------- */
+
+a.mm-product__btn,
+a.mm-product__btn:hover {
+    text-decoration: none;
+}
+
+/* ---------- Product details ---------- */
+
+.mm-crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--mm-ink-faint);
+}
+
+    .mm-crumbs a {
+        color: var(--mm-primary);
+    }
+
+        .mm-crumbs a:hover {
+            text-decoration: underline;
+        }
+
+.mm-detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 40px;
+    align-items: center;
+    padding-top: 24px;
+}
+
+.mm-detail__media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    max-height: 520px;
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    background: radial-gradient(circle at 50% 40%, #fff 0, var(--mm-peach) 100%);
+    box-shadow: var(--shadow-sm);
+}
+
+    .mm-detail__media img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        object-fit: contain;
+    }
+
+.mm-detail__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.mm-detail__title {
+    margin: 10px 0 0;
+    font-size: clamp(30px, 5vw, 46px);
+    font-weight: 900;
+    color: var(--mm-ink);
+    overflow-wrap: anywhere;
+}
+
+.mm-detail__text {
+    max-width: 62ch;
+    margin: 16px 0 0;
+    font-size: 18px;
+    color: var(--mm-ink-soft);
+}
+
+/* ---------- Owners / Company ---------- */
+
+.mm-owner-grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.mm-owner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    min-width: 0;
+    padding: 28px 24px;
+    border-radius: var(--radius-lg);
+    border-top: 5px solid var(--mm-secondary);
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+}
+
+.mm-owner--placeholder {
+    border-top-style: dashed;
+}
+
+.mm-owner__photo,
+.mm-owner__initial {
+    width: 96px;
+    height: 96px;
+    margin-bottom: 8px;
+    border-radius: 50%;
+}
+
+.mm-owner__photo {
+    object-fit: cover;
+    box-shadow: var(--shadow-sm);
+}
+
+.mm-owner__initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mm-secondary);
+    color: var(--mm-ink);
+    font-size: 40px;
+    font-weight: 900;
+}
+
+.mm-owner__name {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--mm-ink);
+    overflow-wrap: anywhere;
+}
+
+.mm-owner__role {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--mm-primary);
+    overflow-wrap: anywhere;
+}
+
+.mm-owner__bio {
+    margin: 6px 0 0;
+    color: var(--mm-ink-soft);
+}
+
+.mm-owner__email {
+    margin-top: 8px;
+    color: var(--mm-primary);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+    .mm-owner__email:hover {
+        text-decoration: underline;
+    }
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+    .mm-detail {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .mm-detail__media {
+        max-height: 360px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mm-actions .pill-btn {
+        flex: 1 1 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .mm-owner-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -99,6 +99,18 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
                 : string.Empty;
         }
 
+        /// <summary>
+        /// " active" when the current request is the given controller AND action (Our Story and Contact
+        /// are actions of the Home controller, so a controller-only match would also light up Home).
+        /// </summary>
+        public string ActiveClass(string controllerName, string actionName)
+        {
+            return string.Equals(RouteValue("controller"), controllerName, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(RouteValue("action"), actionName, StringComparison.OrdinalIgnoreCase)
+                ? " active"
+                : string.Empty;
+        }
+
         private static bool IsHome()
         {
             string controller = RouteValue("controller");

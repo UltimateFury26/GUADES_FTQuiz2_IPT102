@@ -78,6 +78,9 @@
                 </article>
             }
         </div>
+        <div class="mm-actions">
+            <a class="pill-btn pill-btn-secondary" href="@Url.Action("Index", "FTQuiz2_Products")">View all products</a>
+        </div>
     }
 </section>
 
@@ -100,7 +103,7 @@
             {
                 <p class="mm-empty">The brand story will be added soon.</p>
             }
-            @* Phase 4: add a "Read our full story" link to the About page here. *@
+            <a class="pill-btn pill-btn-secondary" href="@Url.Action("About", "Home")">Read our full story</a>
         </div>
         @if (Model.AboutImageUrl.Length > 0)
         {
@@ -189,5 +192,5 @@
         <p class="mm-empty">Contact details will be available soon.</p>
     }
 
-    <button type="button" class="pill-btn pill-btn-primary" data-modal="contactModal">Contact us</button>
+    <a class="pill-btn pill-btn-primary" href="@Url.Action("Contact", "Home")">Contact us</a>
 </section>

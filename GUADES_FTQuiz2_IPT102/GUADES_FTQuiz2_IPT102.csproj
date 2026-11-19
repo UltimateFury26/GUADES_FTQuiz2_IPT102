@@ -128,6 +128,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\FTQuiz2_ProductsController.cs" />
+    <Compile Include="Controllers\FTQuiz2_BusinessController.cs" />
     <Compile Include="Controllers\FTQuiz2_ErrorController.cs" />
     <Compile Include="Controllers\FTQuiz2_LoginController.cs" />
     <Compile Include="Controllers\FTQuiz2_MyAccountController.cs" />
@@ -156,6 +158,7 @@
     <Compile Include="FTQuiz2_Models\FTQuiz2_OwnerInfo.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_Product.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_HomeViewModel.cs" />
+    <Compile Include="FTQuiz2_ViewModels\FTQuiz2_BusinessPagesViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_LoginViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ManageUsersViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ContentPageViewModel.cs" />
@@ -262,7 +265,6 @@
     <Content Include="FTQuiz2_Uploads\d302badd3d12468e9dc79e8566deee1d.jpg" />
     <Content Include="Views\Shared\_FTQuiz2_AuthLayout.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_Chrome.cshtml" />
-    <Content Include="Views\Shared\_FTQuiz2_ContactModal.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_ProductModal.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_Layout.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_Notices.cshtml" />
@@ -280,6 +282,10 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\FTQuiz2_Products\Index.cshtml" />
+    <Content Include="Views\FTQuiz2_Products\Details.cshtml" />
+    <Content Include="Views\FTQuiz2_Products\NotFound.cshtml" />
+    <Content Include="Views\FTQuiz2_Business\Owners.cshtml" />
     <Content Include="Views\FTQuiz2_Error\Index.cshtml" />
     <Content Include="Views\FTQuiz2_Login\Index.cshtml" />
     <Content Include="Views\FTQuiz2_ManageUsers\Index.cshtml" />

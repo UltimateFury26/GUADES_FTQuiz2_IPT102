@@ -1,0 +1,52 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ProductsIndexViewModel
+@{
+    // Product catalogue: published products only, in display order, straight from SQL Server.
+    // Catalogue only: no cart, price or checkout.
+    ViewBag.Title = "Products";
+}
+
+<header class="mm-page-head">
+    <span class="mm-eyebrow">Products</span>
+    <h1 class="mm-page-head__title">@Model.BusinessName products</h1>
+</header>
+
+<section class="mm-section" aria-label="Product list">
+    @if (Model.Products.Count == 0)
+    {
+        <p class="mm-empty">Our products are being updated. Please check back soon.</p>
+    }
+    else
+    {
+        <div class="mm-product-grid">
+            @foreach (var product in Model.Products)
+            {
+                <article class="mm-product">
+                    <a class="mm-product__btn" href="@Url.Action("Details", "FTQuiz2_Products", new { id = product.ProductId })" aria-label="View details of @product.Name">
+                        <span class="mm-product__media">
+                            @if (product.ImageUrl.Length > 0)
+                            {
+                                <img src="@product.ImageUrl" alt="@product.Name" loading="lazy" />
+                            }
+                            else
+                            {
+                                <span class="mm-product__ph" aria-hidden="true">@product.PlaceholderLetter</span>
+                            }
+                        </span>
+                        <span class="mm-product__body">
+                            @if (product.Flavor.Length > 0)
+                            {
+                                <span class="mm-badge">@product.Flavor</span>
+                            }
+                            <span class="mm-product__name">@product.Name</span>
+                            @if (product.ShortDescription.Length > 0)
+                            {
+                                <span class="mm-product__desc">@product.ShortDescription</span>
+                            }
+                            <span class="mm-product__more">View details</span>
+                        </span>
+                    </a>
+                </article>
+            }
+        </div>
+    }
+</section>

@@ -1,9 +1,66 @@
-﻿@{
-    ViewBag.Title = "About";
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_AboutViewModel
+@{
+    // Our Story. Every part comes from the business profile record in SQL Server (usp_BusinessProfile_Get)
+    // through HomeController.About; each part hides itself when it has nothing to show. Local images only.
+    ViewBag.Title = "Our Story";
 }
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
 
-    <p>Use this area to provide additional information.</p>
-</main>
+<header class="mm-page-head">
+    <span class="mm-eyebrow">About @Model.BusinessName</span>
+    <h1 class="mm-page-head__title">Our story</h1>
+    @if (Model.Tagline.Length > 0)
+    {
+        <p class="mm-page-head__lead">@Model.Tagline</p>
+    }
+</header>
+
+<section class="mm-section" aria-labelledby="storyTitle">
+    <div class="mm-story @(Model.ImageUrl.Length > 0 ? "mm-story--with-image" : "")">
+        <div class="mm-story__text">
+            <h2 class="mm-section__title" id="storyTitle">The brand story</h2>
+            @if (Model.HasStory)
+            {
+                <p class="mm-story__body">@Model.BrandStory</p>
+                if (Model.StoryIsPlaceholder)
+                {
+                    <p class="mm-note">Placeholder text: the approved brand story has not been added yet.</p>
+                }
+            }
+            else
+            {
+                <p class="mm-empty">The brand story will be added soon.</p>
+            }
+        </div>
+        @if (Model.ImageUrl.Length > 0)
+        {
+            <div class="mm-story__media"><img src="@Model.ImageUrl" alt="@Model.BusinessName drinks" loading="lazy" /></div>
+        }
+    </div>
+</section>
+
+@if (Model.HasHighlights)
+{
+    <section class="mm-section" aria-label="Mission and vision">
+        <div class="mm-highlights">
+            @if (Model.Mission.Length > 0)
+            {
+                <article class="mm-highlight">
+                    <h3>Our mission</h3>
+                    <p>@Model.Mission</p>
+                </article>
+            }
+            @if (Model.Vision.Length > 0)
+            {
+                <article class="mm-highlight">
+                    <h3>Our vision</h3>
+                    <p>@Model.Vision</p>
+                </article>
+            }
+        </div>
+    </section>
+}
+
+<div class="mm-actions">
+    <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">See our products</a>
+    <a class="pill-btn pill-btn-secondary" href="@Url.Action("Contact", "Home")">Contact us</a>
+</div>

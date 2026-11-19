@@ -19,6 +19,19 @@ namespace GUADES_FTQuiz2_IPT102
             routes.MapRoute("FTQuiz2_Error", "FTQuiz2_Error",
                 new { controller = "FTQuiz2_Error", action = "Index" });
 
+            // Business pages (Phase 4). They must stay ABOVE the Admin route: that route accepts any
+            // {controller}/{action}, so it would otherwise win URL generation for Url.Action(...).
+            routes.MapRoute("FTQuiz2_OurStory", "OurStory",
+                new { controller = "Home", action = "About" });
+            routes.MapRoute("FTQuiz2_Contact", "Contact",
+                new { controller = "Home", action = "Contact" });
+            routes.MapRoute("FTQuiz2_Products", "Products",
+                new { controller = "FTQuiz2_Products", action = "Index" });
+            routes.MapRoute("FTQuiz2_ProductDetails", "Products/{id}",
+                new { controller = "FTQuiz2_Products", action = "Details" });
+            routes.MapRoute("FTQuiz2_Owners", "Owners",
+                new { controller = "FTQuiz2_Business", action = "Owners" });
+
             // Original /Admin/*.aspx folder.
             routes.MapRoute("FTQuiz2_Admin", "FTQuiz2_Admin/{controller}/{action}/{id}",
                 new { controller = "FTQuiz2_ManageUsers", action = "Index", id = UrlParameter.Optional });

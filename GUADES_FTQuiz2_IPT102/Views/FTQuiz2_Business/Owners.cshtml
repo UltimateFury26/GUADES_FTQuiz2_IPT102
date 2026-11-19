@@ -1,0 +1,61 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_OwnersViewModel
+@{
+    // Owner / company information from SQL Server (usp_Owner_GetAll), in display order.
+    // A record that still holds the seed text "[... - to be completed]" is labelled as a placeholder here,
+    // so it is never mistaken for verified information.
+    ViewBag.Title = "Owners / Company";
+}
+
+<header class="mm-page-head">
+    <span class="mm-eyebrow">@Model.BusinessName</span>
+    <h1 class="mm-page-head__title">Owners / Company</h1>
+    <p class="mm-page-head__lead">Owner and company information.</p>
+</header>
+
+<section class="mm-section" aria-label="Owners and company representatives">
+    @if (Model.Owners.Count == 0)
+    {
+        <p class="mm-empty">Owner and company information will be added soon.</p>
+    }
+    else
+    {
+        if (Model.HasPlaceholders)
+        {
+            <p class="mm-note">Some entries below are placeholders waiting for verified information.</p>
+        }
+
+        <div class="mm-owner-grid">
+            @foreach (var owner in Model.Owners)
+            {
+                <article class="@("mm-owner" + (owner.IsPlaceholder ? " mm-owner--placeholder" : ""))">
+                    @if (owner.PhotoUrl.Length > 0)
+                    {
+                        <img class="mm-owner__photo" src="@owner.PhotoUrl" alt="@owner.FullName" loading="lazy" />
+                    }
+                    else
+                    {
+                        <span class="mm-owner__initial" aria-hidden="true">@owner.Initial</span>
+                    }
+
+                    @if (owner.IsPlaceholder)
+                    {
+                        <span class="mm-badge mm-badge--note">Placeholder</span>
+                    }
+                    <h2 class="mm-owner__name">@owner.FullName</h2>
+                    @if (owner.Position.Length > 0)
+                    {
+                        <p class="mm-owner__role">@owner.Position</p>
+                    }
+                    @if (owner.Bio.Length > 0)
+                    {
+                        <p class="mm-owner__bio mm-prose">@owner.Bio</p>
+                    }
+                    @if (owner.Email.Length > 0)
+                    {
+                        <a class="mm-owner__email" href="@("mailto:" + owner.Email)">@owner.Email</a>
+                    }
+                </article>
+            }
+        </div>
+    }
+</section>

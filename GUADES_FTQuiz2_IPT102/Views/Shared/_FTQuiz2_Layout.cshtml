@@ -1,7 +1,7 @@
 @using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 @{
-    // Signed-in shell: Mogu Mogu header navigation, page body, footer, Contact modal.
-    // The chrome model still comes from the existing data layer; it is re-pointed to business data in Phase 2/4.
+    // Signed-in shell: Mogu Mogu header navigation, page body, footer.
+    // The chrome model reads the business profile and contact rows; Contact is a page (Phase 4), not a modal.
     FTQuiz2_ChromeViewModel chrome = FTQuiz2_ChromeViewModel.ForRequest();
     string pageTitle = ViewBag.Title as string;
     string fullTitle = string.IsNullOrWhiteSpace(pageTitle) ? "Mogu Mogu" : pageTitle + " | Mogu Mogu";
@@ -38,7 +38,10 @@
                 </div>
                 <nav class="mm-footer__links" aria-label="Footer">
                     <a href="@Url.Content("~/")">Home</a>
-                    <button type="button" class="mm-footer__link-btn" data-modal="contactModal">Contact</button>
+                    <a href="@Url.Action("About", "Home")">Our Story</a>
+                    <a href="@Url.Action("Index", "FTQuiz2_Products")">Products</a>
+                    <a href="@Url.Action("Contact", "Home")">Contact</a>
+                    <a href="@Url.Action("Owners", "FTQuiz2_Business")">Owners / Company</a>
                 </nav>
                 <p class="mm-footer__copy">
                     &copy; @DateTime.Now.Year Mogu Mogu. Academic project; brand names and images belong to their respective owners.
@@ -47,8 +50,6 @@
 
         </div>
     </main>
-
-    @Html.Partial("_FTQuiz2_ContactModal", chrome)
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/FTQuiz2_Scripts/js")

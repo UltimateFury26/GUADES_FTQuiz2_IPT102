@@ -1,0 +1,77 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ProductDetailsViewModel
+@{
+    // One published product. The controller only gets here for a valid, published product id.
+    ViewBag.Title = Model.Product.Name;
+}
+
+<nav class="mm-crumbs" aria-label="Breadcrumb">
+    <a href="@Url.Action("Index", "FTQuiz2_Products")">Products</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">@Model.Product.Name</span>
+</nav>
+
+<section class="mm-detail" aria-labelledby="productTitle">
+    <div class="mm-detail__media">
+        @if (Model.Product.ImageUrl.Length > 0)
+        {
+            <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" />
+        }
+        else
+        {
+            <span class="mm-product__ph" aria-hidden="true">@Model.Product.PlaceholderLetter</span>
+        }
+    </div>
+
+    <div class="mm-detail__body">
+        @if (Model.Product.Flavor.Length > 0)
+        {
+            <span class="mm-badge">@Model.Product.Flavor</span>
+        }
+        <h1 class="mm-detail__title" id="productTitle">@Model.Product.Name</h1>
+        @if (Model.Description.Length > 0)
+        {
+            <p class="mm-prose mm-detail__text">@Model.Description</p>
+        }
+        <div class="mm-actions">
+            <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">Back to all products</a>
+            <a class="pill-btn pill-btn-secondary" href="@Url.Action("Contact", "Home")">Contact us</a>
+        </div>
+    </div>
+</section>
+
+@if (Model.OtherProducts.Count > 0)
+{
+    <section class="mm-section" aria-labelledby="moreTitle">
+        <div class="mm-section__head">
+            <span class="mm-eyebrow">More to explore</span>
+            <h2 class="mm-section__title" id="moreTitle">Other @Model.BusinessName drinks</h2>
+        </div>
+        <div class="mm-product-grid">
+            @foreach (var product in Model.OtherProducts)
+            {
+                <article class="mm-product">
+                    <a class="mm-product__btn" href="@Url.Action("Details", "FTQuiz2_Products", new { id = product.ProductId })" aria-label="View details of @product.Name">
+                        <span class="mm-product__media">
+                            @if (product.ImageUrl.Length > 0)
+                            {
+                                <img src="@product.ImageUrl" alt="@product.Name" loading="lazy" />
+                            }
+                            else
+                            {
+                                <span class="mm-product__ph" aria-hidden="true">@product.PlaceholderLetter</span>
+                            }
+                        </span>
+                        <span class="mm-product__body">
+                            @if (product.Flavor.Length > 0)
+                            {
+                                <span class="mm-badge">@product.Flavor</span>
+                            }
+                            <span class="mm-product__name">@product.Name</span>
+                            <span class="mm-product__more">View details</span>
+                        </span>
+                    </a>
+                </article>
+            }
+        </div>
+    </section>
+}
