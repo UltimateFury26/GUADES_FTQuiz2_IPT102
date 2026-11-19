@@ -1,15 +1,16 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ProductCardView
-@* Product detail modal. Opened by a [data-modal="productModal{id}"] button; closed by [data-close], Esc or a click outside (FTQuiz2_Portfolio.js). *@
+@* Product detail modal. Opened by a [data-modal="productModal{id}"] button; closed by [data-close], Esc or a click outside (FTQuiz2_Portfolio.js).
+   Focus moves to the close button on open, stays inside the dialog, and returns to the trigger on close (FTQuiz2_MoguMogu.js). *@
 <div class="modal-overlay" id="@Model.ModalId" role="dialog" aria-modal="true" aria-labelledby="@(Model.ModalId + "Title")">
     <div class="modal-box mm-product-modal">
         <button type="button" class="modal-close" data-close aria-label="Close">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12" /><path d="M18 6 6 18" /></svg>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12" /><path d="M18 6 6 18" /></svg>
         </button>
 
         <div class="mm-product-modal__media">
             @if (Model.ImageUrl.Length > 0)
             {
-                <img src="@Model.ImageUrl" alt="@Model.Name" />
+                <img src="@Model.ImageUrl" alt="@Model.Name" decoding="async" />
             }
             else
             {
@@ -21,7 +22,7 @@
         {
             <span class="mm-badge">@Model.Flavor</span>
         }
-        <h3 id="@(Model.ModalId + "Title")">@Model.Name</h3>
+        <h3 class="mm-product-modal__title" id="@(Model.ModalId + "Title")">@Model.Name</h3>
         @if (Model.FullDescription.Length > 0)
         {
             <p class="mm-product-modal__text">@Model.FullDescription</p>

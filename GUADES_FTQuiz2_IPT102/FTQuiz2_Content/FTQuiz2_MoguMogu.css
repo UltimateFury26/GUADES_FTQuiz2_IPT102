@@ -1587,3 +1587,208 @@ a.mm-product__btn:hover {
         transform: none;
     }
 }
+
+/* ===========================================================
+   PRODUCT DETAILS, NOT-FOUND AND PRODUCT MODAL (redesign Phase 05)
+   Details/not-found are scoped to .mm-product-page / .mm-notfound.
+   The modal rules target .mm-product-modal and its .modal-overlay parent
+   (the product modal is the only overlay in the shell).
+   =========================================================== */
+
+/* ---------- Product details ---------- */
+.mm-product-page .mm-crumbs {
+    padding-top: 16px;
+}
+.mm-product-page .mm-crumbs a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+}
+.mm-product-page .mm-detail {
+    gap: clamp(28px, 5vw, 64px);
+    padding-top: 20px;
+}
+.mm-product-page .mm-detail__media {
+    border-radius: 32px;
+    background:
+        radial-gradient(circle at 80% 12%, rgba(255, 180, 0, .28) 0, rgba(255, 180, 0, 0) 45%),
+        radial-gradient(circle at 50% 45%, #fff 0, var(--mm-peach) 100%);
+    box-shadow: 0 10px 28px rgba(43, 27, 46, .12);
+    animation: mm-detail-in .45s var(--mm-ease) both;
+}
+.mm-product-page .mm-detail__media img {
+    filter: drop-shadow(0 16px 22px rgba(43, 27, 46, .18));
+}
+.mm-product-page .mm-detail__media .mm-product__ph {
+    width: 140px;
+    height: 140px;
+    font-size: 60px;
+}
+.mm-product-page .mm-detail__body {
+    animation: mm-detail-in .45s var(--mm-ease) .08s both;
+}
+.mm-product-page .mm-detail__body .mm-badge {
+    padding: 5px 14px;
+    font-size: 13px;
+}
+.mm-product-page .mm-detail__title {
+    line-height: 1.08;
+    letter-spacing: -.01em;
+}
+.mm-product-page .mm-detail__title::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 5px;
+    margin-top: 14px;
+    border-radius: 999px;
+    background: var(--mm-secondary);
+}
+.mm-product-page .mm-detail__text {
+    margin-top: 20px;
+    line-height: 1.7;
+}
+.mm-product-page .mm-actions {
+    margin-top: 32px;
+}
+@keyframes mm-detail-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* ---------- Not found ---------- */
+.mm-notfound {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 64px 0 24px;
+    text-align: center;
+}
+.mm-notfound__mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff 0, var(--mm-secondary) 55%, #ff9a00 100%);
+    color: var(--mm-ink);
+    font-size: 48px;
+    font-weight: 900;
+    box-shadow: var(--shadow-sm);
+}
+.mm-notfound .mm-page-head__lead {
+    margin-inline: auto;
+}
+.mm-notfound .mm-actions {
+    justify-content: center;
+}
+
+/* ---------- Product modal ---------- */
+.modal-overlay {
+    background: rgba(43, 27, 46, .6);
+    visibility: hidden;       /* closed dialogs must not be reachable with Tab */
+    transition: opacity var(--mm-dur-fast) ease, visibility 0s linear var(--mm-dur-fast);
+}
+.modal-overlay.open {
+    visibility: visible;
+    transition-delay: 0s;
+}
+.modal-overlay .modal-box {
+    transform: translateY(12px) scale(.98);
+    transition: transform var(--mm-dur) var(--mm-ease);
+}
+.modal-overlay.open .modal-box {
+    transform: none;
+}
+.mm-product-modal {
+    max-height: 88vh;
+    padding: 28px 28px 28px;
+    border-radius: 28px;
+    box-shadow: var(--mm-shadow-lg);
+}
+.mm-product-modal .modal-close {
+    z-index: 1;
+    top: 12px;
+    right: 12px;
+    width: var(--mm-touch);
+    height: var(--mm-touch);
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: background var(--mm-dur-fast) ease, color var(--mm-dur-fast) ease;
+}
+.mm-product-modal .modal-close:hover {
+    background: var(--mm-primary);
+    color: #fff;
+}
+.mm-product-modal .modal-close:focus-visible {
+    outline: 3px solid var(--mm-primary);
+    outline-offset: 2px;
+}
+.mm-product-modal .modal-close .icon {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+}
+.mm-product-modal__media {
+    height: 240px;
+    margin: -8px -4px 20px;
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at 80% 12%, rgba(255, 180, 0, .25) 0, rgba(255, 180, 0, 0) 45%),
+        radial-gradient(circle at 50% 45%, #fff 0, var(--mm-peach) 100%);
+}
+.mm-product-modal__media img {
+    max-width: 90%;
+    filter: drop-shadow(0 12px 16px rgba(43, 27, 46, .18));
+}
+.mm-product-modal .modal-box h3,
+.mm-product-modal__title {
+    margin: 10px 0 12px;
+    padding-right: 0;
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.2;
+    color: var(--mm-ink);
+    overflow-wrap: anywhere;
+}
+.mm-product-modal__text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--mm-ink-soft);
+    overflow-wrap: anywhere;
+}
+@media (max-width: 480px) {
+.modal-overlay {
+        padding: 12px;
+    }
+.mm-product-modal {
+        padding: 20px 18px 22px;
+        border-radius: 22px;
+    }
+.mm-product-modal__media {
+        height: 180px;
+        margin: -4px 0 16px;
+    }
+.mm-product-modal .modal-box h3,
+.mm-product-modal__title {
+        font-size: 21px;
+    }
+.mm-product-modal__text {
+        font-size: 15px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+.mm-product-page .mm-detail__media,
+.mm-product-page .mm-detail__body {
+        animation: none;
+    }
+.modal-overlay .modal-box {
+        transform: none;
+    }
+}
