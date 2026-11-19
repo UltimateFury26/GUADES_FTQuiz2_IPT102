@@ -1,9 +1,8 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ManagePostsViewModel
 @using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 @{
-    // Port of Admin/ManagePosts.aspx (Site.Master shell comes from _ViewStart; the controller sets the
-    // FTQuiz2_admin body class). Same five columns as the source Repeater: Announcement, Status,
-    // Posted, Author, Actions. Sorting = header links (?sort=&dir=); every row button is a POST form.
+    // Presentation-only refresh of the existing Manage Posts screen.
+    // Sorting, routes, form names, POST actions, and anti-forgery protection are unchanged.
     ViewBag.Title = "Manage Posts";
     string listUrl = Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManagePosts");
     string sortArg = Model.SortField;
@@ -19,130 +18,162 @@
     };
 }
 
-<div class="admin-head">
-    <div>
-        <h1 class="admin-title">Manage Posts</h1>
-        <p class="admin-sub">Announcements for every logged-in user. Only published posts appear on Home; drafts stay hidden.</p>
-    </div>
-    <div class="admin-head-actions">
-        <span class="admin-count">@Model.CountText</span>
-        @if (!Model.ShowForm)
-        {
-            <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", new { add = "1", sort = sortArg, dir = dirArg })">New announcement</a>
-        }
-    </div>
-</div>
+<section class="posts-page">
+    <header class="admin-head posts-head">
+        <div class="posts-head-copy">
+            <span class="posts-eyebrow">CONTENT WORKSPACE</span>
+            <h1 class="admin-title">Manage Posts</h1>
+            <p class="admin-sub">Create and manage announcements for your community. Published posts appear on Home; drafts remain private.</p>
+        </div>
+        <div class="admin-head-actions posts-head-actions">
+            <span class="admin-count">@Model.CountText</span>
+            @if (!Model.ShowForm)
+            {
+                <a class="pill-btn pill-btn-primary posts-create-btn" href="@Url.Action("Index", new { add = "1", sort = sortArg, dir = dirArg })">
+                    <span aria-hidden="true">＋</span> New announcement
+                </a>
+            }
+        </div>
+    </header>
 
-@if (!string.IsNullOrWhiteSpace(Model.Message))
-{
-    <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error")" role="alert">@Model.Message</div>
-}
-
-@if (Model.ShowForm)
-{
-    <!-- ADD / EDIT FORM (hidden until New announcement or Edit is clicked) -->
-    using (Html.BeginForm("Save", "FTQuiz2_ManagePosts", FormMethod.Post, new { @class = "editor-card editor-form" }))
+    @if (!string.IsNullOrWhiteSpace(Model.Message))
     {
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="PostId" value="@Model.Form.PostId" />
-        <input type="hidden" name="sort" value="@sortArg" />
-        <input type="hidden" name="dir" value="@dirArg" />
-
-        <h2>@Model.FormTitle</h2>
-
-        <div class="form-field">
-            <label class="form-label" for="Title">Title</label>
-            @Html.TextBox("Title", Model.Form.Title, new { @class = "form-input", maxlength = 150, autofocus = "autofocus" })
-            @Html.ValidationMessage("Title", "", new { @class = "form-error" })
-        </div>
-
-        <div class="form-field">
-            <label class="form-label" for="Body">Message</label>
-            @Html.TextArea("Body", Model.Form.Body, 6, 20, new { @class = "form-input form-textarea" })
-            @Html.ValidationMessage("Body", "", new { @class = "form-error" })
-            <p class="form-hint">Up to 4,000 characters. Line breaks are kept when the post is shown.</p>
-        </div>
-
-        <div class="form-field">
-            <span class="form-check">
-                @Html.CheckBox("IsPublished", Model.Form.IsPublished)
-                <label for="IsPublished">Publish (visible to users on Home)</label>
-            </span>
-            <p class="form-hint">Leave unchecked to save as a draft. You can publish it later from the list.</p>
-        </div>
-
-        <div class="editor-actions">
-            <button type="submit" class="pill-btn pill-btn-primary">Save announcement</button>
-            <a class="pill-btn pill-btn-secondary" href="@Url.Action("Index", new { sort = sortArg, dir = dirArg })">Cancel</a>
-        </div>
+        <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error") posts-feedback" role="alert">@Model.Message</div>
     }
-}
-else if (anyPosts)
-{
-    <!-- LIST -->
-    <div class="table-scroll">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    @foreach (string[] col in columns)
-                    {
-                        <th scope="col"><a class="@Model.SortHeaderClass(col[1])" href="@(listUrl + "?sort=" + col[1] + "&dir=" + Model.NextDir(col[1]))">@Model.SortHeaderText(col[0], col[1])</a></th>
-                    }
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var post in Model.Posts)
-                {
-                    <tr>
-                        <td class="cell-wrap">
-                            <p class="post-title">@post.Title</p>
-                            <p class="post-preview">@FTQuiz2_ManagePostsViewModel.Preview(post.Body)</p>
-                        </td>
-                        <td><span class="@Model.StatusBadgeClass(post.IsPublished)">@Model.StatusText(post.IsPublished)</span></td>
-                        <td>
-                            @Model.FormatDateTime(post.CreatedAt)
-                            @if (post.UpdatedAt.HasValue)
-                            {
-                                <p class="post-meta">Updated @Model.FormatDateTime(post.UpdatedAt.Value)</p>
-                            }
-                        </td>
-                        <td>@post.AuthorName</td>
-                        <td class="cell-actions">
-                            <a class="row-btn" href="@Url.Action("Index", new { edit = post.PostId, sort = sortArg, dir = dirArg })">Edit</a>
 
-                            @using (Html.BeginForm("SetPublished", "FTQuiz2_ManagePosts", FormMethod.Post, new { @class = "inline-form" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="postId" value="@post.PostId" />
-                                <input type="hidden" name="publish" value="@(post.IsPublished ? "false" : "true")" />
-                                <input type="hidden" name="sort" value="@sortArg" />
-                                <input type="hidden" name="dir" value="@dirArg" />
-                                <button type="submit" class="row-btn">@(post.IsPublished ? "Unpublish" : "Publish")</button>
-                            }
+    @if (Model.ShowForm)
+    {
+        <section class="posts-editor-panel" aria-labelledby="posts-editor-title">
+            <div class="posts-panel-heading">
+                <div>
+                    <span class="posts-section-kicker">ANNOUNCEMENT DETAILS</span>
+                    <h2 id="posts-editor-title">@Model.FormTitle</h2>
+                    <p>Write a clear update and choose whether it should be visible to visitors.</p>
+                </div>
+                <span class="posts-panel-icon" aria-hidden="true">✎</span>
+            </div>
 
-                            @using (Html.BeginForm("Delete", "FTQuiz2_ManagePosts", FormMethod.Post, new { @class = "inline-form" }))
+            @using (Html.BeginForm("Save", "FTQuiz2_ManagePosts", FormMethod.Post, new { @class = "editor-card editor-form posts-form" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="PostId" value="@Model.Form.PostId" />
+                <input type="hidden" name="sort" value="@sortArg" />
+                <input type="hidden" name="dir" value="@dirArg" />
+
+                <div class="form-field posts-field">
+                    <label class="form-label" for="Title">Announcement title <span class="posts-required">Required</span></label>
+                    @Html.TextBox("Title", Model.Form.Title, new { @class = "form-input", maxlength = 150, autofocus = "autofocus", placeholder = "e.g. New store hours this week" })
+                    @Html.ValidationMessage("Title", "", new { @class = "form-error" })
+                    <p class="form-hint">Use a short, descriptive title (up to 150 characters).</p>
+                </div>
+
+                <div class="form-field posts-field">
+                    <label class="form-label" for="Body">Message <span class="posts-required">Required</span></label>
+                    @Html.TextArea("Body", Model.Form.Body, 7, 20, new { @class = "form-input form-textarea posts-message-input", placeholder = "Share the details of your announcement..." })
+                    @Html.ValidationMessage("Body", "", new { @class = "form-error" })
+                    <p class="form-hint">Up to 4,000 characters. Line breaks are kept when the post is shown.</p>
+                </div>
+
+                <div class="posts-publish-option">
+                    <div class="posts-publish-copy">
+                        <strong>Publishing status</strong>
+                        <span>Choose whether this announcement should appear on the public Home page.</span>
+                    </div>
+                    <label class="posts-publish-check" for="IsPublished">
+                        @Html.CheckBox("IsPublished", Model.Form.IsPublished)
+                        <span>Publish now</span>
+                    </label>
+                </div>
+                <p class="form-hint posts-publish-hint">Leave this unchecked to save the announcement as a draft. You can publish it later from the list.</p>
+
+                <div class="editor-actions posts-editor-actions">
+                    <button type="submit" class="pill-btn pill-btn-primary">Save announcement</button>
+                    <a class="pill-btn pill-btn-secondary" href="@Url.Action("Index", new { sort = sortArg, dir = dirArg })">Cancel</a>
+                </div>
+            }
+        </section>
+    }
+    else if (anyPosts)
+    {
+        <section class="posts-list-panel" aria-label="Announcements list">
+            <div class="posts-list-heading">
+                <div>
+                    <span class="posts-section-kicker">YOUR CONTENT</span>
+                    <h2>All announcements</h2>
+                    <p>Review publication status, update content, or manage visibility.</p>
+                </div>
+                <span class="posts-list-count">@Model.CountText</span>
+            </div>
+            <div class="table-scroll posts-table-scroll">
+                <table class="data-table posts-table">
+                    <thead>
+                        <tr>
+                            @foreach (string[] col in columns)
                             {
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="postId" value="@post.PostId" />
-                                <input type="hidden" name="sort" value="@sortArg" />
-                                <input type="hidden" name="dir" value="@dirArg" />
-                                <button type="submit" class="row-btn row-btn-danger"
-                                        data-confirm="Delete &quot;@post.Title&quot;? This can't be undone."
-                                        onclick="return confirm(this.getAttribute('data-confirm'));">Delete</button>
+                                <th scope="col"><a class="posts-sort-link @Model.SortHeaderClass(col[1])" href="@(listUrl + "?sort=" + col[1] + "&dir=" + Model.NextDir(col[1]))">@Model.SortHeaderText(col[0], col[1])</a></th>
                             }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
-else if (Model.Loaded)
-{
-    <!-- EMPTY STATE -->
-    <div class="empty-state">
-        <p class="empty-title">No announcements yet</p>
-        <p class="empty-text">Click &ldquo;New announcement&rdquo; to write the first one. Until one is published, the announcement card and board are hidden on Home.</p>
-    </div>
-}
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var post in Model.Posts)
+                        {
+                            <tr>
+                                <td class="cell-wrap posts-announcement-cell">
+                                    <p class="post-title posts-row-title">@post.Title</p>
+                                    <p class="post-preview posts-row-preview">@FTQuiz2_ManagePostsViewModel.Preview(post.Body)</p>
+                                </td>
+                                <td><span class="@Model.StatusBadgeClass(post.IsPublished) posts-status">@Model.StatusText(post.IsPublished)</span></td>
+                                <td class="posts-date-cell">
+                                    <span>@Model.FormatDateTime(post.CreatedAt)</span>
+                                    @if (post.UpdatedAt.HasValue)
+                                    {
+                                        <p class="post-meta posts-updated-meta">Updated @Model.FormatDateTime(post.UpdatedAt.Value)</p>
+                                    }
+                                </td>
+                                <td class="posts-author-cell">@post.AuthorName</td>
+                                <td class="cell-actions posts-actions-cell">
+                                    <div class="posts-action-group">
+                                        <a class="row-btn posts-action-btn" href="@Url.Action("Index", new { edit = post.PostId, sort = sortArg, dir = dirArg })">Edit</a>
+
+                                        @using (Html.BeginForm("SetPublished", "FTQuiz2_ManagePosts", FormMethod.Post, new { @class = "inline-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="postId" value="@post.PostId" />
+                                            <input type="hidden" name="publish" value="@(post.IsPublished ? "false" : "true")" />
+                                            <input type="hidden" name="sort" value="@sortArg" />
+                                            <input type="hidden" name="dir" value="@dirArg" />
+                                            <button type="submit" class="row-btn posts-action-btn">@(post.IsPublished ? "Unpublish" : "Publish")</button>
+                                        }
+
+                                        @using (Html.BeginForm("Delete", "FTQuiz2_ManagePosts", FormMethod.Post, new { @class = "inline-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="postId" value="@post.PostId" />
+                                            <input type="hidden" name="sort" value="@sortArg" />
+                                            <input type="hidden" name="dir" value="@dirArg" />
+                                            <button type="submit" class="row-btn row-btn-danger posts-action-btn posts-delete-btn"
+                                                    data-confirm="Delete &quot;@post.Title&quot;? This can't be undone."
+                                                    onclick="return confirm(this.getAttribute('data-confirm'));">Delete</button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <p class="posts-table-note">Tip: Select a column heading to sort the announcement list.</p>
+        </section>
+    }
+    else if (Model.Loaded)
+    {
+        <section class="posts-empty-state" aria-labelledby="posts-empty-title">
+            <div class="posts-empty-icon" aria-hidden="true">✦</div>
+            <span class="posts-section-kicker">A FRESH START</span>
+            <h2 id="posts-empty-title">No announcements yet</h2>
+            <p>Keep your visitors informed by creating your first announcement. You can save it as a draft or publish it when it is ready.</p>
+            <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", new { add = "1", sort = sortArg, dir = dirArg })">Create your first announcement</a>
+        </section>
+    }
+</section>
