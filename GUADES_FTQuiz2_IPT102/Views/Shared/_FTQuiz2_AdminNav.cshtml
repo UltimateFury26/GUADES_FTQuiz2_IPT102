@@ -1,0 +1,38 @@
+@{
+    // Sticky admin sidebar. Rendered inside admin pages only; the layout grid in FTQuiz2_MoguRefresh.css
+    // places it in the left column. Links mirror the old header dropdown, one entry per admin area.
+    GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ChromeViewModel chrome = GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ChromeViewModel.ForRequest();
+}
+<nav class="mg-admin-nav" aria-label="Admin sections">
+    <p class="mg-admin-nav__title">Admin workspace</p>
+
+    <a class="mg-admin-nav__link@(chrome.ActiveClass("FTQuiz2_ManageUsers"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManageUsers")">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2" /><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5" /><path d="M16 6.2a3 3 0 0 1 0 5.6" /><path d="M17.5 19c0-2.2-.7-3.6-1.8-4.5" /></svg>
+        <span>Users</span>
+    </a>
+
+    <a class="mg-admin-nav__link@(chrome.ActiveClass("FTQuiz2_ManageContent"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManageContent")">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="2.4" /><path d="M8 8h8" /><path d="M8 12h8" /><path d="M8 16h5" /></svg>
+        <span>Content</span>
+    </a>
+
+    <a class="mg-admin-nav__link@(chrome.ActiveClass("FTQuiz2_ManageProducts"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManageProducts")">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z" /><path d="M4 8.5 12 13l8-4.5" /><path d="M12 13v7" /></svg>
+        <span>Products</span>
+    </a>
+
+    <a class="mg-admin-nav__link@(chrome.ActiveClass("FTQuiz2_ManagePosts"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManagePosts")">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h11l3 3v12H5z" /><path d="M16 4.5v3h3" /><path d="M8 11h8" /><path d="M8 15h6" /></svg>
+        <span>Posts</span>
+    </a>
+
+    <a class="mg-admin-nav__link@(chrome.ActiveClass("FTQuiz2_Reports"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_Reports")">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V4" /><path d="M4 20h16" /><rect x="7.5" y="12" width="3" height="5" /><rect x="12.5" y="8" width="3" height="9" /><rect x="17.5" y="10" width="3" height="7" /></svg>
+        <span>Reports</span>
+    </a>
+
+    <div class="mg-admin-nav__foot">
+        Mogu Mogu &middot; Admin<br />
+        Signed in as @chrome.AccountName
+    </div>
+</nav>

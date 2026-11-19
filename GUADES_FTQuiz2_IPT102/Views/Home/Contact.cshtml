@@ -6,23 +6,22 @@
     var businessName = String.IsNullOrWhiteSpace(Model.BusinessName) ? "Mogu Mogu" : Model.BusinessName;
 }
 
-<main class="mm-contact-page">
+<main class="mm-contact-page" data-mg-reveal>
     <header class="mm-contact-hero">
         <div class="mm-contact-hero__copy">
-            <span class="mm-eyebrow">We'd love to hear from you</span>
             <h1 class="mm-contact-hero__title">Let's talk <span>good vibes.</span></h1>
             <p class="mm-contact-hero__lead">
                 Have a question about @businessName? Find the right way to get in touch using the contact details below.
             </p>
             <div class="mm-contact-hero__chips" aria-label="Contact highlights">
-                <span><span aria-hidden="true">&#9993;</span> Email</span>
-                <span><span aria-hidden="true">&#8982;</span> Visit</span>
-                <span><span aria-hidden="true">&#9825;</span> Follow</span>
+                <span><span aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></span> Email</span>
+                <span><span aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span> Visit</span>
+                <span><span aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-9.4A4 4 0 0 1 12 7a4 4 0 0 1 7 3.6c0 5-7 9.4-7 9.4z"/></svg></span> Follow</span>
             </div>
         </div>
         <div class="mm-contact-hero__art" aria-hidden="true">
-            <span class="mm-contact-hero__spark mm-contact-hero__spark--one">&#10022;</span>
-            <span class="mm-contact-hero__spark mm-contact-hero__spark--two">&#10037;</span>
+            <span class="mm-contact-hero__spark mm-contact-hero__spark--one"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span>
+            <span class="mm-contact-hero__spark mm-contact-hero__spark--two"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span>
             <div class="mm-contact-hero__fruit mm-contact-hero__fruit--back"></div>
             <div class="mm-contact-hero__fruit mm-contact-hero__fruit--front">
                 <span>mogu<br />mogu</span>
@@ -35,7 +34,6 @@
 
     <section class="mm-contact-content" aria-labelledby="mm-contact-details-title">
         <div class="mm-contact-content__intro">
-            <span class="mm-eyebrow">Get in touch</span>
             <h2 id="mm-contact-details-title">Here&#39;s how to reach us</h2>
             <p>Choose the contact channel that works best for you.</p>
         </div>
@@ -46,7 +44,7 @@
                 @if (!String.IsNullOrWhiteSpace(Model.Email))
                 {
                     <article class="mm-contact-card mm-contact-card--email">
-                        <span class="mm-contact-card__icon" aria-hidden="true">&#9993;</span>
+                        <span class="mm-contact-card__icon" aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></span>
                         <span class="mm-contact-card__label">Email us</span>
                         <a class="mm-contact-card__value" href="@("mailto:" + Model.Email)">@Model.Email</a>
                         <span class="mm-contact-card__hint">Send us your questions and enquiries</span>
@@ -55,7 +53,7 @@
                 @if (!String.IsNullOrWhiteSpace(Model.PhoneDisplay))
                 {
                     <article class="mm-contact-card mm-contact-card--phone">
-                        <span class="mm-contact-card__icon" aria-hidden="true">&#9742;</span>
+                        <span class="mm-contact-card__icon" aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.5h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 5.7 2 2 0 0 1 6 3.5z"/></svg></span>
                         <span class="mm-contact-card__label">Call us</span>
                         @if (!String.IsNullOrWhiteSpace(Model.PhoneHref))
                         {
@@ -71,7 +69,7 @@
                 @if (!String.IsNullOrWhiteSpace(Model.Address))
                 {
                     <article class="mm-contact-card mm-contact-card--address">
-                        <span class="mm-contact-card__icon" aria-hidden="true">&#8982;</span>
+                        <span class="mm-contact-card__icon" aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
                         <span class="mm-contact-card__label">Find us</span>
                         <span class="mm-contact-card__value mm-contact-card__value--static mm-prose">@Model.Address</span>
                         <span class="mm-contact-card__hint">Business address</span>
@@ -89,7 +87,7 @@
                 @if (!String.IsNullOrWhiteSpace(Model.InstagramUrl))
                 {
                     <article class="mm-contact-card mm-contact-card--social">
-                        <span class="mm-contact-card__icon" aria-hidden="true">&#9673;</span>
+                        <span class="mm-contact-card__icon" aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.6 2.4 4 5.4 4 8.5s-1.4 6.1-4 8.5c-2.6-2.4-4-5.4-4-8.5s1.4-6.1 4-8.5z"/></svg></span>
                         <span class="mm-contact-card__label">Instagram</span>
                         <a class="mm-contact-card__value" href="@Model.InstagramUrl" target="_blank" rel="noopener noreferrer">@GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_BusinessFormat.DisplayUrl(Model.InstagramUrl)</a>
                         <span class="mm-contact-card__hint">See more from the Mogu Mogu world</span>
@@ -100,7 +98,7 @@
         else
         {
             <div class="mm-contact-empty" role="status">
-                <span class="mm-contact-empty__icon" aria-hidden="true">&#9993;</span>
+                <span class="mm-contact-empty__icon" aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></span>
                 <h3>Contact details coming soon</h3>
                 <p>There are no public contact details available right now. Please check back later.</p>
             </div>
@@ -109,12 +107,11 @@
 
     <section class="mm-contact-next" aria-label="Explore more">
         <div>
-            <span class="mm-eyebrow">Keep exploring</span>
             <h2>There&#39;s more to discover.</h2>
             <p>Get to know the people behind the business or explore the Mogu Mogu product range.</p>
         </div>
         <div class="mm-contact-next__actions">
-            <a class="pill-btn pill-btn-primary" href="@Url.Action("Owners", "FTQuiz2_Business")">Owners / Company <span aria-hidden="true">&#8594;</span></a>
+            <a class="pill-btn pill-btn-primary" href="@Url.Action("Owners", "FTQuiz2_Business")">Owners / Company <span aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg></span></a>
             <a class="pill-btn pill-btn-secondary" href="@Url.Action("Index", "FTQuiz2_Products")">Explore products</a>
         </div>
     </section>

@@ -9,7 +9,6 @@
 <!-- HERO -->
 <section class="mm-hero" aria-labelledby="heroTitle">
     <div class="mm-hero__text">
-        <span class="mm-eyebrow">Welcome to @Model.BusinessName</span>
         <h1 class="mm-hero__title" id="heroTitle">@Model.HeadlineText</h1>
         @if (Model.Mission.Length > 0)
         {
@@ -38,12 +37,23 @@
     }
 </section>
 
+<!-- MOVING BRAND BAND -->
+<div class="mg-band" data-mg-marquee aria-hidden="true">
+    <div class="mg-band__track">
+        <div class="mg-band__group">
+            <span class="mg-band__item">You gotta chew</span>
+            <span class="mg-band__item">Mogu Mogu</span>
+            <span class="mg-band__item">Nata de coco</span>
+            <span class="mg-band__item">Real fruit juice</span>
+        </div>
+    </div>
+</div>
+
 <div class="mm-home">
 
 <!-- FEATURED PRODUCTS -->
-<section class="mm-section" id="products" aria-labelledby="productsTitle">
+<section class="mm-section" id="products" aria-labelledby="productsTitle" data-mg-reveal>
     <div class="mm-section__head mm-section__head--center">
-        <span class="mm-eyebrow">Products</span>
         <h2 class="mm-section__title" id="productsTitle">Featured products</h2>
     </div>
 
@@ -56,7 +66,7 @@
         <div class="mm-product-grid">
             @foreach (var product in Model.FeaturedProducts)
             {
-                <article class="mm-product">
+                <article class="mm-product" data-mg-tilt>
                     <button type="button" class="mm-product__btn" data-modal="@product.ModalId" aria-label="View details of @product.Name">
                         <span class="mm-product__media">
                             @if (product.ImageUrl.Length > 0)
@@ -96,10 +106,9 @@
 }
 
 <!-- OUR STORY (brand introduction + about preview) -->
-<section class="mm-section mm-section--tint" id="our-story" aria-labelledby="storyTitle">
+<section class="mm-section mm-section--tint" id="our-story" aria-labelledby="storyTitle" data-mg-reveal>
     <div class="mm-story @(Model.AboutImageUrl.Length > 0 ? "mm-story--with-image" : "")">
         <div class="mm-story__text">
-            <span class="mm-eyebrow">About @Model.BusinessName</span>
             <h2 class="mm-section__title" id="storyTitle">Our story</h2>
             @if (Model.StoryPreview.Length > 0)
             {
@@ -154,7 +163,6 @@
 <!-- CONTACT PREVIEW -->
 <section class="mm-section" id="contact" aria-labelledby="contactTitle">
     <div class="mm-section__head mm-section__head--center">
-        <span class="mm-eyebrow">Contact</span>
         <h2 class="mm-section__title" id="contactTitle">Get in touch</h2>
     </div>
 

@@ -1,0 +1,67 @@
+/* ============================================================================
+   FTQuiz2_Fonts.css  —  self-hosted brand type (no Google Fonts request)
+   ----------------------------------------------------------------------------
+   Replaces the old <link href="https://fonts.googleapis.com/css2?..."> tag.
+
+   Both families ship as VARIABLE fonts, so one file per family covers every
+   weight the design uses — no more 600/700/800 cuts to download separately.
+
+     Baloo 2   wght 400 → 800   (display / headings)
+     Nunito    wght 200 → 1000  (body / UI)
+
+   Files live in  ~/FTQuiz2_Media/Fonts/  and are referenced RELATIVELY, so the
+   paths still resolve correctly when this sheet is served from a bundle
+   (~/FTQuiz2_Content/fonts) or from a virtual directory deployment.
+
+   font-display: swap  →  text paints immediately in the fallback stack and
+   swaps over when the woff2 lands. No invisible-text flash.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- Baloo 2 */
+@font-face {
+    font-family: "Baloo 2";
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url("../FTQuiz2_Media/Fonts/baloo2-variable.woff2") format("woff2");
+}
+
+/* ----------------------------------------------------------------- Nunito */
+@font-face {
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 200 1000;
+    font-display: swap;
+    src: url("../FTQuiz2_Media/Fonts/nunito-variable.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Nunito";
+    font-style: italic;
+    font-weight: 200 1000;
+    font-display: swap;
+    src: url("../FTQuiz2_Media/Fonts/nunito-italic-variable.woff2") format("woff2");
+}
+
+/* ----------------------------------------------------------------------------
+   Size-adjust fallbacks.
+   These are used only while the woff2 is still in flight. Tuning the metrics
+   keeps the layout from shifting when the real font swaps in.
+   -------------------------------------------------------------------------- */
+@font-face {
+    font-family: "Baloo 2 Fallback";
+    src: local("Trebuchet MS"), local("Verdana"), local("DejaVu Sans");
+    size-adjust: 102%;
+    ascent-override: 96%;
+    descent-override: 26%;
+    line-gap-override: 0%;
+}
+
+@font-face {
+    font-family: "Nunito Fallback";
+    src: local("Segoe UI"), local("Helvetica Neue"), local("Arial"), local("DejaVu Sans");
+    size-adjust: 100%;
+    ascent-override: 100%;
+    descent-override: 27%;
+    line-gap-override: 0%;
+}

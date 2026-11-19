@@ -19,10 +19,11 @@
     };
 }
 
+@Html.Partial("_FTQuiz2_AdminNav")
+
 <div class="users-page">
     <header class="users-page-head">
         <div class="users-heading-copy">
-            <span class="users-eyebrow">ADMINISTRATION / ACCOUNTS</span>
             <h1 class="admin-title">Manage Users</h1>
             <p class="admin-sub">Review registered accounts, check access status, and manage account activity.</p>
         </div>
@@ -40,18 +41,16 @@
     <section class="users-list-panel" aria-labelledby="users-list-title">
         <div class="users-panel-heading">
             <div>
-                <span class="users-section-kicker">ACCOUNT DIRECTORY</span>
                 <h2 id="users-list-title">Registered users</h2>
                 <p>Search account details or narrow the list by account status.</p>
             </div>
-            <span class="users-panel-mark" aria-hidden="true">&#9679;</span>
         </div>
 
         <div class="users-toolbar">
             <div class="users-search-wrap">
                 <label class="users-control-label" for="userSearchInput">Search accounts</label>
                 <div class="users-search-control">
-                    <span class="users-search-icon" aria-hidden="true">&#9906;</span>
+                    <span class="users-search-icon" aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></span>
                     <input type="text" id="userSearchInput" class="form-input filter-input" maxlength="100"
                            placeholder="Username, email or phone" aria-label="Search users"
                            autocomplete="off" spellcheck="false" />
@@ -150,7 +149,7 @@
         else if (Model.Loaded)
         {
             <div class="users-empty-state">
-                <span class="users-empty-icon" aria-hidden="true">&#9786;</span>
+                <span class="users-empty-icon" aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 14a4 4 0 0 0 7 0"/><path d="M9 9.5h.01"/><path d="M15 9.5h.01"/></svg></span>
                 <h3>No registered users yet</h3>
                 <p>New accounts will appear here when users complete registration.</p>
             </div>

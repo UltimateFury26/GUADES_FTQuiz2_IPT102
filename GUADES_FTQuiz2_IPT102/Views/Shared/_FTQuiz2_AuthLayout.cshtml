@@ -1,8 +1,13 @@
-@{
+﻿@{
     // Centered card on a branded background (Login, Signup, Error).
     // No database access here, so these pages still render when the database is down.
     string pageTitle = ViewBag.Title as string;
     string fullTitle = string.IsNullOrWhiteSpace(pageTitle) ? "Mogu Mogu" : pageTitle + " | Mogu Mogu";
+
+    string brandIcon = GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers.FTQuiz2_ImagePath.Resolve("FTQuiz2_Media/Brand/mogu-mogu-favicon.ico");
+    if (brandIcon.Length == 0) { brandIcon = GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers.FTQuiz2_ImagePath.Resolve("FTQuiz2_Media/Brand/mogu-mogu-favicon-32.png"); }
+    if (brandIcon.Length == 0) { brandIcon = Url.Content("~/favicon.ico"); }
+    string appleIcon = GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers.FTQuiz2_ImagePath.Resolve("FTQuiz2_Media/Brand/mogu-mogu-apple-icon.png");
 }
 <!DOCTYPE html>
 
@@ -11,7 +16,21 @@
     <title>@fullTitle</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#151f6d" />
+    @* Brand type is SELF-HOSTED — no request to fonts.googleapis.com.
+       Files: FTQuiz2_Media/Fonts/{baloo2-variable,nunito-variable,nunito-italic-variable}.woff2
+       Rules: FTQuiz2_Content/FTQuiz2_Fonts.css (@font-face + metric fallbacks).
+       Preload the two files that paint above the fold so they arrive first. *@
+    <link rel="preload" href="@Url.Content("~/FTQuiz2_Media/Fonts/baloo2-variable.woff2")" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="@Url.Content("~/FTQuiz2_Media/Fonts/nunito-variable.woff2")" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" type="image/x-icon" href="@brandIcon" />
+    @if (appleIcon.Length > 0)
+    {
+        <link rel="apple-touch-icon" href="@appleIcon" />
+    }
+    @Styles.Render("~/FTQuiz2_Content/fonts")
     @Styles.Render("~/FTQuiz2_Content/css")
+    @Styles.Render("~/FTQuiz2_Content/refresh")
     @RenderSection("FTQuiz2_Head", required: false)
 </head>
 <body class="mm-site mm-auth">

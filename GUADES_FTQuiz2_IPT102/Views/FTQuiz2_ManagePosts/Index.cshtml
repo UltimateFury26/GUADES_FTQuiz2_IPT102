@@ -18,10 +18,11 @@
     };
 }
 
+@Html.Partial("_FTQuiz2_AdminNav")
+
 <section class="posts-page">
     <header class="admin-head posts-head">
         <div class="posts-head-copy">
-            <span class="posts-eyebrow">CONTENT WORKSPACE</span>
             <h1 class="admin-title">Manage Posts</h1>
             <p class="admin-sub">Create and manage announcements for your community. Published posts appear on Home; drafts remain private.</p>
         </div>
@@ -30,7 +31,7 @@
             @if (!Model.ShowForm)
             {
                 <a class="pill-btn pill-btn-primary posts-create-btn" href="@Url.Action("Index", new { add = "1", sort = sortArg, dir = dirArg })">
-                    <span aria-hidden="true">＋</span> New announcement
+                    New announcement
                 </a>
             }
         </div>
@@ -46,11 +47,9 @@
         <section class="posts-editor-panel" aria-labelledby="posts-editor-title">
             <div class="posts-panel-heading">
                 <div>
-                    <span class="posts-section-kicker">ANNOUNCEMENT DETAILS</span>
                     <h2 id="posts-editor-title">@Model.FormTitle</h2>
                     <p>Write a clear update and choose whether it should be visible to visitors.</p>
                 </div>
-                <span class="posts-panel-icon" aria-hidden="true">✎</span>
             </div>
 
             @using (Html.BeginForm("Save", "FTQuiz2_ManagePosts", FormMethod.Post, new { @class = "editor-card editor-form posts-form" }))
@@ -98,7 +97,6 @@
         <section class="posts-list-panel" aria-label="Announcements list">
             <div class="posts-list-heading">
                 <div>
-                    <span class="posts-section-kicker">YOUR CONTENT</span>
                     <h2>All announcements</h2>
                     <p>Review publication status, update content, or manage visibility.</p>
                 </div>
@@ -169,8 +167,6 @@
     else if (Model.Loaded)
     {
         <section class="posts-empty-state" aria-labelledby="posts-empty-title">
-            <div class="posts-empty-icon" aria-hidden="true">✦</div>
-            <span class="posts-section-kicker">A FRESH START</span>
             <h2 id="posts-empty-title">No announcements yet</h2>
             <p>Keep your visitors informed by creating your first announcement. You can save it as a draft or publish it when it is ready.</p>
             <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", new { add = "1", sort = sortArg, dir = dirArg })">Create your first announcement</a>

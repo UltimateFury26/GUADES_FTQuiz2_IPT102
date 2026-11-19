@@ -1,10 +1,16 @@
-@using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
+﻿@using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 @{
     // Signed-in shell: Mogu Mogu header navigation, page body, footer.
     // The chrome model reads the business profile and contact rows; Contact is a page (Phase 4), not a modal.
     FTQuiz2_ChromeViewModel chrome = FTQuiz2_ChromeViewModel.ForRequest();
     string pageTitle = ViewBag.Title as string;
     string fullTitle = string.IsNullOrWhiteSpace(pageTitle) ? "Mogu Mogu" : pageTitle + " | Mogu Mogu";
+
+    // Tab icon: use the Mogu Mogu favicon you downloaded into FTQuiz2_Media/Brand/, else the project root icon.
+    string brandIcon = GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers.FTQuiz2_ImagePath.Resolve("FTQuiz2_Media/Brand/mogu-mogu-favicon.ico");
+    if (brandIcon.Length == 0) { brandIcon = GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers.FTQuiz2_ImagePath.Resolve("FTQuiz2_Media/Brand/mogu-mogu-favicon-32.png"); }
+    if (brandIcon.Length == 0) { brandIcon = Url.Content("~/favicon.ico"); }
+    string appleIcon = GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers.FTQuiz2_ImagePath.Resolve("FTQuiz2_Media/Brand/mogu-mogu-apple-icon.png");
 }
 <!DOCTYPE html>
 
@@ -13,15 +19,46 @@
     <title>@fullTitle</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#d12657" />
+    <meta name="theme-color" content="#151f6d" />
+    @* Brand type is SELF-HOSTED — no request to fonts.googleapis.com.
+       Files: FTQuiz2_Media/Fonts/{baloo2-variable,nunito-variable,nunito-italic-variable}.woff2
+       Rules: FTQuiz2_Content/FTQuiz2_Fonts.css (@font-face + metric fallbacks).
+       Preload the two files that paint above the fold so they arrive first. *@
+    <link rel="preload" href="@Url.Content("~/FTQuiz2_Media/Fonts/baloo2-variable.woff2")" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="@Url.Content("~/FTQuiz2_Media/Fonts/nunito-variable.woff2")" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" type="image/x-icon" href="@brandIcon" />
+    @if (appleIcon.Length > 0)
+    {
+        <link rel="apple-touch-icon" href="@appleIcon" />
+    }
+    @Styles.Render("~/FTQuiz2_Content/fonts")
     @Styles.Render("~/FTQuiz2_Content/css")
     @Styles.Render("~/FTQuiz2_Content/admin")
+    @Styles.Render("~/FTQuiz2_Content/refresh")
     @RenderSection("FTQuiz2_Head", required: false)
 </head>
 <body class="@("mm-site " + (ViewBag.FTQuiz2_BodyClass as string))">
     <a class="mm-skip-link" href="#top">Skip to content</a>
 
     @Html.Partial("_FTQuiz2_Chrome", chrome)
+
+    @* Marquee ticker: the moving brand strip borrowed from the Mogu Mogu look. Hidden on admin/account screens. *@
+    @if (!string.Equals(ViewBag.FTQuiz2_BodyClass as string, "FTQuiz2_admin", System.StringComparison.OrdinalIgnoreCase)
+        && !string.Equals(ViewBag.FTQuiz2_BodyClass as string, "FTQuiz2_account", System.StringComparison.OrdinalIgnoreCase))
+    {
+        <div class="mg-ticker" data-mg-marquee aria-hidden="true">
+            <div class="mg-ticker__track">
+                <div class="mg-ticker__group">
+                    <span class="mg-ticker__item">Real nata de coco</span>
+                    <span class="mg-ticker__item">Bottled in Manila</span>
+                    <span class="mg-ticker__item">Six fruity flavours</span>
+                    <span class="mg-ticker__item">Chewy in every sip</span>
+                    <span class="mg-ticker__item">You gotta chew</span>
+                    <span class="mg-ticker__item">Chill it, shake it, sip it</span>
+                </div>
+            </div>
+        </div>
+    }
 
     <!-- MAIN BODY -->
     <main class="site-body">

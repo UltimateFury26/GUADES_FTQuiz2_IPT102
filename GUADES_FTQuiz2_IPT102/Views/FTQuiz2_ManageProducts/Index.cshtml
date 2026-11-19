@@ -9,6 +9,8 @@
     bool anyProducts = !Model.LoadFailed && Model.Products.Count > 0;
 }
 
+@Html.Partial("_FTQuiz2_AdminNav")
+
 <div class="admin-head manage-products-head">
     <div>
         <h1 class="admin-title">Manage Products</h1>
@@ -107,7 +109,6 @@ else if (anyProducts)
     <section class="manage-products-list" aria-labelledby="manage-products-list-title">
         <div class="manage-products-list-head">
             <div>
-                <span class="manage-products-eyebrow">CATALOGUE</span>
                 <h2 id="manage-products-list-title">Product inventory</h2>
                 <p>Review product details, publication status, and the order shown to visitors.</p>
             </div>
@@ -138,7 +139,7 @@ else if (anyProducts)
                                 <td class="manage-product-image-cell" data-label="Image">
                                     @if (thumb.Length == 0)
                                     {
-                                        <span class="manage-product-thumb manage-product-thumb-empty" aria-label="No product image"><span aria-hidden="true">&#9634;</span></span>
+                                        <span class="manage-product-thumb manage-product-thumb-empty" aria-label="No product image"><span aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></span></span>
                                     }
                                     else
                                     {
@@ -167,14 +168,14 @@ else if (anyProducts)
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="productId" value="@product.ProductId" />
                                                 <input type="hidden" name="direction" value="up" />
-                                                <button type="submit" class="row-btn manage-product-icon-btn" aria-label="@("Move " + product.ProductName + " up")" disabled="@(isFirst ? "disabled" : null)">&#9650;</button>
+                                                <button type="submit" class="row-btn manage-product-icon-btn" aria-label="@("Move " + product.ProductName + " up")" disabled="@(isFirst ? "disabled" : null)"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5l7 12H5z"/></svg></button>
                                             }
                                             @using (Html.BeginForm("Move", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
                                             {
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="productId" value="@product.ProductId" />
                                                 <input type="hidden" name="direction" value="down" />
-                                                <button type="submit" class="row-btn manage-product-icon-btn" aria-label="@("Move " + product.ProductName + " down")" disabled="@(isLast ? "disabled" : null)">&#9660;</button>
+                                                <button type="submit" class="row-btn manage-product-icon-btn" aria-label="@("Move " + product.ProductName + " down")" disabled="@(isLast ? "disabled" : null)"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19L5 7h14z"/></svg></button>
                                             }
                                         </div>
                                     </div>
@@ -199,7 +200,7 @@ else if (anyProducts)
                                             <input type="hidden" name="productId" value="@product.ProductId" />
                                             <button type="submit" class="row-btn row-btn-danger manage-product-action-btn"
                                                     data-confirm="@("Delete " + product.ProductName + "? Its image will be removed too. This can't be undone.")"
-                                                    onclick="return confirm(this.getAttribute('data-confirm'));"><span aria-hidden="true">&#10005;</span> Delete</button>
+                                                    onclick="return confirm(this.getAttribute('data-confirm'));"><span aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></span> Delete</button>
                                         }
                                     </div>
                                 </td>
@@ -216,8 +217,7 @@ else if (!Model.LoadFailed)
 {
     <!-- EMPTY CATALOGUE STATE -->
     <section class="manage-products-empty" aria-labelledby="manage-products-empty-title">
-        <div class="manage-products-empty-icon" aria-hidden="true">&#10022;</div>
-        <span class="manage-products-eyebrow">YOUR CATALOGUE STARTS HERE</span>
+        <div class="manage-products-empty-icon" aria-hidden="true"><svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></div>
         <h2 id="manage-products-empty-title">No products yet</h2>
         <p>There are no products in the catalogue. Add your first product to start building the collection. Products remain hidden from visitors until published.</p>
         <a class="pill-btn pill-btn-primary" href="@addUrl">Add your first product</a>

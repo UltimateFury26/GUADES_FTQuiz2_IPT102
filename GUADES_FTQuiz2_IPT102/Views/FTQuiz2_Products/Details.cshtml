@@ -4,7 +4,7 @@
     ViewBag.Title = Model.Product.Name;
 }
 
-<div class="mm-product-page">
+<div class="mm-product-page" data-mg-reveal>
     <nav class="mm-crumbs" aria-label="Breadcrumb">
         <a href="@Url.Action("Index", "FTQuiz2_Products")">Products</a>
         <span aria-hidden="true">/</span>
@@ -44,7 +44,6 @@
     {
         <section class="mm-section mm-products-page" aria-labelledby="moreTitle">
             <div class="mm-section__head">
-                <span class="mm-eyebrow">More to explore</span>
                 <h2 class="mm-section__title" id="moreTitle">Other @Model.BusinessName drinks</h2>
             </div>
             <div class="mm-product-grid">

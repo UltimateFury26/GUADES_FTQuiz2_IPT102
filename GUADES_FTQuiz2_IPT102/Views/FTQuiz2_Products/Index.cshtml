@@ -5,9 +5,8 @@
     ViewBag.Title = "Products";
 }
 
-<div class="mm-products-page">
+<div class="mm-products-page" data-mg-reveal>
     <header class="mm-page-head">
-        <span class="mm-eyebrow">Products</span>
         <h1 class="mm-page-head__title">@Model.BusinessName products</h1>
         @if (Model.Products.Count > 0)
         {
