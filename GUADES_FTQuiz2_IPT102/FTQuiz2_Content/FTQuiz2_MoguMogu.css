@@ -1879,3 +1879,141 @@ a.mm-product__btn:hover {
     .mm-contact-card { transition: none; }
     .mm-contact-card:hover { transform: none; }
 }
+
+/* ===========================================================
+   OWNERS / COMPANY PAGE (redesign Phase 08)
+   Scoped to .mm-owners-page; all profile content remains data-driven.
+   =========================================================== */
+.mm-owners-page {
+    --mm-owners-pink: #f9dce6;
+    --mm-owners-gold: #ffe3a6;
+}
+.mm-owners-hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(240px, .85fr);
+    align-items: center;
+    min-height: 310px;
+    margin: 8px 0 52px;
+    padding: clamp(28px, 5vw, 56px);
+    overflow: hidden;
+    border: 1px solid var(--mm-line);
+    border-radius: 30px;
+    background: linear-gradient(115deg, #fff 0%, #fffaf4 58%, #ffeddb 100%);
+    box-shadow: 0 18px 42px rgba(88, 49, 55, .08);
+}
+.mm-owners-hero__copy { position: relative; z-index: 2; max-width: 650px; }
+.mm-owners-hero__kicker {
+    margin: 22px 0 8px;
+    color: var(--mm-primary);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: .13em;
+}
+.mm-owners-hero__title {
+    margin: 0;
+    color: var(--mm-ink);
+    font-size: clamp(36px, 5.4vw, 60px);
+    font-weight: 900;
+    letter-spacing: -.045em;
+    line-height: 1.04;
+}
+.mm-owners-hero__title span { color: var(--mm-primary); }
+.mm-owners-hero__lead {
+    max-width: 52ch;
+    margin: 18px 0 0;
+    color: var(--mm-ink-soft);
+    font-size: clamp(16px, 2vw, 19px);
+}
+.mm-owners-hero__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    margin-top: 24px;
+    padding: 0 19px;
+    border: 1px solid rgba(209, 38, 87, .2);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--mm-primary-dark);
+    font-weight: 900;
+    text-decoration: none;
+    transition: transform var(--mm-dur-fast) ease, box-shadow var(--mm-dur-fast) ease;
+}
+.mm-owners-hero__link:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.mm-owners-hero__art { position: relative; min-height: 220px; }
+.mm-owners-orbit { position: absolute; display: block; border: 1px solid rgba(209, 38, 87, .18); border-radius: 50%; }
+.mm-owners-orbit--one { width: 230px; height: 230px; top: 0; left: 50%; transform: translateX(-50%); }
+.mm-owners-orbit--two { width: 172px; height: 172px; top: 29px; left: 50%; transform: translateX(-50%); border-style: dashed; }
+.mm-owners-fruit { position: absolute; display: grid; place-items: center; border-radius: 50%; box-shadow: 0 18px 34px rgba(76, 38, 49, .18), inset 0 5px 12px rgba(255,255,255,.5); }
+.mm-owners-fruit--pink { width: 124px; height: 124px; top: 48px; left: calc(50% - 90px); background: radial-gradient(circle at 32% 25%, #ff9ab6, #d12657 72%); border: 7px solid #fff0f3; color: #fff; font-size: 48px; font-weight: 900; }
+.mm-owners-fruit--gold { width: 106px; height: 106px; top: 22px; left: calc(50% + 22px); background: radial-gradient(circle at 30% 25%, #ffe39b, #ffa51d 75%); border: 7px solid #fff7e7; }
+.mm-owners-spark { position: absolute; width: 13px; height: 13px; border: 3px solid #fff; border-radius: 50%; background: var(--mm-leaf); box-shadow: 0 2px 8px rgba(43,27,46,.12); }
+.mm-owners-spark--one { top: 20px; right: 12%; }
+.mm-owners-spark--two { bottom: 18px; left: 16%; background: var(--mm-secondary); }
+.mm-owners-content { margin-top: 8px; }
+.mm-owners-section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+.mm-owners-section-head h2 { margin: 7px 0 0; color: var(--mm-ink); font-size: clamp(26px, 3.5vw, 36px); font-weight: 900; letter-spacing: -.025em; }
+.mm-owners-section-head > p { max-width: 38ch; margin: 0 0 4px; color: var(--mm-ink-soft); font-size: 14px; }
+.mm-owners-note { margin: 0 0 20px; }
+.mm-owners-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 22px; }
+.mm-owners-card {
+    position: relative;
+    min-height: 250px;
+    padding: 24px;
+    overflow: hidden;
+    border: 1px solid var(--mm-line);
+    border-top: 4px solid var(--mm-primary);
+    border-radius: 22px;
+    background: linear-gradient(155deg, #fff 0%, #fff 72%, #fff8f1 100%);
+    box-shadow: 0 8px 24px rgba(43,27,46,.055);
+    transition: transform var(--mm-dur) var(--mm-ease), box-shadow var(--mm-dur) var(--mm-ease), border-color var(--mm-dur) ease;
+}
+.mm-owners-card::after { content: ""; position: absolute; right: -34px; bottom: -56px; width: 130px; height: 130px; border-radius: 50%; background: var(--mm-owners-pink); opacity: .42; pointer-events: none; }
+.mm-owners-card:nth-child(even) { border-top-color: var(--mm-secondary); }
+.mm-owners-card:nth-child(even)::after { background: var(--mm-owners-gold); }
+.mm-owners-card:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(43,27,46,.11); }
+.mm-owners-card--placeholder, .mm-owner--placeholder { border-top-style: dashed; }
+.mm-owners-card__topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 24px; }
+.mm-owners-card__label { color: var(--mm-ink-faint); font-size: 10px; font-weight: 900; letter-spacing: .12em; }
+.mm-owners-card__identity { display: flex; align-items: center; gap: 16px; margin-top: 24px; }
+.mm-owners-card__photo, .mm-owners-card__initial { flex: 0 0 88px; width: 88px; height: 88px; margin: 0; border: 4px solid #fff; box-shadow: 0 5px 16px rgba(43,27,46,.12); }
+.mm-owners-card__initial { font-size: 34px; background: linear-gradient(145deg, #ffe7a9, #ffb400); }
+.mm-owners-card__heading { min-width: 0; }
+.mm-owners-card .mm-owner__name { font-size: clamp(19px, 2vw, 23px); line-height: 1.2; }
+.mm-owners-card .mm-owner__role { margin-top: 7px; }
+.mm-owners-card__bio { position: relative; z-index: 1; margin-top: 20px; font-size: 14px; line-height: 1.75; }
+.mm-owners-card__email { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 9px; max-width: 100%; margin-top: 18px; padding: 9px 12px; border-radius: 999px; background: #fff0f4; font-size: 13px; text-decoration: none; }
+.mm-owners-card__email-icon { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--mm-primary); color: #fff; font-size: 14px; }
+.mm-owners-empty { display: grid; justify-items: center; padding: 46px 24px; border: 1px dashed var(--mm-line); border-radius: 24px; background: #fff; text-align: center; }
+.mm-owners-empty__mark { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: #fff1d3; color: #9b6500; font-size: 27px; }
+.mm-owners-empty h3 { margin: 16px 0 4px; color: var(--mm-ink); font-size: 23px; }
+.mm-owners-empty p { max-width: 48ch; margin: 0 0 20px; color: var(--mm-ink-soft); }
+.mm-owners-cta { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 52px; padding: 30px clamp(22px, 4vw, 42px); border-radius: 24px; background: var(--mm-ink); color: #fff; }
+.mm-owners-cta .mm-eyebrow { color: #ffd16b; }
+.mm-owners-cta h2 { margin: 7px 0 4px; color: #fff; font-size: clamp(22px, 3vw, 30px); }
+.mm-owners-cta p { margin: 0; color: rgba(255,255,255,.78); }
+.mm-owners-cta .pill-btn { flex: 0 0 auto; text-decoration: none; }
+@media (max-width: 760px) {
+    .mm-owners-hero { grid-template-columns: 1fr; min-height: 0; margin-bottom: 38px; }
+    .mm-owners-hero__art { min-height: 190px; margin-top: 12px; }
+    .mm-owners-orbit--one { width: 190px; height: 190px; }
+    .mm-owners-orbit--two { width: 142px; height: 142px; top: 24px; }
+    .mm-owners-fruit--pink { width: 106px; height: 106px; top: 42px; left: calc(50% - 78px); font-size: 40px; }
+    .mm-owners-fruit--gold { width: 92px; height: 92px; left: calc(50% + 18px); }
+    .mm-owners-section-head { display: block; }
+    .mm-owners-section-head > p { margin-top: 10px; }
+    .mm-owners-cta { align-items: flex-start; flex-direction: column; }
+}
+@media (max-width: 420px) {
+    .mm-owners-hero { padding: 24px 20px; border-radius: 22px; }
+    .mm-owners-card { padding: 20px 18px; }
+    .mm-owners-card__identity { align-items: flex-start; gap: 12px; }
+    .mm-owners-card__photo, .mm-owners-card__initial { flex-basis: 72px; width: 72px; height: 72px; }
+    .mm-owners-card__initial { font-size: 28px; }
+    .mm-owners-card__topline { align-items: flex-start; flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .mm-owners-card, .mm-owners-hero__link { transition: none; }
+    .mm-owners-card:hover, .mm-owners-hero__link:hover { transform: none; }
+}

@@ -1,61 +1,112 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_OwnersViewModel
 @{
-    // Owner / company information from SQL Server (usp_Owner_GetAll), in display order.
-    // A record that still holds the seed text "[... - to be completed]" is labelled as a placeholder here,
-    // so it is never mistaken for verified information.
+    // Owner / company information is supplied by SQL Server (usp_Owner_GetAll).
+    // Keep all names, roles, biographies, photos, and email addresses data-driven.
     ViewBag.Title = "Owners / Company";
 }
 
-<header class="mm-page-head">
-    <span class="mm-eyebrow">@Model.BusinessName</span>
-    <h1 class="mm-page-head__title">Owners / Company</h1>
-    <p class="mm-page-head__lead">Owner and company information.</p>
-</header>
-
-<section class="mm-section" aria-label="Owners and company representatives">
-    @if (Model.Owners.Count == 0)
-    {
-        <p class="mm-empty">Owner and company information will be added soon.</p>
-    }
-    else
-    {
-        if (Model.HasPlaceholders)
-        {
-            <p class="mm-note">Some entries below are placeholders waiting for verified information.</p>
-        }
-
-        <div class="mm-owner-grid">
-            @foreach (var owner in Model.Owners)
-            {
-                <article class="@("mm-owner" + (owner.IsPlaceholder ? " mm-owner--placeholder" : ""))">
-                    @if (owner.PhotoUrl.Length > 0)
-                    {
-                        <img class="mm-owner__photo" src="@owner.PhotoUrl" alt="@owner.FullName" loading="lazy" />
-                    }
-                    else
-                    {
-                        <span class="mm-owner__initial" aria-hidden="true">@owner.Initial</span>
-                    }
-
-                    @if (owner.IsPlaceholder)
-                    {
-                        <span class="mm-badge mm-badge--note">Placeholder</span>
-                    }
-                    <h2 class="mm-owner__name">@owner.FullName</h2>
-                    @if (owner.Position.Length > 0)
-                    {
-                        <p class="mm-owner__role">@owner.Position</p>
-                    }
-                    @if (owner.Bio.Length > 0)
-                    {
-                        <p class="mm-owner__bio mm-prose">@owner.Bio</p>
-                    }
-                    @if (owner.Email.Length > 0)
-                    {
-                        <a class="mm-owner__email" href="@("mailto:" + owner.Email)">@owner.Email</a>
-                    }
-                </article>
-            }
+<div class="mm-owners-page">
+    <header class="mm-owners-hero">
+        <div class="mm-owners-hero__copy">
+            <span class="mm-eyebrow">@Model.BusinessName</span>
+            <p class="mm-owners-hero__kicker">THE PEOPLE BEHIND THE BRAND</p>
+            <h1 class="mm-owners-hero__title">Owners <span>&amp;</span> Company</h1>
+            <p class="mm-owners-hero__lead">
+                Get to know the people and company information shared by our team.
+            </p>
+            <a class="mm-owners-hero__link" href="@Url.Action("Contact", "Home")">
+                Get in touch <span aria-hidden="true">&#8599;</span>
+            </a>
         </div>
-    }
-</section>
+        <div class="mm-owners-hero__art" aria-hidden="true">
+            <span class="mm-owners-orbit mm-owners-orbit--one"></span>
+            <span class="mm-owners-orbit mm-owners-orbit--two"></span>
+            <span class="mm-owners-fruit mm-owners-fruit--pink">M</span>
+            <span class="mm-owners-fruit mm-owners-fruit--gold"></span>
+            <span class="mm-owners-spark mm-owners-spark--one"></span>
+            <span class="mm-owners-spark mm-owners-spark--two"></span>
+        </div>
+    </header>
+
+    <section class="mm-owners-content" aria-labelledby="mm-owners-section-title">
+        <div class="mm-owners-section-head">
+            <div>
+                <span class="mm-eyebrow">OUR PEOPLE &amp; COMPANY</span>
+                <h2 id="mm-owners-section-title">The team behind the name</h2>
+            </div>
+            <p>Company and representative details are displayed as provided by the business.</p>
+        </div>
+
+        @if (Model.Owners.Count == 0)
+        {
+            <div class="mm-owners-empty">
+                <span class="mm-owners-empty__mark" aria-hidden="true">&#9733;</span>
+                <h3>Information coming soon</h3>
+                <p>Owner and company information will be added here when verified details are available.</p>
+                <a class="pill-btn pill-btn-primary" href="@Url.Action("Contact", "Home")">Contact us</a>
+            </div>
+        }
+        else
+        {
+            if (Model.HasPlaceholders)
+            {
+                <p class="mm-note mm-owners-note">Some entries are still awaiting verified information.</p>
+            }
+
+            <div class="mm-owner-grid mm-owners-grid">
+                @foreach (var owner in Model.Owners)
+                {
+                    <article class="@("mm-owner mm-owners-card" + (owner.IsPlaceholder ? " mm-owner--placeholder" : ""))">
+                        <div class="mm-owners-card__topline">
+                            <span class="mm-owners-card__label">@(owner.IsPlaceholder ? "INFORMATION PENDING" : "COMPANY PROFILE")</span>
+                            @if (owner.IsPlaceholder)
+                            {
+                                <span class="mm-badge mm-badge--note">Awaiting details</span>
+                            }
+                        </div>
+
+                        <div class="mm-owners-card__identity">
+                            @if (owner.PhotoUrl.Length > 0)
+                            {
+                                <img class="mm-owner__photo mm-owners-card__photo" src="@owner.PhotoUrl" alt="@owner.FullName" loading="lazy" />
+                            }
+                            else
+                            {
+                                <span class="mm-owner__initial mm-owners-card__initial" aria-hidden="true">@owner.Initial</span>
+                            }
+                            <div class="mm-owners-card__heading">
+                                <h3 class="mm-owner__name">@owner.FullName</h3>
+                                @if (owner.Position.Length > 0)
+                                {
+                                    <p class="mm-owner__role">@owner.Position</p>
+                                }
+                            </div>
+                        </div>
+
+                        @if (owner.Bio.Length > 0)
+                        {
+                            <p class="mm-owner__bio mm-prose mm-owners-card__bio">@owner.Bio</p>
+                        }
+
+                        @if (owner.Email.Length > 0)
+                        {
+                            <a class="mm-owner__email mm-owners-card__email" href="@("mailto:" + owner.Email)">
+                                <span class="mm-owners-card__email-icon" aria-hidden="true">&#9993;</span>
+                                <span>@owner.Email</span>
+                            </a>
+                        }
+                    </article>
+                }
+            </div>
+        }
+    </section>
+
+    <section class="mm-owners-cta" aria-label="Contact the company">
+        <div>
+            <span class="mm-eyebrow">HAVE A QUESTION?</span>
+            <h2>We'd love to hear from you.</h2>
+            <p>Reach out through our contact page for enquiries and further information.</p>
+        </div>
+        <a class="pill-btn pill-btn-primary" href="@Url.Action("Contact", "Home")">Contact us <span aria-hidden="true">&#8594;</span></a>
+    </section>
+</div>
