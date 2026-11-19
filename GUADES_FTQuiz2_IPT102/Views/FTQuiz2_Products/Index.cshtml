@@ -7,10 +7,17 @@
 
 <div class="mm-products-page" data-mg-reveal>
     <header class="mm-page-head">
-        <h1 class="mm-page-head__title">@Model.BusinessName products</h1>
+        <div>
+            <p class="mm-page-head__kicker">Pick your flavour</p>
+            <h1 class="mm-page-head__title">@Model.BusinessName products</h1>
+            <p class="mm-page-head__lead">
+                Real fruit juice, real nata de coco cubes, and a bottle that is honestly more
+                of a snack than a drink. Chill it, shake it, chew it.
+            </p>
+        </div>
         @if (Model.Products.Count > 0)
         {
-            <p class="mm-products-count">@Model.Products.Count @(Model.Products.Count == 1 ? "product" : "products")</p>
+            <p class="mm-products-count">@Model.Products.Count @(Model.Products.Count == 1 ? "flavour" : "flavours")</p>
         }
     </header>
 

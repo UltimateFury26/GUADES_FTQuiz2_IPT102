@@ -62,18 +62,20 @@ namespace GUADES_FTQuiz2_IPT102.Controllers
             return View(model);
         }
 
-        // Contact: the contact information record (usp_ContactInfo_Get). Display only; there is no
-        // contact form, so nothing here pretends to send a message. Links are only kept when they are
-        // real http/https addresses and the email only when it is safe for a mailto: link.
-        public ActionResult Contact()
+        // About Us: one page for the contact information record (usp_ContactInfo_Get) and the owner
+        // records (usp_Owner_GetAll), the way the real Mogu Mogu site groups them. Display only; there
+        // is no contact form, so nothing here pretends to send a message. Links are only kept when they
+        // are real http/https addresses and the email only when it is safe for a mailto: link.
+        public ActionResult AboutUs()
         {
-            var model = new FTQuiz2_ContactViewModel
+            var model = new FTQuiz2_AboutUsViewModel
             {
                 BusinessName = FTQuiz2_ChromeViewModel.ForRequest().OwnerName
             };
 
-            FTQuiz2_ContactInfo contact = new FTQuiz2_BusinessRepository().GetContactInfo();
+            var business = new FTQuiz2_BusinessRepository();
 
+            FTQuiz2_ContactInfo contact = business.GetContactInfo();
             if (contact != null)
             {
                 model.Email = FTQuiz2_BusinessFormat.SafeEmail(contact.Email);
@@ -84,7 +86,23 @@ namespace GUADES_FTQuiz2_IPT102.Controllers
                 model.InstagramUrl = FTQuiz2_UrlGuard.SafeHttpUrl(contact.InstagramUrl);
             }
 
-            ViewBag.Title = "Contact";
+            List<FTQuiz2_OwnerInfo> owners = business.GetOwners();
+            foreach (FTQuiz2_OwnerInfo owner in owners)
+            {
+                model.Owners.Add(new FTQuiz2_OwnerCardView
+                {
+                    OwnerId = owner.OwnerId,
+                    FullName = owner.FullName,
+                    Position = owner.Position ?? string.Empty,
+                    Bio = owner.Bio ?? string.Empty,
+                    Email = FTQuiz2_BusinessFormat.SafeEmail(owner.Email),
+                    PhotoUrl = FTQuiz2_ImagePath.Resolve(owner.PhotoPath),
+                    IsPlaceholder = FTQuiz2_BusinessFormat.IsPlaceholder(owner.FullName)
+                        || FTQuiz2_BusinessFormat.IsPlaceholder(owner.Bio)
+                });
+            }
+
+            ViewBag.Title = "About Us";
             return View(model);
         }
 

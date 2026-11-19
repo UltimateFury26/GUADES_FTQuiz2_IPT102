@@ -1,29 +1,41 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_AboutViewModel
 @{
-    // Our Story. Every part comes from the business profile record in SQL Server (usp_BusinessProfile_Get)
-    // through HomeController.About; each part hides itself when it has nothing to show. Local images only.
+    // Our Story: the business profile record (usp_BusinessProfile_Get). Empty parts are hidden by the view.
     ViewBag.Title = "Our Story";
 }
 
-<div class="mm-about-page" data-mg-reveal>
+<div class="mm-about-page">
+
     <header class="mm-page-head">
-        <h1 class="mm-page-head__title">Our story</h1>
+        <p class="mm-page-head__kicker">Since the first bottle</p>
+        <h1 class="mm-page-head__title">Our Story</h1>
         @if (Model.Tagline.Length > 0)
         {
             <p class="mm-page-head__lead">@Model.Tagline</p>
         }
+        <p class="mm-page-head__meta">@Model.BusinessName</p>
     </header>
 
-    <section class="mm-section" aria-labelledby="storyTitle">
-        <div class="mm-story @(Model.ImageUrl.Length > 0 ? "mm-story--with-image" : "")">
-            <div class="mm-story__text">
-                <h2 class="mm-section__title" id="storyTitle">The brand story</h2>
+    <section class="mm-story-section" aria-labelledby="storyBodyTitle">
+        <div class="mm-story-section__inner">
+
+            @if (Model.ImageUrl.Length > 0)
+            {
+                <div class="mm-story-section__media">
+                    <img src="@Model.ImageUrl" alt="@Model.BusinessName" loading="lazy" />
+                </div>
+            }
+
+            <div class="mm-story-section__text">
+                <span class="mm-story-section__kicker">How it started</span>
+                <h2 class="mm-story-section__title" id="storyBodyTitle">A drink you chew</h2>
+
                 @if (Model.HasStory)
                 {
-                    <p class="mm-story__body">@Model.BrandStory</p>
+                    <p class="mm-story-section__body">@Model.BrandStory</p>
                     if (Model.StoryIsPlaceholder)
                     {
-                        <p class="mm-note">Placeholder text: the approved brand story has not been added yet.</p>
+                        <p class="mm-note">This story is still a placeholder in the content records.</p>
                     }
                 }
                 else
@@ -31,10 +43,7 @@
                     <p class="mm-empty">The brand story will be added soon.</p>
                 }
             </div>
-            @if (Model.ImageUrl.Length > 0)
-            {
-                <div class="mm-story__media"><img src="@Model.ImageUrl" alt="@Model.BusinessName drinks" loading="lazy" decoding="async" /></div>
-            }
+
         </div>
     </section>
 
@@ -60,8 +69,15 @@
         </section>
     }
 
-    <div class="mm-actions">
-        <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">See our products</a>
-        <a class="pill-btn pill-btn-secondary" href="@Url.Action("Contact", "Home")">Contact us</a>
-    </div>
+    <section class="mm-aboutus-cta">
+        <div>
+            <h2>Meet the people</h2>
+            <p>Who makes it, where to find us, and how to get in touch — all on one page.</p>
+        </div>
+        <div class="mm-actions">
+            <a class="pill-btn pill-btn-primary" href="@Url.Action("AboutUs", "Home")">About Us</a>
+            <a class="pill-btn pill-btn-secondary" href="@Url.Action("Index", "FTQuiz2_Products")">See the products</a>
+        </div>
+    </section>
+
 </div>

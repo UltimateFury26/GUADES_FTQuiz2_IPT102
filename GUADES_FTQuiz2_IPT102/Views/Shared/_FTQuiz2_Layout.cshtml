@@ -1,7 +1,7 @@
-﻿@using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
+@using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 @{
     // Signed-in shell: Mogu Mogu header navigation, page body, footer.
-    // The chrome model reads the business profile and contact rows; Contact is a page (Phase 4), not a modal.
+    // The chrome model reads the business profile and contact rows; About Us is a page, not a modal.
     FTQuiz2_ChromeViewModel chrome = FTQuiz2_ChromeViewModel.ForRequest();
     string pageTitle = ViewBag.Title as string;
     string fullTitle = string.IsNullOrWhiteSpace(pageTitle) ? "Mogu Mogu" : pageTitle + " | Mogu Mogu";
@@ -42,11 +42,13 @@
 
     @Html.Partial("_FTQuiz2_Chrome", chrome)
 
-    @* Marquee ticker: the moving brand strip borrowed from the Mogu Mogu look. Hidden on admin/account screens. *@
+    @* Marquee ticker: the moving brand strip borrowed from the Mogu Mogu look. Hidden on admin/account screens.
+       This is the ONLY band on the site. FTQuiz2_Motion.js sets a negative animation-delay from the wall clock,
+       so the strip keeps its position across page loads instead of restarting from the left edge. *@
     @if (!string.Equals(ViewBag.FTQuiz2_BodyClass as string, "FTQuiz2_admin", System.StringComparison.OrdinalIgnoreCase)
         && !string.Equals(ViewBag.FTQuiz2_BodyClass as string, "FTQuiz2_account", System.StringComparison.OrdinalIgnoreCase))
     {
-        <div class="mg-ticker" data-mg-marquee aria-hidden="true">
+        <div class="mg-ticker" data-mg-marquee data-mg-duration="34000" aria-hidden="true">
             <div class="mg-ticker__track">
                 <div class="mg-ticker__group">
                     <span class="mg-ticker__item">Real nata de coco</span>
@@ -72,18 +74,54 @@
             <footer class="mm-footer">
                 <div class="mm-footer__brand">
                     @Html.Partial("_FTQuiz2_BrandLogo")
-                    <p class="mm-footer__tagline">Nata de coco fruit drinks.</p>
+                    <p class="mm-footer__tagline">Nata de coco fruit drinks. Chewy little bottles of sunshine, bottled in Manila.</p>
+                    <div class="mm-footer__social">
+                        <a href="@Url.Action("AboutUs", "Home")" aria-label="About Mogu Mogu">
+                            <svg data-mg-icon viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><path d="M12 7.5h.01" /></svg>
+                        </a>
+                        <a href="@Url.Action("Index", "FTQuiz2_Products")" aria-label="Our products">
+                            <svg data-mg-icon viewBox="0 0 24 24"><path d="M8 3h8v3l2 3v10a2 2 0 01-2 2H8a2 2 0 01-2-2V9l2-3z" /><path d="M6 12h12" /></svg>
+                        </a>
+                        <a href="@Url.Content("~/FTQuiz2_MyAccount")" aria-label="My account">
+                            <svg data-mg-icon viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4" /><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6" /></svg>
+                        </a>
+                    </div>
                 </div>
-                <nav class="mm-footer__links" aria-label="Footer">
-                    <a href="@Url.Content("~/")">Home</a>
-                    <a href="@Url.Action("About", "Home")">Our Story</a>
-                    <a href="@Url.Action("Index", "FTQuiz2_Products")">Products</a>
-                    <a href="@Url.Action("Contact", "Home")">Contact</a>
-                    <a href="@Url.Action("Owners", "FTQuiz2_Business")">Owners / Company</a>
+
+                <nav class="mm-footer__col" aria-label="Explore">
+                    <h2>Explore</h2>
+                    <ul>
+                        <li><a href="@Url.Content("~/")">Home</a></li>
+                        <li><a href="@Url.Action("About", "Home")">Our Story</a></li>
+                        <li><a href="@Url.Action("Index", "FTQuiz2_Products")">Products</a></li>
+                        <li><a href="@Url.Action("AboutUs", "Home")">About Us</a></li>
+                    </ul>
                 </nav>
-                <p class="mm-footer__copy">
-                    &copy; @DateTime.Now.Year Mogu Mogu. Academic project; brand names and images belong to their respective owners.
-                </p>
+
+                <nav class="mm-footer__col" aria-label="Products">
+                    <h2>Products</h2>
+                    <ul>
+                        <li><a href="@Url.Action("Index", "FTQuiz2_Products")">All flavours</a></li>
+                        <li><a href="@Url.Content("~/")#products">Featured</a></li>
+                        <li><a href="@Url.Content("~/")#our-story">Our story</a></li>
+                    </ul>
+                </nav>
+
+                <nav class="mm-footer__col" aria-label="Account">
+                    <h2>Account</h2>
+                    <ul>
+                        <li><a href="@Url.Content("~/FTQuiz2_MyAccount")">My account</a></li>
+                        <li><a href="@Url.Action("AboutUs", "Home")">Contact</a></li>
+                        <li><a href="@Url.Action("AboutUs", "Home")">Owners &amp; company</a></li>
+                    </ul>
+                </nav>
+
+                <div class="mm-footer__bottom">
+                    <p class="mm-footer__copy">
+                        &copy; @DateTime.Now.Year Mogu Mogu. Academic project; brand names and images belong to their respective owners.
+                    </p>
+                    <a class="mm-footer__top" href="#top">Back to top</a>
+                </div>
             </footer>
 
         </div>

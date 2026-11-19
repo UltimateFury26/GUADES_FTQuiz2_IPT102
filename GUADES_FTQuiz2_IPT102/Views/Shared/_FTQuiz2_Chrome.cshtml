@@ -21,8 +21,7 @@
             <a class="@("mm-nav__link" + Model.HomeActiveClass())" aria-current="@current(Model.HomeActiveClass())" href="@Url.Content("~/")">Home</a>
             <a class="@("mm-nav__link" + Model.ActiveClass("Home", "About"))" aria-current="@current(Model.ActiveClass("Home", "About"))" href="@Url.Action("About", "Home")">Our Story</a>
             <a class="@("mm-nav__link" + Model.ActiveClass("FTQuiz2_Products"))" aria-current="@current(Model.ActiveClass("FTQuiz2_Products"))" href="@Url.Action("Index", "FTQuiz2_Products")">Products</a>
-            <a class="@("mm-nav__link" + Model.ActiveClass("Home", "Contact"))" aria-current="@current(Model.ActiveClass("Home", "Contact"))" href="@Url.Action("Contact", "Home")">Contact</a>
-            <a class="@("mm-nav__link" + Model.ActiveClass("FTQuiz2_Business"))" aria-current="@current(Model.ActiveClass("FTQuiz2_Business"))" href="@Url.Action("Owners", "FTQuiz2_Business")">Owners / Company</a>
+            <a class="@("mm-nav__link" + Model.ActiveClass("Home", "AboutUs"))" aria-current="@current(Model.ActiveClass("Home", "AboutUs"))" href="@Url.Action("AboutUs", "Home")">About Us</a>
 
             @if (Model.IsAdmin)
             {

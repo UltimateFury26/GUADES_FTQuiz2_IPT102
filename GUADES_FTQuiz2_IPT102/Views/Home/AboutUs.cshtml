@@ -1,0 +1,159 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_AboutUsViewModel
+@using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
+@{
+    // About Us: contact details and the owners / company records on one page.
+    // Everything comes from SQL Server; empty parts hide themselves.
+    ViewBag.Title = "About Us";
+}
+
+<div class="mm-aboutus-page">
+
+    <header class="mm-page-head">
+        <p class="mm-page-head__kicker">People, place &amp; a whole lot of chewing</p>
+        <h1 class="mm-page-head__title">About Us</h1>
+        <p class="mm-page-head__lead">
+            @Model.BusinessName is made by a small team in Manila who believe a drink should be
+            something you chew. Here is where to find us, and who is behind the bottles.
+        </p>
+    </header>
+
+    <div class="mm-aboutus-split">
+
+        <!-- CONTACT -->
+        <section aria-labelledby="aboutusContactTitle">
+            <h2 class="mm-aboutus-split__title" id="aboutusContactTitle">Come say hello</h2>
+            <p class="mm-aboutus-split__lead">
+                Orders, wholesale, press, or just to tell us which flavour you finished first.
+                We answer everything, eventually, usually with a straw in hand.
+            </p>
+
+            @if (Model.HasContact)
+            {
+                <div class="mm-aboutus-contact">
+                    @if (Model.Email.Length > 0)
+                    {
+                        <div class="mm-aboutus-contact__row">
+                            <svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M4 7l8 6 8-6" /></svg>
+                            <div>
+                                <span class="mm-aboutus-contact__label">Email</span>
+                                <a class="mm-aboutus-contact__value" href="@("mailto:" + Model.Email)">@Model.Email</a>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.PhoneDisplay.Length > 0)
+                    {
+                        <div class="mm-aboutus-contact__row">
+                            <svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h3l2 5-2.5 1.5a12 12 0 006 6L16 13l5 2v3a2 2 0 01-2.2 2A17 17 0 014 5.2 2 2 0 016 3z" /></svg>
+                            <div>
+                                <span class="mm-aboutus-contact__label">Phone</span>
+                                @if (Model.PhoneHref.Length > 0)
+                                {
+                                    <a class="mm-aboutus-contact__value" href="@("tel:" + Model.PhoneHref)">@Model.PhoneDisplay</a>
+                                }
+                                else
+                                {
+                                    <span class="mm-aboutus-contact__value">@Model.PhoneDisplay</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Address.Length > 0)
+                    {
+                        <div class="mm-aboutus-contact__row">
+                            <svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 10-14 0c0 5.4 7 11 7 11z" /><circle cx="12" cy="10" r="2.6" /></svg>
+                            <div>
+                                <span class="mm-aboutus-contact__label">Address</span>
+                                <span class="mm-aboutus-contact__value">@Model.Address</span>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.FacebookUrl.Length > 0)
+                    {
+                        <div class="mm-aboutus-contact__row">
+                            <svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 00-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8.5A.5.5 0 0114 8z" /></svg>
+                            <div>
+                                <span class="mm-aboutus-contact__label">Facebook</span>
+                                <a class="mm-aboutus-contact__value" href="@Model.FacebookUrl" target="_blank" rel="noopener">@FTQuiz2_BusinessFormat.DisplayUrl(Model.FacebookUrl)</a>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.InstagramUrl.Length > 0)
+                    {
+                        <div class="mm-aboutus-contact__row">
+                            <svg data-mg-icon viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><circle cx="12" cy="12" r="4" /><path d="M17 7h.01" /></svg>
+                            <div>
+                                <span class="mm-aboutus-contact__label">Instagram</span>
+                                <a class="mm-aboutus-contact__value" href="@Model.InstagramUrl" target="_blank" rel="noopener">@FTQuiz2_BusinessFormat.DisplayUrl(Model.InstagramUrl)</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="mm-empty">Contact details will be available soon.</p>
+            }
+        </section>
+
+        <!-- OWNERS / COMPANY -->
+        <section aria-labelledby="aboutusTeamTitle">
+            <h2 class="mm-aboutus-split__title" id="aboutusTeamTitle">Owners &amp; company</h2>
+            <p class="mm-aboutus-split__lead">
+                The people who signed off on putting jelly cubes in a bottle and calling it a drink.
+            </p>
+
+            @if (Model.HasOwners)
+            {
+                <div class="mm-aboutus-team">
+                    @foreach (var owner in Model.Owners)
+                    {
+                        <article class="mm-aboutus-person @(owner.IsPlaceholder ? "mm-aboutus-person--placeholder" : "")">
+                            <div class="mm-aboutus-person__avatar" aria-hidden="true">
+                                @if (owner.PhotoUrl.Length > 0)
+                                {
+                                    <img src="@owner.PhotoUrl" alt="" loading="lazy" />
+                                }
+                                else
+                                {
+                                    @owner.Initial
+                                }
+                            </div>
+                            <div>
+                                <h3 class="mm-aboutus-person__name">@owner.FullName</h3>
+                                @if (owner.Position.Length > 0)
+                                {
+                                    <p class="mm-aboutus-person__role">@owner.Position</p>
+                                }
+                                @if (owner.Bio.Length > 0)
+                                {
+                                    <p class="mm-aboutus-person__bio">@owner.Bio</p>
+                                }
+                                @if (owner.Email.Length > 0)
+                                {
+                                    <a class="mm-aboutus-person__email" href="@("mailto:" + owner.Email)">
+                                        <svg data-mg-icon viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M4 7l8 6 8-6" /></svg>
+                                        @owner.Email
+                                    </a>
+                                }
+                            </div>
+                        </article>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="mm-empty">Owner details will be available soon.</p>
+            }
+        </section>
+
+    </div>
+
+    <section class="mm-aboutus-cta">
+        <div>
+            <h2>Still thirsty?</h2>
+            <p>Six fruity flavours, real nata de coco, and a whole lot of chewing. Pick your first bottle.</p>
+        </div>
+        <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">See the products</a>
+    </section>
+
+</div>

@@ -84,15 +84,39 @@
     }
 
     /* ------------------------------------------------------------- marquees */
-    /* Duplicate each marquee group so the -50% keyframe loops seamlessly. */
+    /* Two jobs:
+       1. Duplicate the group INSIDE the flex track, so the -50% keyframe loops
+          with no gap. (The clone used to be appended to the outer wrapper, which
+          left the track holding a single group and produced a visible jump.)
+       2. Start every strip at the phase the wall clock says it should be at.
+          Because the offset comes from Date.now(), a full page load lands on the
+          same point of the loop the previous page left off at, so the band keeps
+          travelling instead of snapping back to the start. */
     function initMarquees() {
-        document.querySelectorAll("[data-mg-marquee]").forEach(function (track) {
-            var group = track.querySelector(".mg-ticker__group, .mg-band__group");
-            if (!group || track.dataset.mgCloned === "1") { return; }
-            track.appendChild(group.cloneNode(true));
-            track.dataset.mgCloned = "1";
+        document.querySelectorAll("[data-mg-marquee]").forEach(function (wrapper) {
+            var group = wrapper.querySelector(".mg-ticker__group, .mg-band__group");
+            if (!group) { return; }
+
+            var track = group.parentNode;
+            if (wrapper.dataset.mgCloned !== "1") {
+                track.appendChild(group.cloneNode(true));
+                wrapper.dataset.mgCloned = "1";
+            }
+
+            var duration = parseFloat(wrapper.getAttribute("data-mg-duration"), 10);
+            if (!duration || duration < 1000) {
+                duration = wrapper.classList.contains("mg-band") ? 26000 : 34000;
+            }
+
+            track.style.animationDuration = duration + "ms";
+            track.style.animationDelay = "-" + (Date.now() % duration) + "ms";
         });
     }
+
+    /* Re-sync after a back/forward cache restore, where the CSS clock froze. */
+    window.addEventListener("pageshow", function (e) {
+        if (e.persisted) { initMarquees(); }
+    });
 
     /* --------------------------------------------------------- scroll reveal */
     function initReveal() {
@@ -179,37 +203,109 @@
     }
 
     /* ----------------------------------------------------- password UX (port) */
-    /* Ported from GUADES_Quiz_IPT102-main Portfolio.js:
-       show/hide toggle, 0-4 strength score, live label.
-       Added here: requirement checklist, confirm-match note, caps-lock hint,
-       and a submit guard so a too-weak password cannot be posted. */
+    /* Ported from GUADES_Quiz_IPT102-main Portfolio.js and then tightened:
+         - the score is rule based, not character-class counting
+         - obvious patterns (password, qwerty, 1234, aaaaaa) are capped at "Weak"
+         - the checklist, the confirm note and the caps-lock hint all agree with it
+         - the show/hide eye is driven by inline display, so no stylesheet
+           specificity war can leave the icon stuck on one state. */
+
+    var COMMON_PASSWORDS = [
+        "password", "passw0rd", "12345678", "123456789", "qwerty", "qwertyui",
+        "letmein", "welcome", "admin123", "iloveyou", "abc12345", "football",
+        "monkey", "dragon", "sunshine", "princess", "michael", "shadow"
+    ];
+
+    function passwordRules(value) {
+        var v = value || "";
+        return {
+            length: v.length >= 8,
+            upper: /[A-Z]/.test(v),
+            lower: /[a-z]/.test(v),
+            number: /[0-9]/.test(v),
+            symbol: /[^A-Za-z0-9]/.test(v)
+        };
+    }
+
+    /* 0 = very weak ... 4 = strong. */
+    /* True when the letters/digits are almost entirely one ascending run, or a
+       keyboard walk ("qwerty", "asdfgh"). Symbols and case are ignored here. */
+    function isStraightRun(value) {
+        var s = (value || "").replace(/[^a-z0-9]/g, "");
+        if (s.length < 4) { return false; }
+        if (/^(qwerty|asdfgh|zxcvbn|qazwsx)/.test(s)) { return true; }
+
+        var run = 1;
+        var best = 1;
+        for (var i = 1; i < s.length; i++) {
+            run = s.charCodeAt(i) === s.charCodeAt(i - 1) + 1 ? run + 1 : 1;
+            if (run > best) { best = run; }
+        }
+        return best >= Math.max(4, s.length - 1);
+    }
+
     function passwordStrengthScore(value) {
+        var v = value || "";
+        if (!v) { return 0; }
+
+        var r = passwordRules(v);
         var score = 0;
-        if (value.length >= 8) { score++; }
-        if (value.length >= 12) { score++; }
-        if (/[a-z]/.test(value) && /[A-Z]/.test(value)) { score++; }
-        if (/[0-9]/.test(value)) { score++; }
-        if (/[^A-Za-z0-9]/.test(value)) { score++; }
-        return Math.min(score, 4);
+
+        if (r.length) { score++; }
+        if (v.length >= 12) { score++; }
+
+        var classes = (r.lower ? 1 : 0) + (r.upper ? 1 : 0) + (r.number ? 1 : 0) + (r.symbol ? 1 : 0);
+        if (classes >= 3) { score++; }
+        if (classes === 4) { score++; }
+
+        // A single repeated character or a well-known password never deserves more than
+        // "Weak", however long it is. A straight run ("abcdefgh", "12345678") is capped at
+        // "Fair" rather than "Weak", so a long password that merely starts with "abcd"
+        // is not punished as harshly as "password" itself.
+        var lower = v.toLowerCase();
+        var repeated = /^(.)\1+$/.test(v);
+        var common = COMMON_PASSWORDS.indexOf(lower) !== -1;
+        if (repeated || common) { score = Math.min(score, 1); }
+        else if (isStraightRun(lower)) { score = Math.min(score, 2); }
+
+        return Math.max(0, Math.min(score, 4));
     }
 
     function initPasswords() {
         var labels = ["Very weak", "Weak", "Fair", "Good", "Strong"];
 
-        /* Show / hide */
+        /* ---- show / hide ------------------------------------------------- */
+        function setEye(btn, input, visible) {
+            input.type = visible ? "text" : "password";
+            btn.classList.toggle("is-visible", visible);
+            btn.setAttribute("aria-label", visible ? "Hide password" : "Show password");
+            btn.setAttribute("aria-pressed", visible ? "true" : "false");
+            btn.setAttribute("title", visible ? "Hide password" : "Show password");
+
+            var on = btn.querySelector(".icon-eye");
+            var off = btn.querySelector(".icon-eye-off");
+            if (on) { on.style.display = visible ? "none" : "block"; }
+            if (off) { off.style.display = visible ? "block" : "none"; }
+        }
+
         document.querySelectorAll(".password-toggle").forEach(function (btn) {
             var field = btn.closest(".password-field");
             var input = field ? field.querySelector("input") : null;
             if (!input) { return; }
-            btn.addEventListener("click", function () {
-                var hidden = input.type === "password";
-                input.type = hidden ? "text" : "password";
-                btn.classList.toggle("is-visible", hidden);
-                btn.setAttribute("aria-label", hidden ? "Hide password" : "Show password");
+
+            setEye(btn, input, input.type === "text");
+
+            btn.addEventListener("click", function (e) {
+                e.preventDefault();
+                setEye(btn, input, input.type === "password");
+                // Keep the caret where it was, otherwise the field jumps to the end.
+                var end = input.value.length;
+                input.focus({ preventScroll: true });
+                try { input.setSelectionRange(end, end); } catch (err) { /* type=email etc. */ }
             });
         });
 
-        /* Strength meters */
+        /* ---- strength meters --------------------------------------------- */
         document.querySelectorAll("[data-strength-for]").forEach(function (meter) {
             var input = document.getElementById(meter.getAttribute("data-strength-for"));
             var fill = meter.querySelector("[data-strength-fill]");
@@ -219,19 +315,14 @@
             var rules = meter.parentNode.querySelector("[data-pwd-rules]");
             var ruleItems = rules ? rules.querySelectorAll("li[data-rule]") : [];
 
-            function checkRule(name, value) {
-                switch (name) {
-                    case "length": return value.length >= 8;
-                    case "upper": return /[A-Z]/.test(value);
-                    case "lower": return /[a-z]/.test(value);
-                    case "number": return /[0-9]/.test(value);
-                    case "symbol": return /[^A-Za-z0-9]/.test(value);
-                    default: return false;
-                }
+            if (!label.hasAttribute("aria-live")) {
+                label.setAttribute("aria-live", "polite");
             }
 
             function update() {
                 var value = input.value;
+                var r = passwordRules(value);
+
                 if (!value) {
                     fill.className = "pwd-strength-fill";
                     fill.style.width = "0%";
@@ -239,12 +330,16 @@
                     ruleItems.forEach(function (li) { li.classList.remove("is-met"); });
                     return;
                 }
+
                 var score = passwordStrengthScore(value);
                 fill.className = "pwd-strength-fill pwd-strength-" + score;
                 fill.style.width = ((score + 1) / 5 * 100) + "%";
                 label.textContent = labels[score];
+                label.setAttribute("data-score", String(score));
+
                 ruleItems.forEach(function (li) {
-                    li.classList.toggle("is-met", checkRule(li.getAttribute("data-rule"), value));
+                    var rule = li.getAttribute("data-rule");
+                    li.classList.toggle("is-met", !!r[rule]);
                 });
             }
 
@@ -253,23 +348,29 @@
             update();
         });
 
-        /* Confirm-match notes */
+        /* ---- confirm-match notes ----------------------------------------- */
         document.querySelectorAll("[data-pwd-match]").forEach(function (note) {
             var confirm = document.getElementById(note.getAttribute("data-pwd-match"));
             var target = document.getElementById(note.getAttribute("data-pwd-target"));
             if (!confirm || !target) { return; }
+
             function update() {
-                if (!confirm.value) { note.textContent = ""; note.className = "pwd-match-note"; return; }
+                if (!confirm.value) {
+                    note.textContent = "";
+                    note.className = "pwd-match-note";
+                    return;
+                }
                 var ok = confirm.value === target.value;
                 note.textContent = ok ? "Passwords match" : "Passwords do not match yet";
                 note.className = "pwd-match-note " + (ok ? "is-ok" : "is-bad");
             }
+
             confirm.addEventListener("input", update);
             target.addEventListener("input", update);
             update();
         });
 
-        /* Caps lock hint */
+        /* ---- caps-lock hint ---------------------------------------------- */
         document.querySelectorAll(".password-field input").forEach(function (input) {
             var hint = input.parentNode.querySelector("[data-caps-hint]");
             if (!hint) { return; }
@@ -277,23 +378,26 @@
                 if (typeof e.getModifierState !== "function") { return; }
                 hint.hidden = !e.getModifierState("CapsLock");
             });
+            input.addEventListener("blur", function () { hint.hidden = true; });
         });
 
-        /* Submit guard: only for forms that opt in with data-pwd-guard. */
+        /* ---- submit guard: only for forms that opt in -------------------- */
         document.querySelectorAll("form[data-pwd-guard]").forEach(function (form) {
             form.addEventListener("submit", function (e) {
                 var meter = form.querySelector("[data-strength-for]");
                 var input = meter ? document.getElementById(meter.getAttribute("data-strength-for")) : null;
                 if (!input || !input.value) { return; }
+
                 if (passwordStrengthScore(input.value) < 2) {
                     e.preventDefault();
                     input.focus();
                     var label = meter.querySelector("[data-strength-label]");
-                    if (label) { label.textContent = "Too weak — add length, numbers or symbols"; }
+                    if (label) { label.textContent = "Too weak - add length, numbers or symbols"; }
                 }
             });
         });
     }
+
 
     /* ------------------------------------------------------------ form polish */
     function initForms() {

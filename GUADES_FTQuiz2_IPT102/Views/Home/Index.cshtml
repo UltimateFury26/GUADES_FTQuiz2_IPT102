@@ -6,54 +6,53 @@
     ViewBag.Title = "Home";
 }
 
-<!-- HERO -->
+<!-- HERO: one full-bleed stage. The picture is a layer of a fixed-height panel, so it always fills it. -->
 <section class="mm-hero" aria-labelledby="heroTitle">
-    <div class="mm-hero__text">
-        <h1 class="mm-hero__title" id="heroTitle">@Model.HeadlineText</h1>
-        @if (Model.Mission.Length > 0)
-        {
-            <p class="mm-hero__lead">@Model.Mission</p>
-        }
-        <div class="mm-hero__actions">
-            <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">See our products <span aria-hidden="true">&rarr;</span></a>
-            <a class="pill-btn pill-btn-secondary" href="#our-story">Our story</a>
-        </div>
-    </div>
-    @if (Model.HeroUrl.Length > 0)
-    {
-        <div class="mm-hero__visual">
-            <figure class="mm-hero__frame">
-                <img src="@Model.HeroUrl" alt="@Model.BusinessName drinks" decoding="async" />
-            </figure>
-        </div>
-    }
-    else
-    {
-        <div class="mm-hero__visual mm-hero__visual--ph" aria-hidden="true">
-            <span class="mm-bubble mm-bubble--lg"></span>
-            <span class="mm-bubble mm-bubble--md"></span>
-            <span class="mm-bubble mm-bubble--sm"></span>
-        </div>
-    }
-</section>
+    <div class="mm-hero__inner">
 
-<!-- MOVING BRAND BAND -->
-<div class="mg-band" data-mg-marquee aria-hidden="true">
-    <div class="mg-band__track">
-        <div class="mg-band__group">
-            <span class="mg-band__item">You gotta chew</span>
-            <span class="mg-band__item">Mogu Mogu</span>
-            <span class="mg-band__item">Nata de coco</span>
-            <span class="mg-band__item">Real fruit juice</span>
+        <div class="mm-hero__text">
+            <p class="mm-hero__eyebrow">Nata de coco fruit drink</p>
+            <h1 class="mm-hero__title" id="heroTitle">@Model.HeadlineText</h1>
+            @if (Model.Mission.Length > 0)
+            {
+                <p class="mm-hero__lead">@Model.Mission</p>
+            }
+            <div class="mm-hero__actions">
+                <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">See our products</a>
+                <a class="pill-btn pill-btn-secondary" href="#our-story">Our story</a>
+            </div>
+            <ul class="mm-hero__facts">
+                <li>Real nata de coco</li>
+                <li>Six fruity flavours</li>
+                <li>Bottled in Manila</li>
+            </ul>
         </div>
+
+        @if (Model.HeroUrl.Length > 0)
+        {
+            <div class="mm-hero__visual">
+                <img src="@Model.HeroUrl" alt="@Model.BusinessName drinks" decoding="async" />
+                <span class="mm-hero__sticker">You gotta chew</span>
+            </div>
+        }
+        else
+        {
+            <div class="mm-hero__visual mm-hero__visual--ph" aria-hidden="true">
+                <span class="mm-bubble mm-bubble--lg"></span>
+                <span class="mm-bubble mm-bubble--md"></span>
+                <span class="mm-bubble mm-bubble--sm"></span>
+            </div>
+        }
+
     </div>
-</div>
+</section>
 
 <div class="mm-home">
 
 <!-- FEATURED PRODUCTS -->
 <section class="mm-section" id="products" aria-labelledby="productsTitle" data-mg-reveal>
-    <div class="mm-section__head mm-section__head--center">
+    <div class="mm-section__head">
+        <p class="mm-section__kicker">The line-up</p>
         <h2 class="mm-section__title" id="productsTitle">Featured products</h2>
     </div>
 
@@ -106,24 +105,30 @@
 }
 
 <!-- OUR STORY (brand introduction + about preview) -->
-<section class="mm-section mm-section--tint" id="our-story" aria-labelledby="storyTitle" data-mg-reveal>
-    <div class="mm-story @(Model.AboutImageUrl.Length > 0 ? "mm-story--with-image" : "")">
-        <div class="mm-story__text">
-            <h2 class="mm-section__title" id="storyTitle">Our story</h2>
+<section class="mm-section mm-section--tint mm-story-section" id="our-story" aria-labelledby="storyTitle" data-mg-reveal>
+    <div class="mm-story-section__inner @(Model.AboutImageUrl.Length > 0 ? "" : "mm-story-section--no-media")">
+
+        @if (Model.AboutImageUrl.Length > 0)
+        {
+            <div class="mm-story-section__media">
+                <img src="@Model.AboutImageUrl" alt="About @Model.BusinessName" loading="lazy" />
+            </div>
+        }
+
+        <div class="mm-story-section__text">
+            <span class="mm-story-section__kicker">Our story</span>
+            <h2 class="mm-story-section__title" id="storyTitle">Chewy little bottles of sunshine</h2>
             @if (Model.StoryPreview.Length > 0)
             {
-                <p class="mm-story__body">@Model.StoryPreview</p>
+                <p class="mm-story-section__body">@Model.StoryPreview</p>
             }
             else
             {
                 <p class="mm-empty">The brand story will be added soon.</p>
             }
-            <a class="pill-btn pill-btn-secondary" href="@Url.Action("About", "Home")">Read our full story</a>
+            <a class="pill-btn pill-btn-primary" href="@Url.Action("About", "Home")">Read our full story</a>
         </div>
-        @if (Model.AboutImageUrl.Length > 0)
-        {
-            <div class="mm-story__media"><img src="@Model.AboutImageUrl" alt="About @Model.BusinessName" loading="lazy" /></div>
-        }
+
     </div>
 
     @if (Model.HasHighlights)
@@ -160,46 +165,50 @@
     </section>
 }
 
-<!-- CONTACT PREVIEW -->
+<!-- GET IN TOUCH -->
 <section class="mm-section" id="contact" aria-labelledby="contactTitle">
-    <div class="mm-section__head mm-section__head--center">
+    <div class="mm-section__head">
+        <p class="mm-section__kicker">Say hello</p>
         <h2 class="mm-section__title" id="contactTitle">Get in touch</h2>
     </div>
 
     @if (Model.HasContact)
     {
-        <ul class="mm-contact-list">
+        <div class="mm-touch-grid">
             @if (Model.Email.Length > 0)
             {
-                <li><span class="mm-contact-list__label">Email</span><a href="@("mailto:" + Model.Email)">@Model.Email</a></li>
+                <a class="mm-touch-card" href="@("mailto:" + Model.Email)">
+                    <span class="mm-touch-card__icon" aria-hidden="true">
+                        <svg data-mg-icon viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M4 7l8 6 8-6" /></svg>
+                    </span>
+                    <span class="mm-touch-card__label">Email</span>
+                    <span class="mm-touch-card__value">@Model.Email</span>
+                    <span class="mm-touch-card__hint">Orders, wholesale and press.</span>
+                </a>
             }
             @if (Model.PhoneDisplay.Length > 0)
             {
-                <li>
-                    <span class="mm-contact-list__label">Phone</span>
-                    @if (Model.PhoneHref.Length > 0)
-                    {
-                        <a href="@("tel:" + Model.PhoneHref)">@Model.PhoneDisplay</a>
-                    }
-                    else
-                    {
-                        <span>@Model.PhoneDisplay</span>
-                    }
-                </li>
+                <a class="mm-touch-card mm-touch-card--phone" href="@(Model.PhoneHref.Length > 0 ? "tel:" + Model.PhoneHref : "#contact")">
+                    <span class="mm-touch-card__icon" aria-hidden="true">
+                        <svg data-mg-icon viewBox="0 0 24 24"><path d="M6 3h3l2 5-2.5 1.5a12 12 0 006 6L16 13l5 2v3a2 2 0 01-2.2 2A17 17 0 014 5.2 2 2 0 016 3z" /></svg>
+                    </span>
+                    <span class="mm-touch-card__label">Phone</span>
+                    <span class="mm-touch-card__value">@Model.PhoneDisplay</span>
+                    <span class="mm-touch-card__hint">Weekdays, 9am to 6pm.</span>
+                </a>
             }
             @if (Model.Address.Length > 0)
             {
-                <li><span class="mm-contact-list__label">Address</span><span>@Model.Address</span></li>
+                <div class="mm-touch-card mm-touch-card--address">
+                    <span class="mm-touch-card__icon" aria-hidden="true">
+                        <svg data-mg-icon viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 10-14 0c0 5.4 7 11 7 11z" /><circle cx="12" cy="10" r="2.6" /></svg>
+                    </span>
+                    <span class="mm-touch-card__label">Address</span>
+                    <span class="mm-touch-card__value">@Model.Address</span>
+                    <span class="mm-touch-card__hint">Come say hi at the plant.</span>
+                </div>
             }
-            @if (Model.FacebookUrl.Length > 0)
-            {
-                <li><span class="mm-contact-list__label">Facebook</span><a href="@Model.FacebookUrl" target="_blank" rel="noopener">@Model.FacebookUrl</a></li>
-            }
-            @if (Model.InstagramUrl.Length > 0)
-            {
-                <li><span class="mm-contact-list__label">Instagram</span><a href="@Model.InstagramUrl" target="_blank" rel="noopener">@Model.InstagramUrl</a></li>
-            }
-        </ul>
+        </div>
     }
     else
     {
@@ -207,7 +216,7 @@
     }
 
     <div class="mm-actions">
-        <a class="pill-btn pill-btn-primary" href="@Url.Action("Contact", "Home")">Contact us</a>
+        <a class="pill-btn pill-btn-secondary" href="@Url.Action("AboutUs", "Home")">More about us</a>
     </div>
 </section>
 

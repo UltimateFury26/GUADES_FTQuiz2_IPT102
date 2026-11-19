@@ -178,6 +178,62 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
         public string Initial { get { return FTQuiz2_BusinessFormat.Initial(FullName); } }
     }
 
+    /// <summary>
+    /// About Us page: the contact information record plus the owner records, on one page.
+    /// This replaces the separate Contact and Owners / Company pages, the way the real Mogu Mogu
+    /// site keeps its story, people and contact details together.
+    /// </summary>
+    public class FTQuiz2_AboutUsViewModel
+    {
+        public string BusinessName { get; set; }
+
+        // ---- contact information (usp_ContactInfo_Get) ----
+        public string Email { get; set; }
+        public string PhoneDisplay { get; set; }
+        public string PhoneHref { get; set; }       // digits and + only, for tel:
+        public string Address { get; set; }
+        public string FacebookUrl { get; set; }     // empty unless a real http/https address
+        public string InstagramUrl { get; set; }
+
+        // ---- owners (usp_Owner_GetAll) ----
+        public List<FTQuiz2_OwnerCardView> Owners { get; set; }
+
+        public FTQuiz2_AboutUsViewModel()
+        {
+            BusinessName = "Mogu Mogu";
+            Email = string.Empty;
+            PhoneDisplay = string.Empty;
+            PhoneHref = string.Empty;
+            Address = string.Empty;
+            FacebookUrl = string.Empty;
+            InstagramUrl = string.Empty;
+            Owners = new List<FTQuiz2_OwnerCardView>();
+        }
+
+        public bool HasContact
+        {
+            get
+            {
+                return Email.Length > 0 || PhoneDisplay.Length > 0 || Address.Length > 0
+                    || FacebookUrl.Length > 0 || InstagramUrl.Length > 0;
+            }
+        }
+
+        public bool HasOwners { get { return Owners.Count > 0; } }
+
+        public bool HasPlaceholders
+        {
+            get
+            {
+                foreach (FTQuiz2_OwnerCardView owner in Owners)
+                {
+                    if (owner.IsPlaceholder) { return true; }
+                }
+                return false;
+            }
+        }
+    }
+
     /// <summary>Owners / Company page: owner records (usp_Owner_GetAll), in display order.</summary>
     public class FTQuiz2_OwnersViewModel
     {

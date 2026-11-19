@@ -1,4 +1,4 @@
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace GUADES_FTQuiz2_IPT102
@@ -23,14 +23,17 @@ namespace GUADES_FTQuiz2_IPT102
             // {controller}/{action}, so it would otherwise win URL generation for Url.Action(...).
             routes.MapRoute("FTQuiz2_OurStory", "OurStory",
                 new { controller = "Home", action = "About" });
-            routes.MapRoute("FTQuiz2_Contact", "Contact",
-                new { controller = "Home", action = "Contact" });
+            routes.MapRoute("FTQuiz2_AboutUs", "AboutUs",
+                new { controller = "Home", action = "AboutUs" });
             routes.MapRoute("FTQuiz2_Products", "Products",
                 new { controller = "FTQuiz2_Products", action = "Index" });
             routes.MapRoute("FTQuiz2_ProductDetails", "Products/{id}",
                 new { controller = "FTQuiz2_Products", action = "Details" });
+            // Old /Owners and /Contact addresses now land on the merged About Us page.
             routes.MapRoute("FTQuiz2_Owners", "Owners",
                 new { controller = "FTQuiz2_Business", action = "Owners" });
+            routes.MapRoute("FTQuiz2_Contact", "Contact",
+                new { controller = "FTQuiz2_Business", action = "Contact" });
 
             // Original /Admin/*.aspx folder.
             routes.MapRoute("FTQuiz2_Admin", "FTQuiz2_Admin/{controller}/{action}/{id}",
