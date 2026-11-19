@@ -136,6 +136,24 @@
     <Compile Include="Controllers\FTQuiz2_Admin\FTQuiz2_ManageContentController.cs" />
     <Compile Include="Controllers\FTQuiz2_Admin\FTQuiz2_ManagePostsController.cs" />
     <Compile Include="Controllers\FTQuiz2_Admin\FTQuiz2_ReportsController.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_BusinessRepository.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_BusinessProfileConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_ContactInfoConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_EducationConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_GalleryItemConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_HobbyConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_OwnerInfoConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PageVisitConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PersonalInfoConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PostConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_ProductConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_ProjectConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_SkillConfiguration.cs" />
+    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_UserConfiguration.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_BusinessProfile.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_ContactInfo.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_OwnerInfo.cs" />
+    <Compile Include="FTQuiz2_Models\FTQuiz2_Product.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_HomeViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_LoginViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ManageUsersViewModel.cs" />
@@ -146,15 +164,6 @@
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_PartialViewModels.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_SignupViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_SkillBoardViewModel.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_EducationConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_GalleryItemConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_HobbyConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PageVisitConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PersonalInfoConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PostConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_ProjectConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_SkillConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_UserConfiguration.cs" />
     <Compile Include="FTQuiz2_Helpers\FTQuiz2_AppSettings.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_PortfolioDbContext.cs" />
     <Compile Include="FTQuiz2_Migrations\202611172202304_FTQuiz2_Baseline.cs" />
@@ -332,9 +341,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="FTQuiz2_Media\Brand\" />
-    <Folder Include="FTQuiz2_Media\Company\" />
-    <Folder Include="FTQuiz2_Media\Products\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>

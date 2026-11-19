@@ -35,6 +35,12 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
         public DbSet<FTQuiz2_Post> Posts { get; set; }
         public DbSet<FTQuiz2_PageVisit> PageVisits { get; set; }
 
+        // Mogu Mogu business content (Phase 2). The portfolio sets above stay until the final cleanup phase.
+        public DbSet<FTQuiz2_BusinessProfile> BusinessProfiles { get; set; }
+        public DbSet<FTQuiz2_ContactInfo> ContactInfos { get; set; }
+        public DbSet<FTQuiz2_OwnerInfo> Owners { get; set; }
+        public DbSet<FTQuiz2_Product> Products { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // Every table is mapped explicitly (ToTable in each configuration).
@@ -49,6 +55,10 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
             modelBuilder.Configurations.Add(new FTQuiz2_GalleryItemConfiguration());
             modelBuilder.Configurations.Add(new FTQuiz2_PostConfiguration());
             modelBuilder.Configurations.Add(new FTQuiz2_PageVisitConfiguration());
+            modelBuilder.Configurations.Add(new FTQuiz2_BusinessProfileConfiguration());
+            modelBuilder.Configurations.Add(new FTQuiz2_ContactInfoConfiguration());
+            modelBuilder.Configurations.Add(new FTQuiz2_OwnerInfoConfiguration());
+            modelBuilder.Configurations.Add(new FTQuiz2_ProductConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
