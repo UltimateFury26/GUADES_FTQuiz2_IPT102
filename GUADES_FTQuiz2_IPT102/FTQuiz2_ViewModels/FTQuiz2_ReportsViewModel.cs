@@ -18,8 +18,8 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 
     /// <summary>
     /// Everything Reports.aspx.cs bound to its markup: the user summary, the signups chart, the
-    /// active/inactive split bar, the latest signups, the content summary, the visit summary and
-    /// the visits chart. All figures come from the usp_Report_* procedures; percentages are computed here.
+    /// active/inactive split bar, the latest signups, the product and content summaries, the
+    /// signed-in-user visit summary and the visits chart. All figures come from the usp_Report_* procedures; percentages are computed here.
     /// </summary>
     public class FTQuiz2_ReportsViewModel
     {
@@ -39,6 +39,8 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
         public List<FTQuiz2_ReportBar> Signups { get; set; }
         public string SignupTotalText { get; set; }
 
+        public FTQuiz2_ProductSummary ProductSummary { get; set; }
+
         public FTQuiz2_VisitSummary VisitSummary { get; set; }
         public string VisitNote { get; set; }
         public List<FTQuiz2_ReportBar> Visits { get; set; }
@@ -51,6 +53,7 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
         {
             Summary = new FTQuiz2_UserSummary();
             VisitSummary = new FTQuiz2_VisitSummary();
+            ProductSummary = new FTQuiz2_ProductSummary();
             Signups = new List<FTQuiz2_ReportBar>();
             Visits = new List<FTQuiz2_ReportBar>();
             Recent = new List<FTQuiz2_RecentUser>();
@@ -85,10 +88,15 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
                 : Number(total) + (total == 1 ? " signup" : " signups") + " in the last 12 months.";
         }
 
+        public void SetProductSummary(FTQuiz2_ProductSummary summary)
+        {
+            ProductSummary = summary ?? new FTQuiz2_ProductSummary();
+        }
+
         public void SetVisitSummary(FTQuiz2_VisitSummary summary)
         {
             VisitSummary = summary;
-            VisitNote = "Counts how many times a registered User has opened the portfolio. The Admin's own visits are not included.";
+            VisitNote = "Counts each time a signed-in User opens the Home page. It is not public website traffic, and the Admin's own visits are not included.";
         }
 
         public void SetVisits(List<FTQuiz2_MonthlyVisits> months)

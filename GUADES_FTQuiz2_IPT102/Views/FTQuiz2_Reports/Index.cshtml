@@ -1,7 +1,7 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ReportsViewModel
 @using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 @{
-    // Port of Admin/Reports.aspx (Site.Master shell comes from _ViewStart; the
+    // Admin reports (Site.Master shell comes from _ViewStart; the
     // controller sets the FTQuiz2_admin body class). Charts are pure CSS: each .bar-fill gets an inline
     // height computed in the view model. The split bar widths are inline too, like the source Style["width"].
     ViewBag.Title = "Reports";
@@ -10,7 +10,7 @@
 <div class="admin-head">
     <div>
         <h1 class="admin-title">Reports</h1>
-        <p class="admin-sub">Live statistics about registered accounts and the website's content.</p>
+        <p class="admin-sub">Live statistics from the database: accounts, products, content and signed-in-user visits.</p>
     </div>
 </div>
 
@@ -83,8 +83,26 @@ else
 
     </div>
 
-    <!-- USER VISITS (Users only; the Admin's own visits are never counted) -->
-    <h2 class="report-heading">Portfolio visits</h2>
+    <!-- PRODUCTS -->
+    <h2 class="report-heading">Products</h2>
+    <p class="report-sub">Only published products are shown to signed-in users on the website.</p>
+    <div class="stat-grid">
+        <div class="stat-card">
+            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.ProductSummary.TotalProducts)</p>
+            <p class="stat-label">Total products</p>
+        </div>
+        <div class="stat-card">
+            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.ProductSummary.PublishedProducts)</p>
+            <p class="stat-label">Published</p>
+        </div>
+        <div class="stat-card">
+            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.ProductSummary.UnpublishedProducts)</p>
+            <p class="stat-label">Unpublished</p>
+        </div>
+    </div>
+
+    <!-- SIGNED-IN USER VISITS (Users only; the Admin's own visits are never counted) -->
+    <h2 class="report-heading">Home page visits by signed-in users</h2>
     <p class="report-sub">@Model.VisitNote</p>
 
     <div class="stat-grid">
@@ -94,7 +112,7 @@ else
         </div>
         <div class="stat-card">
             <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.VisitSummary.UniqueVisitors)</p>
-            <p class="stat-label">Unique visitors</p>
+            <p class="stat-label">Distinct users</p>
         </div>
         <div class="stat-card">
             <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.VisitSummary.VisitsToday)</p>
@@ -107,7 +125,7 @@ else
     </div>
 
     <section class="report-card" aria-labelledby="visitsHeading">
-        <h2 id="visitsHeading" class="report-title">Visits per month</h2>
+        <h2 id="visitsHeading" class="report-title">Signed-in user visits per month</h2>
         <p class="report-sub">@Model.VisitsTotalText</p>
 
         <div class="bar-chart">
@@ -153,13 +171,13 @@ else
     </div>
 
     <!-- CONTENT SUMMARY -->
-    <h2 class="report-heading">Website content</h2>
+    <h2 class="report-heading">Business content records</h2>
     <div class="table-scroll">
         <table class="data-table data-table-compact">
             <thead>
                 <tr>
                     <th scope="col">Section</th>
-                    <th scope="col">Items</th>
+                    <th scope="col">Records</th>
                 </tr>
             </thead>
             <tbody>

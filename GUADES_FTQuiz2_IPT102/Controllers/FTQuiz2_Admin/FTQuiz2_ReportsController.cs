@@ -8,8 +8,8 @@ using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels;
 namespace GUADES_FTQuiz2_IPT102.Controllers
 {
     /// <summary>
-    /// Port of Admin/Reports.aspx / .cs: user summary cards, signups per month, active vs. inactive,
-    /// portfolio visits, latest signups and the content summary. Read-only: every number comes from a
+    /// Admin reports: user summary cards, signups per month, active vs. inactive, product totals,
+    /// signed-in-user Home visits, latest signups and the business content summary. Read-only: every number comes from a
     /// usp_Report_* procedure. FTQuiz2_AdminController is the AdminPage check (and sets the
     /// FTQuiz2_admin body class that FTQuiz2_Admin.css needs, D-15).
     /// Visit recording itself lives in HomeController.RecordVisit (Users only, failures swallowed).
@@ -30,6 +30,7 @@ namespace GUADES_FTQuiz2_IPT102.Controllers
                 model.SetSummary(repo.GetUserSummary());
                 model.SetSignups(repo.GetSignupsByMonth());
                 model.Recent = repo.GetRecentUsers();
+                model.SetProductSummary(repo.GetProductSummary());
                 model.Content = repo.GetContentSummary();
                 model.SetVisitSummary(repo.GetVisitSummary());
                 model.SetVisits(repo.GetVisitsByMonth());

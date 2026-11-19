@@ -12,6 +12,14 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
         public int NewThisMonth { get; set; }
     }
 
+    /// <summary>usp_Report_ProductSummary: how many products exist and how many are visible to users.</summary>
+    public class FTQuiz2_ProductSummary
+    {
+        public int TotalProducts { get; set; }
+        public int PublishedProducts { get; set; }
+        public int UnpublishedProducts { get; set; }
+    }
+
     public class FTQuiz2_MonthlySignup
     {
         public string Label { get; set; }
@@ -48,7 +56,7 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
         public int Visits { get; set; }
     }
 
-    /// <summary>One-for-one port of source Data/ReportRepository.cs (7 methods).</summary>
+    /// <summary>Report and visit gateway (8 methods). Every figure is aggregated in a usp_Report_* procedure.</summary>
     public class FTQuiz2_ReportRepository
     {
         private readonly FTQuiz2_Db _db;
@@ -61,6 +69,13 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
         {
             return _db.QueryFirstOrDefault<FTQuiz2_UserSummary>("usp_Report_UserSummary")
                    ?? new FTQuiz2_UserSummary();
+        }
+
+        // All-zero summary when the procedure returns no row (empty Products table still returns one row of zeros).
+        public FTQuiz2_ProductSummary GetProductSummary()
+        {
+            return _db.QueryFirstOrDefault<FTQuiz2_ProductSummary>("usp_Report_ProductSummary")
+                   ?? new FTQuiz2_ProductSummary();
         }
 
         public List<FTQuiz2_MonthlySignup> GetSignupsByMonth()
