@@ -1,52 +1,86 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ContactEditorViewModel
 
-@* Contact Information: one row, one form. Only the fields that are filled in appear on the Contact page. *@
-@using (Html.BeginForm("SaveContact", "FTQuiz2_ManageContent", FormMethod.Post, new { @class = "editor-card" }))
+@* Contact Information editor. Keeps the existing SaveContact action, model fields, and validation. *@
+@using (Html.BeginForm("SaveContact", "FTQuiz2_ManageContent", FormMethod.Post, new { @class = "editor-card contact-editor-card" }))
 {
     @Html.AntiForgeryToken()
 
-    <h2>Contact Information</h2>
-    <p class="editor-intro">Shown on the Contact page and in the Home contact section. Leave a field empty to hide it. Enter only verified details.</p>
+    <div class="contact-editor-heading">
+        <div class="contact-editor-heading-copy">
+            <span class="contact-editor-eyebrow">PUBLIC CONTACT DETAILS</span>
+            <h2>Contact Information</h2>
+            <p class="editor-intro">Manage the contact details visitors can see on your public website. Only completed fields are displayed, so leave unverified information blank.</p>
+        </div>
+        <span class="contact-editor-status"><span aria-hidden="true">&#9679;</span> Contact settings</span>
+    </div>
+
+    <div class="contact-editor-note" role="note">
+        <strong>Keep your details accurate</strong>
+        <span>Use a monitored business email, a current business address, and official social-media URLs. Do not enter personal contact details unless they are approved for public display.</span>
+    </div>
 
     if (!string.IsNullOrWhiteSpace(Model.Message))
     {
         <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error")" role="alert">@Model.Message</div>
     }
 
-    <div class="form-row">
-        <div class="form-field">
-            <label class="form-label" for="Email">Business email</label>
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-input", maxlength = 100, type = "email", autocapitalize = "none", spellcheck = "false" })
-            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "form-error" })
-        </div>
+    <div class="contact-editor-fields">
+        <section class="contact-field-group" aria-labelledby="contact-direct-title">
+            <div class="contact-field-group-heading">
+                <span class="contact-field-number">01</span>
+                <div>
+                    <h3 id="contact-direct-title">Direct contact</h3>
+                    <p>Give visitors a reliable way to reach your business.</p>
+                </div>
+            </div>
+            <div class="contact-form-grid">
+                <div class="form-field">
+                    <label class="form-label" for="Email">Business email</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-input", maxlength = 100, type = "email", autocapitalize = "none", spellcheck = "false", autocomplete = "email", placeholder = "name@business.com" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "form-error" })
+                    <p class="form-hint">Use an inbox that is regularly checked.</p>
+                </div>
+                <div class="form-field">
+                    <label class="form-label" for="Phone">Business phone</label>
+                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-input", maxlength = 20, type = "tel", autocomplete = "tel", placeholder = "Enter an approved business number" })
+                    @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "form-error" })
+                    <p class="form-hint">Leave blank if no public business number is available.</p>
+                </div>
+            </div>
+            <div class="form-field">
+                <label class="form-label" for="Address">Business address / location</label>
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-input", maxlength = 250, autocomplete = "street-address", placeholder = "Enter the verified business address" })
+                @Html.ValidationMessageFor(m => m.Address, "", new { @class = "form-error" })
+                <p class="form-hint">Use the address approved for public display. Do not add an unverified location.</p>
+            </div>
+        </section>
 
-        <div class="form-field">
-            <label class="form-label" for="Phone">Business phone</label>
-            @Html.TextBoxFor(m => m.Phone, new { @class = "form-input", maxlength = 20, type = "tel" })
-            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "form-error" })
-        </div>
+        <section class="contact-field-group" aria-labelledby="contact-social-title">
+            <div class="contact-field-group-heading">
+                <span class="contact-field-number">02</span>
+                <div>
+                    <h3 id="contact-social-title">Social media</h3>
+                    <p>Link visitors to your official brand accounts.</p>
+                </div>
+            </div>
+            <div class="contact-form-grid">
+                <div class="form-field">
+                    <label class="form-label" for="FacebookUrl">Facebook page URL</label>
+                    @Html.TextBoxFor(m => m.FacebookUrl, new { @class = "form-input", maxlength = 250, type = "url", placeholder = "https://www.facebook.com/...", autocapitalize = "none", spellcheck = "false" })
+                    @Html.ValidationMessageFor(m => m.FacebookUrl, "", new { @class = "form-error" })
+                </div>
+                <div class="form-field">
+                    <label class="form-label" for="InstagramUrl">Instagram page URL</label>
+                    @Html.TextBoxFor(m => m.InstagramUrl, new { @class = "form-input", maxlength = 250, type = "url", placeholder = "https://www.instagram.com/...", autocapitalize = "none", spellcheck = "false" })
+                    @Html.ValidationMessageFor(m => m.InstagramUrl, "", new { @class = "form-error" })
+                </div>
+            </div>
+            <p class="form-hint contact-url-hint">Enter complete URLs beginning with http:// or https://. Only official, verified accounts should be published.</p>
+        </section>
     </div>
 
-    <div class="form-field">
-        <label class="form-label" for="Address">Address / location</label>
-        @Html.TextBoxFor(m => m.Address, new { @class = "form-input", maxlength = 250 })
-        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "form-error" })
+    <div class="contact-editor-footer">
+        <p>Review each detail before saving. Blank fields remain hidden from the public Contact page.</p>
+        <button type="submit" class="pill-btn pill-btn-primary settings-submit">Save contact information</button>
     </div>
-
-    <div class="form-row">
-        <div class="form-field">
-            <label class="form-label" for="FacebookUrl">Facebook page</label>
-            @Html.TextBoxFor(m => m.FacebookUrl, new { @class = "form-input", maxlength = 250, type = "url", placeholder = "https://www.facebook.com/..." })
-            @Html.ValidationMessageFor(m => m.FacebookUrl, "", new { @class = "form-error" })
-        </div>
-
-        <div class="form-field">
-            <label class="form-label" for="InstagramUrl">Instagram page</label>
-            @Html.TextBoxFor(m => m.InstagramUrl, new { @class = "form-input", maxlength = 250, type = "url", placeholder = "https://www.instagram.com/..." })
-            @Html.ValidationMessageFor(m => m.InstagramUrl, "", new { @class = "form-error" })
-        </div>
-    </div>
-    <p class="form-hint">Links must start with http:// or https://.</p>
-
-    <button type="submit" class="pill-btn pill-btn-primary settings-submit">Save changes</button>
 }
