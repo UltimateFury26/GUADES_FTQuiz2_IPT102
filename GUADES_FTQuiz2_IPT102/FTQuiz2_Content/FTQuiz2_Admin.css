@@ -2231,3 +2231,190 @@ body.FTQuiz2_admin .posts-actions-cell .inline-form,body.FTQuiz2_admin .users-ac
 @keyframes mm-chart-grow{from{transform:scaleX(.05)}to{transform:scaleX(1)}}
 @media(max-width:760px){body.FTQuiz2_admin .admin-head,body.FTQuiz2_admin .posts-head,body.FTQuiz2_admin .users-page-head,body.FTQuiz2_admin .reports-hero,body.FTQuiz2_admin .manage-products-head{padding:23px 20px;border-radius:20px}body.FTQuiz2_admin .data-table thead th{font-size:.65rem}body.FTQuiz2_account .settings-card{padding:20px}}
 @media(prefers-reduced-motion:reduce){body.FTQuiz2_admin .data-table tbody tr,body.FTQuiz2_admin .row-btn,body.FTQuiz2_admin .tab-link{transition:none!important}body.FTQuiz2_admin .bar-fill{animation:none!important}}
+
+
+/* ================================================================
+   VISUAL REPAIR — admin pages
+   A clean editorial control panel with Mogu Mogu fruit-colour accents.
+   Remove the previous gradient hero/ring decorations and pill-heavy UI.
+   ================================================================ */
+body.FTQuiz2_admin, body.FTQuiz2_account {
+    background:#fff; color:#292929; font-family:Arial,Helvetica,sans-serif;
+}
+body.FTQuiz2_admin h1, body.FTQuiz2_admin h2, body.FTQuiz2_admin h3,
+body.FTQuiz2_account h1, body.FTQuiz2_account h2, body.FTQuiz2_account h3 {
+    font-family:"Arial Narrow","Roboto Condensed","Liberation Sans Narrow",sans-serif;
+    font-stretch:condensed; letter-spacing:-.015em; text-transform:uppercase;
+}
+body.FTQuiz2_admin .admin-head,
+body.FTQuiz2_admin .posts-head,
+body.FTQuiz2_admin .users-page-head,
+body.FTQuiz2_admin .reports-hero,
+body.FTQuiz2_admin .manage-products-head {
+    margin:0 0 24px; padding:22px 0 18px; border:0; border-bottom:2px solid #e8b72e;
+    border-radius:0; background:#fff; box-shadow:none; overflow:visible;
+}
+body.FTQuiz2_admin .admin-head:after,
+body.FTQuiz2_admin .posts-head:after,
+body.FTQuiz2_admin .users-page-head:after,
+body.FTQuiz2_admin .reports-hero:after,
+body.FTQuiz2_admin .manage-products-head:after { content:none !important; display:none !important; }
+body.FTQuiz2_admin .admin-title,
+body.FTQuiz2_admin .users-page-head h1,
+body.FTQuiz2_admin .posts-head h1 {
+    margin:0 0 7px; color:#222; font-size:clamp(30px,3.3vw,42px);
+    line-height:1.05; font-weight:700; letter-spacing:-.02em; text-transform:uppercase;
+}
+body.FTQuiz2_admin .admin-sub,
+body.FTQuiz2_admin .posts-head p,
+body.FTQuiz2_admin .users-heading-copy p { max-width:760px; color:#666; font-size:14px; line-height:1.6; }
+body.FTQuiz2_admin .posts-eyebrow,
+body.FTQuiz2_admin .users-eyebrow,
+body.FTQuiz2_admin .reports-eyebrow,
+body.FTQuiz2_admin .manage-products-eyebrow,
+body.FTQuiz2_admin .posts-section-kicker,
+body.FTQuiz2_admin .users-section-kicker,
+body.FTQuiz2_admin .reports-kicker {
+    color:#168fd0; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+}
+body.FTQuiz2_admin .tab-bar, body.FTQuiz2_admin .content-tab-bar {
+    display:flex; flex-wrap:wrap; gap:0; padding:0; margin:0 0 22px;
+    border:0; border-bottom:1px solid #ddd; border-radius:0; background:#fff;
+}
+body.FTQuiz2_admin .tab-link {
+    position:relative; display:inline-flex; align-items:center; min-height:42px;
+    padding:0 18px; border:0; border-radius:0; background:transparent;
+    color:#555; font-size:13px; font-weight:600; box-shadow:none; transform:none;
+}
+body.FTQuiz2_admin .tab-link:hover { color:#168fd0; background:#f7fbfd; transform:none; }
+body.FTQuiz2_admin .tab-link.active { color:#168fd0; background:#fff; box-shadow:none; }
+body.FTQuiz2_admin .tab-link.active:after {
+    content:""; position:absolute; left:12px; right:12px; bottom:-1px; height:3px; background:#168fd0;
+}
+body.FTQuiz2_admin .posts-list-panel,
+body.FTQuiz2_admin .users-list-panel,
+body.FTQuiz2_admin .reports-panel,
+body.FTQuiz2_admin .manage-products-list,
+body.FTQuiz2_admin .editor-card,
+body.FTQuiz2_admin .editor-panel,
+body.FTQuiz2_admin .content-editor-card {
+    border:1px solid #e2e2e2; border-radius:2px; background:#fff; box-shadow:none; overflow:visible;
+}
+body.FTQuiz2_admin .posts-list-heading,
+body.FTQuiz2_admin .users-panel-heading,
+body.FTQuiz2_admin .reports-panel-heading,
+body.FTQuiz2_admin .manage-products-list-head {
+    padding:18px 20px; background:#f7f7f5; border-bottom:1px solid #e4e4e4;
+}
+body.FTQuiz2_admin .posts-list-heading h2,
+body.FTQuiz2_admin .users-panel-heading h2,
+body.FTQuiz2_admin .reports-panel-heading h2,
+body.FTQuiz2_admin .manage-products-list-head h2 {
+    margin:4px 0; color:#292929; font-size:23px; font-weight:700; letter-spacing:-.01em;
+}
+body.FTQuiz2_admin .data-table { border-collapse:collapse; background:#fff; }
+body.FTQuiz2_admin .data-table thead th {
+    padding:12px 14px; background:#f5f5f2; color:#555; border-bottom:1px solid #ddd;
+    font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+}
+body.FTQuiz2_admin .data-table tbody tr { transition:background .18s ease; }
+body.FTQuiz2_admin .data-table tbody tr:hover { background:#f7fbfd; transform:none; }
+body.FTQuiz2_admin .data-table tbody td { padding:13px 14px; color:#383838; border-bottom:1px solid #ececec; }
+body.FTQuiz2_admin .post-title,
+body.FTQuiz2_admin .posts-row-title,
+body.FTQuiz2_admin .users-name-cell strong,
+body.FTQuiz2_admin .manage-product-copy strong { color:#292929; font-weight:700; }
+body.FTQuiz2_admin .posts-status,
+body.FTQuiz2_admin .manage-product-status,
+body.FTQuiz2_admin .badge { border-radius:2px; font-weight:700; }
+body.FTQuiz2_admin .row-btn {
+    min-height:32px; padding:6px 11px; border:1px solid #d4d4d4; border-radius:2px;
+    background:#fff; color:#333; font-size:12px; font-weight:600; box-shadow:none;
+    transition:background .18s,border-color .18s,color .18s;
+}
+body.FTQuiz2_admin .row-btn:hover { transform:none; background:#edf7fb; border-color:#168fd0; color:#126e9e; }
+body.FTQuiz2_admin .row-btn-danger { background:#fff; border-color:#e5b9c4; color:#b52d51; }
+body.FTQuiz2_admin .pill-btn, body.FTQuiz2_admin .pill-btn-primary,
+body.FTQuiz2_admin .pill-btn-secondary {
+    min-height:38px; padding:0 16px; border-radius:2px; box-shadow:none;
+    font-size:12px; font-weight:700; letter-spacing:.035em; text-transform:uppercase;
+}
+body.FTQuiz2_admin .pill-btn-primary { background:#168fd0; border-color:#168fd0; color:#fff; }
+body.FTQuiz2_admin .pill-btn-primary:hover { background:#087bb7; border-color:#087bb7; transform:translateY(-1px); box-shadow:none; }
+body.FTQuiz2_admin .pill-btn-secondary { background:#fff; border:1px solid #168fd0; color:#168fd0; }
+body.FTQuiz2_admin .form-input {
+    min-height:42px; border:1px solid #ccc; border-radius:2px; background:#fff;
+    color:#292929; box-shadow:none;
+}
+body.FTQuiz2_admin .form-input:focus {
+    border-color:#168fd0; box-shadow:0 0 0 2px rgba(22,143,208,.13); outline:0;
+}
+body.FTQuiz2_admin .form-label { color:#333; font-weight:600; }
+body.FTQuiz2_admin .form-hint { color:#777; }
+body.FTQuiz2_admin .posts-editor-panel,
+body.FTQuiz2_admin .users-empty-state,
+body.FTQuiz2_admin .manage-products-empty {
+    padding:26px; border:1px solid #e3e3e3; border-radius:2px; background:#fafaf8;
+}
+body.FTQuiz2_admin .posts-panel-heading,
+body.FTQuiz2_admin .posts-publish-option { border-radius:2px; background:#f7f7f5; }
+body.FTQuiz2_admin .posts-panel-heading h2 { color:#292929; font-size:25px; font-weight:700; }
+body.FTQuiz2_admin .users-count-card,
+body.FTQuiz2_admin .stat-card,
+body.FTQuiz2_admin .settings-card {
+    border:1px solid #e2e2e2; border-radius:2px; background:#fff; box-shadow:none;
+}
+body.FTQuiz2_admin .stat-card { border-top:3px solid #168fd0 !important; }
+body.FTQuiz2_admin .stat-value,
+body.FTQuiz2_admin .users-count-card strong { color:#292929; font-weight:700; letter-spacing:-.03em; }
+body.FTQuiz2_admin .bar-track { border-radius:0; background:#eee; overflow:hidden; }
+body.FTQuiz2_admin .bar-fill { border-radius:0; background:#168fd0; animation:mm-chart-grow .75s ease both; }
+body.FTQuiz2_admin .reports-chart-grid .reports-panel:nth-child(2) .bar-fill { background:#d94b72; }
+body.FTQuiz2_admin .settings-page-header {
+    padding:20px 0; border-bottom:2px solid #e8b72e; border-radius:0; background:#fff;
+}
+body.FTQuiz2_account .settings-title { color:#292929; font-size:clamp(30px,3.2vw,42px); font-weight:700; letter-spacing:-.02em; }
+body.FTQuiz2_account .settings-page-intro { color:#666; font-size:14px; }
+body.FTQuiz2_account .settings-header-mark { display:none; }
+body.FTQuiz2_account .settings-card { padding:24px; }
+body.FTQuiz2_account .settings-card-heading { padding-bottom:16px; border-bottom:1px solid #e6e6e6; }
+body.FTQuiz2_account .settings-card-icon { display:none; }
+body.FTQuiz2_account .settings-card-heading h2 { color:#292929; font-size:22px; }
+body.FTQuiz2_account .settings-card-footer { border-top:1px solid #e6e6e6; }
+body.FTQuiz2_account .settings-card .settings-submit { border-radius:2px; }
+body.FTQuiz2_admin .business-editor-status { display:none !important; }
+body.FTQuiz2_admin .business-field-group { border-top:1px solid #e5e5e5; border-radius:0; }
+body.FTQuiz2_admin .business-field-number { color:#168fd0; }
+@media(max-width:760px) {
+    body.FTQuiz2_admin .admin-head, body.FTQuiz2_admin .posts-head,
+    body.FTQuiz2_admin .users-page-head, body.FTQuiz2_admin .reports-hero,
+    body.FTQuiz2_admin .manage-products-head { padding:18px 0 15px; }
+    body.FTQuiz2_admin .tab-link { padding:0 12px; }
+    body.FTQuiz2_admin .table-scroll { overflow-x:auto; }
+    body.FTQuiz2_admin .posts-editor-panel,
+    body.FTQuiz2_admin .users-empty-state,
+    body.FTQuiz2_admin .manage-products-empty { padding:18px; }
+}
+@media(prefers-reduced-motion:reduce) {
+    body.FTQuiz2_admin *, body.FTQuiz2_admin *:before, body.FTQuiz2_admin *:after,
+    body.FTQuiz2_account *, body.FTQuiz2_account *:before, body.FTQuiz2_account *:after {
+        animation:none !important; transition:none !important; scroll-behavior:auto !important;
+    }
+}
+
+
+/* PHASE 23 — final QA: keyboard focus and narrow-screen admin safeguards. */
+:where(body.FTQuiz2_admin, body.FTQuiz2_account) :where(a,button,input,select,textarea,[tabindex]):focus-visible {
+    outline:3px solid rgba(22,143,208,.72);
+    outline-offset:3px;
+}
+body.FTQuiz2_admin .table-scroll,
+body.FTQuiz2_admin .data-table-wrap { max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+body.FTQuiz2_admin .data-table { min-width:640px; }
+body.FTQuiz2_admin button,
+body.FTQuiz2_admin .row-btn,
+body.FTQuiz2_account button { min-height:36px; }
+@media(max-width:600px) {
+    body.FTQuiz2_account .settings-card { padding:18px; }
+    body.FTQuiz2_account .settings-grid { width:100%; }
+}
