@@ -952,3 +952,343 @@ body.FTQuiz2_admin .brand-media-editor input:focus-visible { outline:3px solid r
 @media (prefers-reduced-motion:reduce) {
     body.FTQuiz2_admin .brand-media-editor * { scroll-behavior:auto; }
 }
+
+
+/* ===========================================================
+   PHASE 15 — ADMIN: MANAGE PRODUCTS LIST
+   Presentation-only catalogue refresh. Existing routes, POST forms,
+   anti-forgery tokens, product values, and controller behavior remain intact.
+   =========================================================== */
+body.FTQuiz2_admin .manage-products-head { margin-bottom: 1.35rem; }
+body.FTQuiz2_admin .manage-products-alert { margin: 0 0 1.1rem; border-radius: 12px; }
+body.FTQuiz2_admin .manage-products-list {
+    min-width: 0;
+    padding: clamp(1rem, 2.2vw, 1.65rem);
+    border: 1px solid #eee3d8;
+    border-radius: 20px;
+    background: #fffdf9;
+    box-shadow: 0 12px 32px rgba(58, 43, 32, .055);
+}
+body.FTQuiz2_admin .manage-products-list-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.1rem;
+}
+body.FTQuiz2_admin .manage-products-eyebrow {
+    display: inline-block;
+    margin-bottom: .38rem;
+    color: #a16a37;
+    font-size: .66rem;
+    font-weight: 900;
+    letter-spacing: .15em;
+}
+body.FTQuiz2_admin .manage-products-list-head h2 {
+    margin: 0 0 .3rem;
+    color: #342832;
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    font-weight: 850;
+    letter-spacing: -.025em;
+}
+body.FTQuiz2_admin .manage-products-list-head p {
+    margin: 0;
+    color: #7b6d65;
+    font-size: .82rem;
+    line-height: 1.55;
+}
+body.FTQuiz2_admin .manage-products-total {
+    flex: 0 0 auto;
+    padding: .45rem .75rem;
+    border: 1px solid #f0dfce;
+    border-radius: 999px;
+    background: #fff6e9;
+    color: #81552f;
+    font-size: .72rem;
+    font-weight: 850;
+}
+body.FTQuiz2_admin .manage-products-table-shell {
+    overflow: hidden;
+    border: 1px solid #eee5dc;
+    border-radius: 15px;
+    background: #fff;
+}
+body.FTQuiz2_admin .manage-products-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+body.FTQuiz2_admin .manage-products-table thead th {
+    padding: .85rem .8rem;
+    border-bottom: 1px solid #eee5dc;
+    background: #fff8f0;
+    color: #816b5b;
+    font-size: .64rem;
+    font-weight: 900;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+body.FTQuiz2_admin .manage-products-table tbody td {
+    padding: .85rem .8rem;
+    border-bottom: 1px solid #f2ece5;
+    background: #fff;
+    color: #665b54;
+    font-size: .8rem;
+    vertical-align: middle;
+}
+body.FTQuiz2_admin .manage-products-table tbody tr:last-child td { border-bottom: 0; }
+body.FTQuiz2_admin .manage-products-table tbody tr:hover td { background: #fffdf9; }
+body.FTQuiz2_admin .manage-product-image-cell { width: 76px; }
+body.FTQuiz2_admin .manage-product-thumb {
+    display: block;
+    width: 58px;
+    height: 58px;
+    border: 1px solid #eee3d8;
+    border-radius: 12px;
+    background: #fbf3e9;
+    object-fit: cover;
+}
+body.FTQuiz2_admin .manage-product-thumb-empty {
+    display: grid;
+    place-items: center;
+    color: #c2a88e;
+    font-size: 1.5rem;
+}
+body.FTQuiz2_admin .manage-product-copy { min-width: 170px; max-width: 330px; }
+body.FTQuiz2_admin .manage-product-copy strong {
+    display: block;
+    color: #392d36;
+    font-size: .86rem;
+    font-weight: 850;
+    line-height: 1.35;
+}
+body.FTQuiz2_admin .manage-product-copy p {
+    margin: .28rem 0 0;
+    color: #887b72;
+    font-size: .74rem;
+    font-weight: 500;
+    line-height: 1.45;
+}
+body.FTQuiz2_admin .manage-product-variant-cell { min-width: 100px; }
+body.FTQuiz2_admin .manage-product-status {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .36rem .62rem;
+    border: 1px solid #dcebdc;
+    border-radius: 999px;
+    background: #f1f8f0;
+    color: #397348;
+    font-size: .68rem;
+    font-weight: 850;
+    white-space: nowrap;
+}
+body.FTQuiz2_admin .manage-product-status.badge-user {
+    border-color: #eadfce;
+    background: #faf4e9;
+    color: #89643d;
+}
+body.FTQuiz2_admin .manage-product-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+body.FTQuiz2_admin .manage-product-order { display: flex; align-items: center; gap: .55rem; }
+body.FTQuiz2_admin .manage-product-order-number {
+    display: inline-grid;
+    min-width: 30px;
+    height: 30px;
+    place-items: center;
+    border: 1px solid #eee4d9;
+    border-radius: 9px;
+    background: #fffaf3;
+    color: #665347;
+    font-size: .75rem;
+    font-weight: 850;
+    font-variant-numeric: tabular-nums;
+}
+body.FTQuiz2_admin .manage-product-order-actions { display: flex; gap: .25rem; }
+body.FTQuiz2_admin .manage-product-icon-btn {
+    display: inline-grid;
+    width: 29px;
+    min-width: 29px;
+    height: 29px;
+    place-items: center;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #eadfd4;
+    border-radius: 8px;
+    background: #fff;
+    color: #765a47;
+    font-size: .62rem;
+}
+body.FTQuiz2_admin .manage-product-icon-btn:hover:not(:disabled) {
+    border-color: #e9cba9;
+    background: #fff4e5;
+    color: #8b5529;
+}
+body.FTQuiz2_admin .manage-product-icon-btn:disabled { opacity: .35; cursor: not-allowed; }
+body.FTQuiz2_admin .manage-product-actions-cell { min-width: 220px; }
+body.FTQuiz2_admin .manage-product-actions { display: flex; flex-wrap: wrap; gap: .35rem; }
+body.FTQuiz2_admin .manage-product-action-btn {
+    min-height: 32px;
+    margin: 0;
+    padding: .38rem .58rem;
+    border: 1px solid #e9dfd5;
+    border-radius: 8px;
+    background: #fff;
+    color: #695448;
+    font-size: .68rem;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+body.FTQuiz2_admin .manage-product-action-btn:hover {
+    border-color: #e7c9a9;
+    background: #fff6eb;
+    color: #8c552a;
+}
+body.FTQuiz2_admin .manage-product-action-btn.row-btn-danger {
+    border-color: #f0d8d4;
+    background: #fff9f8;
+    color: #a34c43;
+}
+body.FTQuiz2_admin .manage-product-action-btn.row-btn-danger:hover {
+    border-color: #e9bdb6;
+    background: #fff0ed;
+}
+body.FTQuiz2_admin .manage-products-footnote {
+    margin: .85rem .15rem 0;
+    color: #8b7d73;
+    font-size: .72rem;
+    line-height: 1.5;
+}
+body.FTQuiz2_admin .manage-products-empty {
+    display: flex;
+    min-height: 300px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2.5rem 1.4rem;
+    border: 1px dashed #e8d8c7;
+    border-radius: 20px;
+    background: radial-gradient(circle at 50% 0%, #fff5e6 0, #fffdf9 62%);
+    text-align: center;
+}
+body.FTQuiz2_admin .manage-products-empty-icon {
+    display: grid;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 1rem;
+    place-items: center;
+    border: 1px solid #f0dfca;
+    border-radius: 17px;
+    background: #fff3df;
+    color: #bd8244;
+    font-size: 1.5rem;
+}
+body.FTQuiz2_admin .manage-products-empty h2 {
+    margin: .1rem 0 .45rem;
+    color: #382b35;
+    font-size: 1.35rem;
+    font-weight: 850;
+}
+body.FTQuiz2_admin .manage-products-empty p:not(.manage-products-eyebrow) {
+    max-width: 470px;
+    margin: 0 0 1.1rem;
+    color: #7e7168;
+    font-size: .84rem;
+    line-height: 1.65;
+}
+body.FTQuiz2_admin .manage-products-empty .pill-btn { min-height: 42px; }
+body.FTQuiz2_admin .manage-products-list a:focus-visible,
+body.FTQuiz2_admin .manage-products-list button:focus-visible,
+body.FTQuiz2_admin .manage-products-empty a:focus-visible {
+    outline: 3px solid rgba(189, 133, 72, .4);
+    outline-offset: 3px;
+}
+@media (max-width: 760px) {
+    body.FTQuiz2_admin .manage-products-list-head { align-items: flex-start; flex-direction: column; }
+    body.FTQuiz2_admin .manage-products-total { align-self: flex-start; }
+    body.FTQuiz2_admin .manage-products-table { min-width: 0; }
+    body.FTQuiz2_admin .manage-products-table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        clip-path: inset(50%);
+    }
+    body.FTQuiz2_admin .manage-products-table,
+    body.FTQuiz2_admin .manage-products-table tbody { display: block; width: 100%; }
+    body.FTQuiz2_admin .manage-products-table tbody { padding: .65rem; }
+    body.FTQuiz2_admin .manage-products-table tbody tr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 .8rem;
+        margin-bottom: .7rem;
+        overflow: hidden;
+        border: 1px solid #eee5dc;
+        border-radius: 13px;
+        background: #fff;
+    }
+    body.FTQuiz2_admin .manage-products-table tbody tr:last-child { margin-bottom: 0; }
+    body.FTQuiz2_admin .manage-products-table tbody td {
+        display: flex;
+        min-width: 0;
+        align-items: center;
+        gap: .6rem;
+        padding: .65rem .7rem;
+        border: 0;
+        background: transparent;
+    }
+    body.FTQuiz2_admin .manage-products-table tbody td::before {
+        content: attr(data-label);
+        flex: 0 0 auto;
+        color: #9a897c;
+        font-size: .59rem;
+        font-weight: 900;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+    body.FTQuiz2_admin .manage-products-table tbody .manage-product-image-cell {
+        grid-column: 1 / -1;
+        padding-bottom: .25rem;
+    }
+    body.FTQuiz2_admin .manage-products-table tbody .manage-product-image-cell::before { content: none; }
+    body.FTQuiz2_admin .manage-products-table tbody .manage-product-name-cell {
+        grid-column: 1 / -1;
+        align-items: flex-start;
+        padding-top: .35rem;
+    }
+    body.FTQuiz2_admin .manage-products-table tbody .manage-product-name-cell::before { content: none; }
+    body.FTQuiz2_admin .manage-product-copy { max-width: none; }
+    body.FTQuiz2_admin .manage-products-table tbody .manage-product-actions-cell {
+        grid-column: 1 / -1;
+        align-items: flex-start;
+        flex-direction: column;
+        border-top: 1px solid #f0e9e1;
+        background: #fffaf5;
+    }
+    body.FTQuiz2_admin .manage-products-table tbody .manage-product-actions-cell::before { padding-top: .35rem; }
+    body.FTQuiz2_admin .manage-product-actions { width: 100%; }
+    body.FTQuiz2_admin .manage-product-action-btn { min-height: 36px; }
+}
+@media (max-width: 430px) {
+    body.FTQuiz2_admin .manage-products-list { padding: .8rem; border-radius: 15px; }
+    body.FTQuiz2_admin .manage-products-table tbody { padding: .45rem; }
+    body.FTQuiz2_admin .manage-products-table tbody tr { grid-template-columns: minmax(0, 1fr); }
+    body.FTQuiz2_admin .manage-products-table tbody .manage-product-actions-cell { grid-column: 1; }
+    body.FTQuiz2_admin .manage-product-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    body.FTQuiz2_admin .manage-product-actions .inline-form { min-width: 0; }
+    body.FTQuiz2_admin .manage-product-action-btn { width: 100%; white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) {
+    body.FTQuiz2_admin .manage-products-list *,
+    body.FTQuiz2_admin .manage-products-empty * { scroll-behavior: auto; transition: none !important; animation: none !important; }
+}

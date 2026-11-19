@@ -9,7 +9,7 @@
     bool anyProducts = !Model.LoadFailed && Model.Products.Count > 0;
 }
 
-<div class="admin-head">
+<div class="admin-head manage-products-head">
     <div>
         <h1 class="admin-title">Manage Products</h1>
         <p class="admin-sub">The Mogu Mogu product catalogue. Only published products appear on Home and the Products page; drafts stay hidden.</p>
@@ -25,7 +25,7 @@
 
 @if (!string.IsNullOrWhiteSpace(Model.Message))
 {
-    <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error")" role="alert">@Model.Message</div>
+    <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error") manage-products-alert" role="alert">@Model.Message</div>
 }
 
 @if (Model.ShowForm)
@@ -103,93 +103,125 @@
 }
 else if (anyProducts)
 {
-    <!-- LIST -->
-    <div class="table-scroll">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th scope="col">Image</th>
-                    <th scope="col">Product</th>
-                    <th scope="col">Variant</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Order</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < Model.Products.Count; i++)
-                {
-                    var product = Model.Products[i];
-                    bool isFirst = i == 0;
-                    bool isLast = i == Model.Products.Count - 1;
-                    string thumb = FTQuiz2_ContentFormat.ThumbUrl(product.ImagePath);
-                    <tr>
-                        <td>
-                            @if (thumb.Length == 0) { <span class="thumb thumb-product thumb-empty"></span> }
-                            else { <img class="thumb thumb-product" src="@thumb" alt="" /> }
-                        </td>
-                        <td class="cell-strong cell-wrap">
-                            @product.ProductName
-                            <p class="post-preview">@FTQuiz2_ContentFormat.Preview(product.ShortDescription, 80)</p>
-                        </td>
-                        <td>@FTQuiz2_ContentFormat.OrDash(product.Flavor)</td>
-                        <td><span class="@Model.StatusBadgeClass(product.IsPublished)">@Model.StatusText(product.IsPublished)</span></td>
-                        <td>
-                            <div class="order-cell">
-                                <span class="order-number">@product.SortOrder</span>
-                                @using (Html.BeginForm("Move", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="productId" value="@product.ProductId" />
-                                    <input type="hidden" name="direction" value="up" />
-                                    <button type="submit" class="row-btn" aria-label="@("Move " + product.ProductName + " up")" disabled="@(isFirst ? "disabled" : null)">&#9650;</button>
-                                }
-                                @using (Html.BeginForm("Move", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="productId" value="@product.ProductId" />
-                                    <input type="hidden" name="direction" value="down" />
-                                    <button type="submit" class="row-btn" aria-label="@("Move " + product.ProductName + " down")" disabled="@(isLast ? "disabled" : null)">&#9660;</button>
-                                }
-                            </div>
-                        </td>
-                        <td class="cell-actions">
-                            @using (Html.BeginForm("Index", "FTQuiz2_ManageProducts", FormMethod.Get, new { @class = "inline-form" }))
-                            {
-                                <input type="hidden" name="edit" value="@product.ProductId" />
-                                <button type="submit" class="row-btn">Edit</button>
-                            }
+    <!-- PRODUCT CATALOGUE -->
+    <section class="manage-products-list" aria-labelledby="manage-products-list-title">
+        <div class="manage-products-list-head">
+            <div>
+                <span class="manage-products-eyebrow">CATALOGUE</span>
+                <h2 id="manage-products-list-title">Product inventory</h2>
+                <p>Review product details, publication status, and the order shown to visitors.</p>
+            </div>
+            <span class="manage-products-total">@Model.Products.Count @(Model.Products.Count == 1 ? "item" : "items")</span>
+        </div>
 
-                            @using (Html.BeginForm("SetPublished", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="productId" value="@product.ProductId" />
-                                <input type="hidden" name="publish" value="@(product.IsPublished ? "false" : "true")" />
-                                <button type="submit" class="row-btn">@(product.IsPublished ? "Unpublish" : "Publish")</button>
-                            }
-
-                            @using (Html.BeginForm("Delete", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="productId" value="@product.ProductId" />
-                                <button type="submit" class="row-btn row-btn-danger"
-                                        data-confirm="@("Delete " + product.ProductName + "? Its image will be removed too. This can't be undone.")"
-                                        onclick="return confirm(this.getAttribute('data-confirm'));">Delete</button>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+        <div class="manage-products-table-shell">
+            <div class="table-scroll">
+                <table class="data-table manage-products-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Variant</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Display order</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Products.Count; i++)
+                        {
+                            var product = Model.Products[i];
+                            bool isFirst = i == 0;
+                            bool isLast = i == Model.Products.Count - 1;
+                            string thumb = FTQuiz2_ContentFormat.ThumbUrl(product.ImagePath);
+                            <tr class="manage-product-row">
+                                <td class="manage-product-image-cell" data-label="Image">
+                                    @if (thumb.Length == 0)
+                                    {
+                                        <span class="manage-product-thumb manage-product-thumb-empty" aria-label="No product image"><span aria-hidden="true">&#9634;</span></span>
+                                    }
+                                    else
+                                    {
+                                        <img class="manage-product-thumb" src="@thumb" alt="@product.ProductName" />
+                                    }
+                                </td>
+                                <td class="manage-product-name-cell" data-label="Product">
+                                    <div class="manage-product-copy">
+                                        <strong>@product.ProductName</strong>
+                                        <p>@FTQuiz2_ContentFormat.Preview(product.ShortDescription, 80)</p>
+                                    </div>
+                                </td>
+                                <td class="manage-product-variant-cell" data-label="Variant">@FTQuiz2_ContentFormat.OrDash(product.Flavor)</td>
+                                <td class="manage-product-status-cell" data-label="Status">
+                                    <span class="manage-product-status @Model.StatusBadgeClass(product.IsPublished)">
+                                        <span class="manage-product-status-dot" aria-hidden="true"></span>
+                                        @Model.StatusText(product.IsPublished)
+                                    </span>
+                                </td>
+                                <td class="manage-product-order-cell" data-label="Display order">
+                                    <div class="manage-product-order">
+                                        <span class="manage-product-order-number">@product.SortOrder</span>
+                                        <div class="manage-product-order-actions" aria-label="Change display order">
+                                            @using (Html.BeginForm("Move", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                                <input type="hidden" name="direction" value="up" />
+                                                <button type="submit" class="row-btn manage-product-icon-btn" aria-label="@("Move " + product.ProductName + " up")" disabled="@(isFirst ? "disabled" : null)">&#9650;</button>
+                                            }
+                                            @using (Html.BeginForm("Move", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                                <input type="hidden" name="direction" value="down" />
+                                                <button type="submit" class="row-btn manage-product-icon-btn" aria-label="@("Move " + product.ProductName + " down")" disabled="@(isLast ? "disabled" : null)">&#9660;</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="cell-actions manage-product-actions-cell" data-label="Actions">
+                                    <div class="manage-product-actions">
+                                        @using (Html.BeginForm("Index", "FTQuiz2_ManageProducts", FormMethod.Get, new { @class = "inline-form" }))
+                                        {
+                                            <input type="hidden" name="edit" value="@product.ProductId" />
+                                            <button type="submit" class="row-btn manage-product-action-btn">Edit</button>
+                                        }
+                                        @using (Html.BeginForm("SetPublished", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="productId" value="@product.ProductId" />
+                                            <input type="hidden" name="publish" value="@(product.IsPublished ? "false" : "true")" />
+                                            <button type="submit" class="row-btn manage-product-action-btn">@(product.IsPublished ? "Unpublish" : "Publish")</button>
+                                        }
+                                        @using (Html.BeginForm("Delete", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="productId" value="@product.ProductId" />
+                                            <button type="submit" class="row-btn row-btn-danger manage-product-action-btn"
+                                                    data-confirm="@("Delete " + product.ProductName + "? Its image will be removed too. This can't be undone.")"
+                                                    onclick="return confirm(this.getAttribute('data-confirm'));"><span aria-hidden="true">&#10005;</span> Delete</button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <p class="manage-products-footnote">Changes to publication and display order take effect through the existing product management actions.</p>
+    </section>
 }
 else if (!Model.LoadFailed)
 {
-    <!-- EMPTY STATE -->
-    <div class="empty-state">
-        <p class="empty-title">No products yet</p>
-        <p class="empty-text">Click &ldquo;Add product&rdquo; to create the first one. Until one is published, Home and the Products page show a &ldquo;being updated&rdquo; message.</p>
-    </div>
+    <!-- EMPTY CATALOGUE STATE -->
+    <section class="manage-products-empty" aria-labelledby="manage-products-empty-title">
+        <div class="manage-products-empty-icon" aria-hidden="true">&#10022;</div>
+        <span class="manage-products-eyebrow">YOUR CATALOGUE STARTS HERE</span>
+        <h2 id="manage-products-empty-title">No products yet</h2>
+        <p>There are no products in the catalogue. Add your first product to start building the collection. Products remain hidden from visitors until published.</p>
+        <a class="pill-btn pill-btn-primary" href="@addUrl">Add your first product</a>
+    </section>
 }
 
 @section FTQuiz2_Scripts {
