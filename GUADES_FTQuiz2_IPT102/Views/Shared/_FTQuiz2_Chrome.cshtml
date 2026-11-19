@@ -2,6 +2,11 @@
 @{
     // aria-current="page" on the active link (the attribute is omitted when the value is null).
     Func<string, string> current = cls => string.IsNullOrEmpty(cls) ? null : "page";
+    bool adminSectionActive = Model.ActiveClass("FTQuiz2_ManageUsers") != string.Empty
+        || Model.ActiveClass("FTQuiz2_ManageContent") != string.Empty
+        || Model.ActiveClass("FTQuiz2_ManageProducts") != string.Empty
+        || Model.ActiveClass("FTQuiz2_ManagePosts") != string.Empty
+        || Model.ActiveClass("FTQuiz2_Reports") != string.Empty;
 }
 
 <!-- MOGU MOGU HEADER: brand, main navigation, Admin menu (admins only) and account menu -->
@@ -22,7 +27,7 @@
             @if (Model.IsAdmin)
             {
                 <details class="mm-menu" id="adminMenu">
-                    <summary class="mm-nav__link mm-menu__toggle">
+                    <summary class="@("mm-nav__link mm-menu__toggle" + (adminSectionActive ? " active" : string.Empty))" aria-label="Admin navigation" aria-current="@current(adminSectionActive ? "active" : string.Empty)">
                         Admin
                         <svg class="icon mm-menu__caret" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
                     </summary>

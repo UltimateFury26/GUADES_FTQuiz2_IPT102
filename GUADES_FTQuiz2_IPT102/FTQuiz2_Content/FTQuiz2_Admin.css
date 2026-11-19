@@ -147,3 +147,190 @@ body.FTQuiz2_admin .order-number {
     min-width: 32px;
     font-weight: 600;
 }
+
+
+/* ===========================================================
+   PHASE 09 — ADMIN NAVIGATION + SHARED PAGE HEADING
+   Scoped to the admin shell and admin body class. Public pages,
+   account pages, routes, authorization and page content are untouched.
+   =========================================================== */
+
+/* Admin menu: make the current admin section obvious while retaining
+   the existing native <details> interaction and authorized-only markup. */
+body.FTQuiz2_admin .mm-menu {
+    position: relative;
+}
+
+body.FTQuiz2_admin .mm-menu > .mm-menu__toggle {
+    border: 1px solid rgba(209, 38, 87, .16);
+    background: #fff8f4;
+    color: #5a263d;
+    font-weight: 800;
+}
+
+body.FTQuiz2_admin .mm-menu > .mm-menu__toggle:hover,
+body.FTQuiz2_admin .mm-menu[open] > .mm-menu__toggle {
+    background: #fff0e6;
+    border-color: rgba(209, 38, 87, .32);
+    color: #b51e4b;
+}
+
+body.FTQuiz2_admin .mm-menu > .mm-menu__toggle.active {
+    background: #d12657;
+    border-color: #d12657;
+    color: #fff;
+    box-shadow: 0 5px 14px rgba(209, 38, 87, .2);
+}
+
+body.FTQuiz2_admin .mm-menu__panel {
+    min-width: 224px;
+    padding: 10px;
+    border: 1px solid #f0d9cc;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .98);
+    box-shadow: 0 18px 44px rgba(54, 31, 45, .16);
+}
+
+body.FTQuiz2_admin .mm-menu__panel::before {
+    display: block;
+    padding: 7px 10px 9px;
+    color: #9a7180;
+    content: "ADMIN WORKSPACE";
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .14em;
+}
+
+body.FTQuiz2_admin .mm-menu__item {
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: #382536;
+    font-size: 13px;
+    font-weight: 750;
+    transition: background .16s ease, color .16s ease, transform .16s ease;
+}
+
+body.FTQuiz2_admin .mm-menu__item:hover,
+body.FTQuiz2_admin .mm-menu__item:focus-visible {
+    background: #fff1e7;
+    color: #b51e4b;
+    transform: translateX(2px);
+}
+
+body.FTQuiz2_admin .mm-menu__item.active {
+    background: #d12657;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(209, 38, 87, .16);
+}
+
+body.FTQuiz2_admin .mm-menu__toggle:focus-visible,
+body.FTQuiz2_admin .mm-menu__item:focus-visible {
+    outline: 3px solid rgba(209, 38, 87, .35);
+    outline-offset: 2px;
+}
+
+/* Shared heading panel used by Manage Users, Content, Products, Posts
+   and Reports. Existing headings, descriptions and action links remain intact. */
+body.FTQuiz2_admin .admin-head {
+    position: relative;
+    isolation: isolate;
+    align-items: center;
+    min-height: 126px;
+    margin: 0 0 26px;
+    padding: 25px 28px;
+    overflow: hidden;
+    border: 1px solid #f1dccc;
+    border-radius: 20px;
+    background: linear-gradient(112deg, #fff 0%, #fffaf5 58%, #fff0df 100%);
+    box-shadow: 0 10px 28px rgba(65, 39, 48, .055);
+}
+
+body.FTQuiz2_admin .admin-head::before {
+    position: absolute;
+    z-index: -1;
+    top: -58px;
+    right: 8%;
+    width: 190px;
+    height: 190px;
+    border: 22px solid rgba(255, 178, 63, .13);
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+}
+
+body.FTQuiz2_admin .admin-head > div:first-child,
+body.FTQuiz2_admin .admin-head > section:first-child {
+    min-width: 0;
+}
+
+body.FTQuiz2_admin .admin-title {
+    margin: 0 0 7px;
+    color: #302033;
+    font-size: clamp(25px, 3vw, 34px);
+    font-weight: 850;
+    letter-spacing: -.035em;
+    line-height: 1.12;
+}
+
+body.FTQuiz2_admin .admin-sub {
+    max-width: 720px;
+    color: #725e70;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+body.FTQuiz2_admin .admin-head-actions {
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+body.FTQuiz2_admin .admin-count {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 7px 12px;
+    border: 1px solid #f0d5df;
+    border-radius: 999px;
+    background: #fff;
+    color: #a51e49;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+@media (max-width: 700px) {
+    body.FTQuiz2_admin .admin-head {
+        align-items: flex-start;
+        gap: 14px;
+        min-height: 0;
+        padding: 21px 18px;
+        border-radius: 16px;
+    }
+
+    body.FTQuiz2_admin .admin-head-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    body.FTQuiz2_admin .mm-menu__panel {
+        left: 0;
+        right: auto;
+        max-width: min(280px, calc(100vw - 32px));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.FTQuiz2_admin .mm-menu__item {
+        transition: none;
+    }
+
+    body.FTQuiz2_admin .mm-menu__item:hover,
+    body.FTQuiz2_admin .mm-menu__item:focus-visible {
+        transform: none;
+    }
+}
