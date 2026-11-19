@@ -1,5 +1,5 @@
 /* ===========================================================
-   FTQuiz2_MoguMogu.css - Mogu Mogu brand layer (Phase 1)
+   FTQuiz2_MoguMogu.css - Mogu Mogu brand layer (Phase 1; shell polish: redesign Phase 01)
    Loaded AFTER FTQuiz2_Portfolio.css in the ~/FTQuiz2_Content/css
    bundle. It (1) re-points the base design tokens to the Mogu Mogu
    palette so every existing button, card, form and admin table picks
@@ -13,7 +13,7 @@
    =========================================================== */
 :root {
     /* Brand tokens */
-    --mm-primary: #d92b5b;
+    --mm-primary: #d12657;          /* 4.8:1 on cream, 5.1:1 on white (was #d92b5b, 4.5:1 on cream) */
     --mm-primary-dark: #b81f48;
     --mm-secondary: #ffb400;
     --mm-leaf: #1fa971;
@@ -25,6 +25,35 @@
     --mm-peach-hover: #f5dcc6;
     --mm-line: #f0dccb;
     --mm-header-h: 72px;
+    --mm-font-display: var(--font);
+
+    /* Spacing scale (use these instead of one-off pixel values) */
+    --mm-space-1: 4px;
+    --mm-space-2: 8px;
+    --mm-space-3: 12px;
+    --mm-space-4: 16px;
+    --mm-space-5: 24px;
+    --mm-space-6: 32px;
+    --mm-space-7: 48px;
+
+    /* Radius, shadow, motion */
+    --mm-radius-pill: 999px;
+    --mm-shadow-lg: 0 22px 48px rgba(43, 27, 46, .22);
+    --mm-dur-fast: 150ms;
+    --mm-dur: 250ms;
+    --mm-ease: cubic-bezier(.2, .7, .2, 1);
+    --mm-touch: 44px;
+
+    /* Notice colors (all text >= 4.5:1 on its background) */
+    --mm-error-bg: #fdeaf0;
+    --mm-error-ink: #8f1a3a;
+    --mm-error-line: #f4b9c9;
+    --mm-ok-bg: #e6f6ee;
+    --mm-ok-ink: #17623f;
+    --mm-ok-line: #b5e2cb;
+    --mm-info-bg: #fff3d6;
+    --mm-info-ink: #2b1b2e;
+    --mm-info-line: #f3d98e;
 
     /* Base tokens re-pointed (names unchanged so old rules keep working) */
     --accent: var(--mm-primary);
@@ -45,15 +74,22 @@
     --shadow-md: 0 14px 34px rgba(43, 27, 46, .18);
     --font: "Nunito", "Trebuchet MS", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
+html {
+    scroll-padding-top: calc(var(--mm-header-h) + 12px);
+}
 body.mm-site {
     background: var(--mm-cream);
     color: var(--mm-ink);
     line-height: 1.55;
 }
+#top:focus {
+    outline: none;
+}
 h1,
 h2,
 h3,
 h4 {
+    font-family: var(--mm-font-display);
     line-height: 1.2;
 }
 :focus-visible {
@@ -77,16 +113,34 @@ h4 {
 
 /* ---------- Shared buttons (extends .pill-btn from the base sheet) ---------- */
 .pill-btn {
-    height: 44px;
+    height: var(--mm-touch);
     padding: 0 24px;
     font-weight: 700;
-    transition: background .15s ease, transform .15s ease, box-shadow .15s ease;
+    cursor: pointer;
+    transition: background var(--mm-dur-fast) ease, color var(--mm-dur-fast) ease,
+                transform var(--mm-dur-fast) ease, box-shadow var(--mm-dur-fast) ease;
 }
 .pill-btn-primary {
-    box-shadow: 0 6px 16px rgba(217, 43, 91, .28);
+    box-shadow: 0 6px 16px rgba(209, 38, 87, .28);
 }
 .pill-btn-primary:hover {
         transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(209, 38, 87, .34);
+    }
+.pill-btn:active,
+.pill-btn-primary:active {
+        transform: translateY(0);
+        box-shadow: var(--shadow-sm);
+    }
+.pill-btn-primary:focus-visible {
+        outline-color: var(--mm-ink);
+    }
+.pill-btn:disabled,
+.pill-btn[aria-disabled="true"] {
+        opacity: .55;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
     }
 .pill-btn-secondary {
     background: #fff;
@@ -98,7 +152,7 @@ h4 {
     }
 .form-input:focus,
 textarea:focus {
-    outline: 3px solid rgba(217, 43, 91, .35);
+    outline: 3px solid rgba(209, 38, 87, .35);
     outline-offset: 0;
     border-color: var(--mm-primary);
 }
@@ -134,9 +188,10 @@ textarea:focus {
     border-bottom: 3px solid var(--mm-secondary);
     box-shadow: 0 4px 18px rgba(43, 27, 46, .06);
     z-index: 250;
-    transition: box-shadow .2s ease;
+    transition: box-shadow var(--mm-dur) ease, background var(--mm-dur) ease;
 }
 .mm-header.is-scrolled {
+        background: rgba(255, 255, 255, .98);
         box-shadow: 0 8px 24px rgba(43, 27, 46, .14);
     }
 .mm-header__inner {
@@ -160,6 +215,7 @@ textarea:focus {
     gap: 4px;
 }
 .mm-nav__link {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -174,17 +230,43 @@ textarea:focus {
     color: var(--mm-ink);
     cursor: pointer;
     list-style: none;
-    transition: background .15s ease, color .15s ease;
+    transition: background var(--mm-dur-fast) ease, color var(--mm-dur-fast) ease;
+}
+.mm-nav__link::after {
+    content: "";
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 6px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--mm-dur) var(--mm-ease);
 }
 .mm-nav__link:hover,
 .mm-menu[open] > .mm-nav__link {
         background: var(--mm-peach);
-        color: var(--mm-primary);
+        color: var(--mm-primary-dark);
+    }
+.mm-nav__link:hover::after,
+.mm-menu[open] > .mm-nav__link::after {
+        transform: scaleX(1);
     }
 .mm-nav__link.active {
         background: var(--mm-primary);
         color: #fff;
     }
+.mm-nav__link.active::after {
+        display: none;
+    }
+.mm-menu__caret {
+    transition: transform var(--mm-dur-fast) ease;
+}
+.mm-menu[open] .mm-menu__caret {
+    transform: rotate(180deg);
+}
 .mm-menu {
     position: relative;
 }
@@ -214,11 +296,12 @@ textarea:focus {
     font-size: 14px;
     font-weight: 700;
     color: var(--mm-ink);
+    transition: background var(--mm-dur-fast) ease, color var(--mm-dur-fast) ease;
 }
 .mm-menu__item:hover,
 .mm-menu__item:focus-visible {
         background: var(--mm-peach);
-        color: var(--mm-primary);
+        color: var(--mm-primary-dark);
     }
 .mm-menu__item.active {
         background: var(--mm-primary);
@@ -227,9 +310,52 @@ textarea:focus {
 .mm-header .account-menu {
     margin-left: 0;
 }
+.mm-header .account-toggle {
+    transition: background var(--mm-dur-fast) ease;
+}
+.mm-header .account-toggle:hover,
+.mm-header .account-menu[open] .account-toggle {
+    background: var(--mm-peach);
+}
+.mm-header .account-toggle:focus-visible {
+    outline: 3px solid var(--mm-primary);
+    outline-offset: 2px;
+}
 .mm-header .account-dropdown {
     background: #fff;
     border-color: var(--mm-line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+}
+.mm-header .account-item {
+    cursor: pointer;
+    transition: background var(--mm-dur-fast) ease, color var(--mm-dur-fast) ease;
+}
+.mm-header .account-item:hover,
+.mm-header .account-item:focus-visible {
+    background: var(--mm-peach);
+    color: var(--mm-primary-dark);
+    outline: none;
+}
+.mm-header .account-item:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--mm-primary);
+}
+
+/* Dropdowns and the mobile menu fade/slide in (150 ms; disabled by the reduced-motion block below). */
+.mm-menu[open] .mm-menu__panel,
+.mm-header .account-menu[open] .account-dropdown,
+.mm-nav.open {
+    animation: mm-pop var(--mm-dur-fast) var(--mm-ease);
+}
+@keyframes mm-pop {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }
 .mm-nav-toggle {
     display: none;
@@ -241,9 +367,16 @@ textarea:focus {
     border-radius: 50%;
     background: var(--mm-peach);
     color: var(--mm-ink);
+    cursor: pointer;
+    padding: 0;
+    transition: background var(--mm-dur-fast) ease;
 }
 .mm-nav-toggle:hover {
         background: var(--mm-peach-hover);
+    }
+.mm-nav-toggle[aria-expanded="true"] {
+        background: var(--mm-primary);
+        color: #fff;
     }
 
 /* ---------- Page frame (no rail any more) ---------- */
@@ -258,7 +391,7 @@ textarea:focus {
 /* ---------- Footer ---------- */
 .mm-footer {
     margin-top: 56px;
-    padding: 32px 0 8px;
+    padding: 32px 0 24px;
     border-top: 3px solid var(--mm-secondary);
     display: grid;
     grid-template-columns: 1fr auto;
@@ -275,6 +408,7 @@ textarea:focus {
     gap: 20px;
 }
 .mm-footer__links a {
+        position: relative;
         border: none;
         background: none;
         padding: 0;
@@ -283,11 +417,31 @@ textarea:focus {
         font-weight: 700;
         color: var(--mm-ink);
         cursor: pointer;
+        transition: color var(--mm-dur-fast) ease;
     }
-.mm-footer__links a:hover {
-            color: var(--mm-primary);
-            text-decoration: underline;
+.mm-footer__links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -2px;
+            height: 2px;
+            border-radius: 2px;
+            background: currentColor;
+            transform: scaleX(0);
+            transform-origin: left center;
+            transition: transform var(--mm-dur) var(--mm-ease);
         }
+.mm-footer__links a:hover {
+            color: var(--mm-primary-dark);
+        }
+.mm-footer__links a:hover::after,
+.mm-footer__links a:focus-visible::after {
+            transform: scaleX(1);
+        }
+.mm-footer__brand .mm-logo-img {
+    height: 36px;
+}
 .mm-footer__copy {
     grid-column: 1 / -1;
     margin: 0;
@@ -299,7 +453,7 @@ textarea:focus {
 body.mm-auth .auth-wrap {
     background:
         radial-gradient(circle at 12% 18%, rgba(255, 180, 0, .35) 0, rgba(255, 180, 0, 0) 38%),
-        radial-gradient(circle at 88% 82%, rgba(217, 43, 91, .22) 0, rgba(217, 43, 91, 0) 42%),
+        radial-gradient(circle at 88% 82%, rgba(209, 38, 87, .22) 0, rgba(209, 38, 87, 0) 42%),
         var(--mm-cream);
 }
 body.mm-auth .auth-card {
@@ -333,6 +487,37 @@ body.FTQuiz2_admin .data-table th {
 body.FTQuiz2_admin .tab-link.active {
     background: var(--mm-primary);
     color: #fff;
+}
+
+/* ---------- Notices (alerts): same class names as before (.alert, .alert-error/-success/-info) ---------- */
+.alert {
+    border-left-width: 5px;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    overflow-wrap: anywhere;
+    animation: mm-pop var(--mm-dur-fast) var(--mm-ease);
+}
+.alert a {
+    font-weight: 800;
+    text-decoration: underline;
+}
+.alert-error {
+    background: var(--mm-error-bg);
+    color: var(--mm-error-ink);
+    border-color: var(--mm-error-line);
+    border-left-color: var(--mm-primary);
+}
+.alert-success {
+    background: var(--mm-ok-bg);
+    color: var(--mm-ok-ink);
+    border-color: var(--mm-ok-line);
+    border-left-color: var(--mm-leaf);
+}
+.alert-info {
+    background: var(--mm-info-bg);
+    color: var(--mm-info-ink);
+    border-color: var(--mm-info-line);
+    border-left-color: var(--mm-secondary);
 }
 
 /* ===========================================================
@@ -638,9 +823,34 @@ body.FTQuiz2_admin .tab-link.active {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
+:root {
+        --mm-header-h: 64px;
+    }
 .mm-header__inner {
         padding: 0 16px;
         gap: 12px;
+    }
+.mm-header .account-toggle {
+        min-height: var(--mm-touch);
+    }
+.mm-header .account-item {
+        min-height: var(--mm-touch);
+    }
+.mm-header .account-dropdown {
+        max-width: calc(100vw - 32px);
+    }
+.mm-nav__link::after {
+        display: none;
+    }
+.mm-menu__item {
+        min-height: var(--mm-touch);
+        display: flex;
+        align-items: center;
+    }
+.mm-footer__links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: var(--mm-touch);
     }
 .mm-header .account-menu {
         margin-left: auto;
@@ -661,13 +871,15 @@ body.FTQuiz2_admin .tab-link.active {
         background: #fff;
         border-bottom: 3px solid var(--mm-secondary);
         box-shadow: var(--shadow-md);
+        max-height: calc(100vh - var(--mm-header-h));
+        overflow-y: auto;
     }
 .mm-nav.open {
             display: flex;
         }
 .mm-nav__link {
         width: 100%;
-        height: 46px;
+        height: 48px;
         justify-content: flex-start;
     }
 .mm-menu__panel {

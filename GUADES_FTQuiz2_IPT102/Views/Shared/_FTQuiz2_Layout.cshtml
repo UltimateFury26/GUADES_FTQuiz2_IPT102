@@ -13,6 +13,7 @@
     <title>@fullTitle</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#d12657" />
     @Styles.Render("~/FTQuiz2_Content/css")
     @Styles.Render("~/FTQuiz2_Content/admin")
     @RenderSection("FTQuiz2_Head", required: false)
@@ -24,7 +25,7 @@
 
     <!-- MAIN BODY -->
     <main class="site-body">
-        <div class="page-inner" id="top">
+        <div class="page-inner" id="top" tabindex="-1">
 
             @Html.Partial("_FTQuiz2_Notices")
 
@@ -33,7 +34,7 @@
             <!-- FOOTER -->
             <footer class="mm-footer">
                 <div class="mm-footer__brand">
-                    <span class="mm-logo-text">Mogu<span class="mm-logo-text__accent">Mogu</span></span>
+                    @Html.Partial("_FTQuiz2_BrandLogo")
                     <p class="mm-footer__tagline">Nata de coco fruit drinks.</p>
                 </div>
                 <nav class="mm-footer__links" aria-label="Footer">

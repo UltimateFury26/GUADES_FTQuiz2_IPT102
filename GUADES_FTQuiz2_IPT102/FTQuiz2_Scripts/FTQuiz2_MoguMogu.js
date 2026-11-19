@@ -1,5 +1,5 @@
-// Mogu Mogu shell behavior (Phase 1). Loaded after FTQuiz2_Portfolio.js in the same bundle.
-// Handles only the new header: mobile menu, Admin dropdown, one-menu-at-a-time, scroll shadow.
+// Mogu Mogu shell behavior (Phase 1; keyboard polish in redesign Phase 01). Loaded after FTQuiz2_Portfolio.js in the same bundle.
+// Handles only the header: mobile menu, Admin dropdown, one-menu-at-a-time, scroll shadow, Esc / focus handling.
 document.addEventListener("DOMContentLoaded", function () {
 
     var header = document.getElementById("mmHeader");
@@ -52,10 +52,36 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Esc closes whatever is open and hands focus back to the control that opened it.
     document.addEventListener("keydown", function (e) {
         if (e.key !== "Escape") { return; }
+
+        var navWasOpen = nav && nav.classList.contains("open");
+        var adminWasOpen = adminMenu && adminMenu.hasAttribute("open");
+        var accountWasOpen = accountMenu && accountMenu.hasAttribute("open");
+
         if (adminMenu) { adminMenu.removeAttribute("open"); }
+        if (accountMenu) { accountMenu.removeAttribute("open"); }
         setNav(false);
+
+        if (accountWasOpen) { focusSummary(accountMenu); }
+        else if (adminWasOpen) { focusSummary(adminMenu); }
+        else if (navWasOpen && navToggle) { navToggle.focus(); }
+    });
+
+    function focusSummary(menu) {
+        var summary = menu.querySelector("summary");
+        if (summary) { summary.focus(); }
+    }
+
+    // Keyboard users tabbing past the last item close the dropdown instead of leaving it hanging open.
+    [adminMenu, accountMenu].forEach(function (menu) {
+        if (!menu) { return; }
+        menu.addEventListener("focusout", function (e) {
+            if (menu.hasAttribute("open") && e.relatedTarget && !menu.contains(e.relatedTarget)) {
+                menu.removeAttribute("open");
+            }
+        });
     });
 
     // ---- Stronger header shadow once the page scrolls ----
