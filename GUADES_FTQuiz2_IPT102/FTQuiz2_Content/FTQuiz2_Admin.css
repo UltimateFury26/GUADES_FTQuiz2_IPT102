@@ -2115,3 +2115,56 @@ body.FTQuiz2_admin .reports-table-empty {
         scroll-behavior: auto;
     }
 }
+
+
+/* ===========================================================
+   PHASE 19 — MY ACCOUNT PAGE REFINEMENT
+   Scoped to the authenticated account page; account operations and validation remain unchanged.
+   =========================================================== */
+body.FTQuiz2_account .settings-page { width: 100%; max-width: 1080px; margin: 0 auto; }
+body.FTQuiz2_account .settings-page-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin: 0 0 26px; padding: 4px 2px 20px; border-bottom: 1px solid #f0e3dd; }
+body.FTQuiz2_account .settings-eyebrow { display: inline-block; margin-bottom: 7px; color: #b24b68; font-size: 10px; font-weight: 800; letter-spacing: .14em; }
+body.FTQuiz2_account .settings-title { margin: 0 0 7px; color: #382b35; font-size: clamp(25px, 3vw, 32px); line-height: 1.2; letter-spacing: -.035em; }
+body.FTQuiz2_account .settings-page-intro { max-width: 560px; margin: 0; color: #786b75; font-size: 13px; line-height: 1.65; }
+body.FTQuiz2_account .settings-header-mark { display: grid; flex: 0 0 54px; width: 54px; height: 54px; place-items: center; border: 1px solid #f1dce3; border-radius: 17px; background: linear-gradient(145deg, #fff7f8, #fff0e9); color: #c34d70; }
+body.FTQuiz2_account .settings-header-mark svg, body.FTQuiz2_account .settings-card-icon svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+body.FTQuiz2_account .settings-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 20px; max-width: none; }
+body.FTQuiz2_account .settings-card { min-width: 0; padding: 24px; border: 1px solid #eee2dc; border-radius: 18px; background: #fff; box-shadow: 0 8px 28px rgba(75, 43, 53, .045); }
+body.FTQuiz2_account .settings-card-heading { display: flex; align-items: flex-start; gap: 13px; margin: 0 0 22px; padding: 0 0 18px; border-bottom: 1px solid #f2e9e4; }
+body.FTQuiz2_account .settings-card-icon { display: grid; flex: 0 0 42px; width: 42px; height: 42px; place-items: center; border-radius: 13px; background: #fff0f3; color: #bd4b6b; }
+body.FTQuiz2_account .settings-card-icon-password { background: #fff3e9; color: #b66c39; }
+body.FTQuiz2_account .settings-card-heading h2 { margin: 1px 0 5px; color: #3d3039; font-size: 17px; font-weight: 750; line-height: 1.35; }
+body.FTQuiz2_account .settings-card-heading p { margin: 0; color: #82747d; font-size: 12px; line-height: 1.55; }
+body.FTQuiz2_account .settings-feedback { margin: -4px 0 18px; border-radius: 10px; font-size: 13px; line-height: 1.55; }
+body.FTQuiz2_account .settings-field-group { display: grid; gap: 17px; }
+body.FTQuiz2_account .settings-field-group .form-field { min-width: 0; margin: 0; }
+body.FTQuiz2_account .settings-card .form-label { margin: 0 0 7px; color: #51434d; font-size: 12px; font-weight: 750; }
+body.FTQuiz2_account .settings-card .form-input { height: 46px; margin: 0; border: 1px solid #e5d9d5; border-radius: 10px; background: #fffdfc; font-size: 14px; transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease; }
+body.FTQuiz2_account .settings-card .form-input:hover { border-color: #d8b8bf; }
+body.FTQuiz2_account .settings-card .form-input:focus { border-color: #c65373; outline: 0; background: #fff; box-shadow: 0 0 0 3px rgba(198, 83, 115, .12); }
+body.FTQuiz2_account .settings-readonly-wrap { position: relative; }
+body.FTQuiz2_account .settings-readonly-wrap .readonly-field { height: 46px; margin: 0; padding: 0 92px 0 14px; overflow: hidden; border: 1px solid #eee5e1; border-radius: 10px; background: #f8f5f3; color: #786d75; font-size: 14px; line-height: 44px; text-overflow: ellipsis; white-space: nowrap; }
+body.FTQuiz2_account .settings-readonly-tag { position: absolute; top: 50%; right: 10px; padding: 4px 7px; transform: translateY(-50%); border-radius: 6px; background: #eee8e5; color: #776b70; font-size: 9px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; }
+body.FTQuiz2_account .settings-field-note { margin: 6px 0 0; color: #8a7e85; font-size: 11px; line-height: 1.5; }
+body.FTQuiz2_account .settings-card .form-error { display: block; margin-top: 5px; font-size: 11px; line-height: 1.45; }
+body.FTQuiz2_account .settings-card .password-field .form-input { padding-right: 48px; }
+body.FTQuiz2_account .settings-card .password-toggle { width: 44px; height: 46px; border-radius: 9px; }
+body.FTQuiz2_account .settings-card .pwd-strength { margin-top: 10px; }
+body.FTQuiz2_account .settings-password-hint { margin: 7px 0 0; color: #81747d; font-size: 11px; line-height: 1.5; }
+body.FTQuiz2_account .settings-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 22px; padding-top: 17px; border-top: 1px solid #f2e9e4; }
+body.FTQuiz2_account .settings-footer-note { color: #8a7e85; font-size: 10px; line-height: 1.45; }
+body.FTQuiz2_account .settings-card .settings-submit { min-height: 40px; padding: 0 17px; white-space: nowrap; }
+body.FTQuiz2_account .settings-page a:focus-visible, body.FTQuiz2_account .settings-page button:focus-visible, body.FTQuiz2_account .settings-page input:focus-visible { outline: 3px solid rgba(198, 83, 115, .25); outline-offset: 2px; }
+@media (max-width: 900px) { body.FTQuiz2_account .settings-grid { grid-template-columns: 1fr; max-width: 680px; } }
+@media (max-width: 560px) {
+    body.FTQuiz2_account .settings-page-header { align-items: flex-start; margin-bottom: 18px; padding-bottom: 16px; }
+    body.FTQuiz2_account .settings-header-mark { flex-basis: 44px; width: 44px; height: 44px; border-radius: 13px; }
+    body.FTQuiz2_account .settings-card { padding: 19px 16px; border-radius: 15px; }
+    body.FTQuiz2_account .settings-card-footer { align-items: stretch; flex-direction: column; }
+    body.FTQuiz2_account .settings-card .settings-submit { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+    body.FTQuiz2_account .settings-page *, body.FTQuiz2_account .settings-page *::before, body.FTQuiz2_account .settings-page *::after {
+        scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    }
+}

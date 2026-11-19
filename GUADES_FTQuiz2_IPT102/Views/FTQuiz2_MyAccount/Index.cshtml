@@ -1,8 +1,7 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_MyAccountViewModel
 @{
-    // Port of MyAccount.aspx (Site.Master shell comes from _ViewStart). Two forms, two cards.
-    // The new-password input keeps id "txtNewPassword" because the strength meter looks it up
-    // through data-strength-for. The body.FTQuiz2_account class is set by the controller (D-17).
+    // My Account keeps the existing two independent POST forms and their source validation behavior.
+    // The body.FTQuiz2_account class is set by the controller and scopes the account-page styling.
     ViewBag.Title = "My Account";
     string focusId = ViewBag.FTQuiz2_FocusId as string;
     string accountMessage = ViewBag.FTQuiz2_AccountMessage as string;
@@ -11,135 +10,175 @@
     string passwordKind = (ViewBag.FTQuiz2_PasswordMessageKind as string) ?? "error";
 }
 
-<h1 class="settings-title">My Account</h1>
+<div class="settings-page" aria-labelledby="settingsPageTitle">
+    <header class="settings-page-header">
+        <div>
+            <span class="settings-eyebrow">PERSONAL SETTINGS</span>
+            <h1 class="settings-title" id="settingsPageTitle">My Account</h1>
+            <p class="settings-page-intro">Manage your contact information and keep your sign-in details up to date.</p>
+        </div>
+        <div class="settings-header-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" /><path d="M4.5 20a7.5 7.5 0 0 1 15 0" /></svg>
+        </div>
+    </header>
 
-<div class="settings-grid">
-
-    <!-- ACCOUNT INFORMATION -->
-    <div class="settings-card">
-        <h2>Account Information</h2>
-
-        @if (!string.IsNullOrWhiteSpace(accountMessage))
-        {
-            <div class="@("alert alert-" + accountKind)" role="alert">@accountMessage</div>
-        }
-
-        @using (Html.BeginForm("SaveAccount", "FTQuiz2_MyAccount", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="form-field">
-                <span class="form-label">Username</span>
-                <span class="readonly-field">@Model.Username</span>
+    <div class="settings-grid">
+        <!-- ACCOUNT INFORMATION -->
+        <section class="settings-card settings-card-account" aria-labelledby="accountInfoTitle">
+            <div class="settings-card-heading">
+                <span class="settings-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" /></svg>
+                </span>
+                <div>
+                    <h2 id="accountInfoTitle">Account Information</h2>
+                    <p>Update the contact details associated with your account.</p>
+                </div>
             </div>
 
-            <div class="form-field">
-                <label class="form-label" for="Email">Email</label>
-                @Html.TextBoxFor(m => m.Email, new
-                {
-                    @class = "form-input",
-                    type = "email",
-                    maxlength = "100",
-                    autocomplete = "email",
-                    autocapitalize = "none",
-                    spellcheck = "false",
-                    data_rule_email = "false"   /* keep the source's own message, not jquery.validate's generic email one */
-                })
-                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "form-error" })
+            @if (!string.IsNullOrWhiteSpace(accountMessage))
+            {
+                <div class="@("alert alert-" + accountKind) settings-feedback" role="alert">@accountMessage</div>
+            }
+
+            @using (Html.BeginForm("SaveAccount", "FTQuiz2_MyAccount", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="settings-field-group">
+                    <div class="form-field settings-readonly-group">
+                        <label class="form-label" for="accountUsername">Username</label>
+                        <div class="settings-readonly-wrap">
+                            <span class="readonly-field" id="accountUsername">@Model.Username</span>
+                            <span class="settings-readonly-tag">Read only</span>
+                        </div>
+                        <p class="settings-field-note">Your username cannot be changed here.</p>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label" for="Email">Email address</label>
+                        @Html.TextBoxFor(m => m.Email, new
+                        {
+                            @class = "form-input",
+                            type = "email",
+                            maxlength = "100",
+                            autocomplete = "email",
+                            autocapitalize = "none",
+                            spellcheck = "false",
+                            data_rule_email = "false"   /* retain the source's own validation message */
+                        })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "form-error" })
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label" for="Phone">Phone number</label>
+                        @Html.TextBoxFor(m => m.Phone, new
+                        {
+                            @class = "form-input",
+                            type = "tel",
+                            maxlength = "11",
+                            autocomplete = "tel",
+                            inputmode = "numeric",
+                            placeholder = "09123456789"
+                        })
+                        @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "form-error" })
+                        <p class="settings-field-note">Use 11 digits, starting with 09.</p>
+                    </div>
+                </div>
+
+                <div class="settings-card-footer">
+                    <span class="settings-footer-note">Changes apply to your account.</span>
+                    <button type="submit" class="pill-btn pill-btn-primary settings-submit">Save changes</button>
+                </div>
+            }
+        </section>
+
+        <!-- CHANGE PASSWORD -->
+        <section class="settings-card settings-card-password" aria-labelledby="changePasswordTitle">
+            <div class="settings-card-heading">
+                <span class="settings-card-icon settings-card-icon-password" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /><path d="M12 14v2" /></svg>
+                </span>
+                <div>
+                    <h2 id="changePasswordTitle">Change Password</h2>
+                    <p>Choose a password that is difficult for others to guess.</p>
+                </div>
             </div>
 
-            <div class="form-field">
-                <label class="form-label" for="Phone">Phone number</label>
-                @Html.TextBoxFor(m => m.Phone, new
-                {
-                    @class = "form-input",
-                    type = "tel",
-                    maxlength = "11",
-                    autocomplete = "tel",
-                    inputmode = "numeric",
-                    placeholder = "09123456789"
-                })
-                @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "form-error" })
-            </div>
+            @if (!string.IsNullOrWhiteSpace(passwordMessage))
+            {
+                <div class="@("alert alert-" + passwordKind) settings-feedback" role="alert">@passwordMessage</div>
+            }
 
-            <button type="submit" class="pill-btn pill-btn-primary settings-submit">Save changes</button>
-        }
+            @using (Html.BeginForm("ChangePassword", "FTQuiz2_MyAccount", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="settings-field-group">
+                    <div class="form-field">
+                        <label class="form-label" for="CurrentPassword">Current password</label>
+                        <div class="password-field">
+                            @Html.PasswordFor(m => m.CurrentPassword, new
+                            {
+                                @class = "form-input",
+                                maxlength = "100",
+                                autocomplete = "current-password"
+                            })
+                            <button type="button" class="password-toggle" aria-label="Show password">
+                                <svg class="icon icon-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
+                                <svg class="icon icon-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18" /><path d="M10.6 5.2A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.7 17.7 0 0 1-3.2 4.1M6.6 6.6C4 8.3 2 12 2 12s3.6 7 10 7c1.4 0 2.7-.3 3.9-.8" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" /></svg>
+                            </button>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.CurrentPassword, "", new { @class = "form-error" })
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label" for="txtNewPassword">New password</label>
+                        <div class="password-field">
+                            @Html.PasswordFor(m => m.NewPassword, new
+                            {
+                                id = "txtNewPassword",              /* pinned: strength meter target */
+                                @class = "form-input",
+                                maxlength = "100",
+                                autocomplete = "new-password"
+                            })
+                            <button type="button" class="password-toggle" aria-label="Show password">
+                                <svg class="icon icon-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
+                                <svg class="icon icon-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18" /><path d="M10.6 5.2A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.7 17.7 0 0 1-3.2 4.1M6.6 6.6C4 8.3 2 12 2 12s3.6 7 10 7c1.4 0 2.7-.3 3.9-.8" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" /></svg>
+                            </button>
+                        </div>
+                        <div class="pwd-strength" data-strength-for="txtNewPassword">
+                            <div class="pwd-strength-track"><div class="pwd-strength-fill" data-strength-fill></div></div>
+                            <span class="pwd-strength-label" data-strength-label></span>
+                        </div>
+                        <p class="form-hint settings-password-hint">At least 8 characters, with a letter and a number.</p>
+                        @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "form-error" })
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label" for="ConfirmNewPassword">Confirm new password</label>
+                        <div class="password-field">
+                            @Html.PasswordFor(m => m.ConfirmNewPassword, new
+                            {
+                                @class = "form-input",
+                                maxlength = "100",
+                                autocomplete = "new-password"
+                            })
+                            <button type="button" class="password-toggle" aria-label="Show password">
+                                <svg class="icon icon-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
+                                <svg class="icon icon-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18" /><path d="M10.6 5.2A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.7 17.7 0 0 1-3.2 4.1M6.6 6.6C4 8.3 2 12 2 12s3.6 7 10 7c1.4 0 2.7-.3 3.9-.8" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" /></svg>
+                            </button>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.ConfirmNewPassword, "", new { @class = "form-error" })
+                    </div>
+                </div>
+
+                <div class="settings-card-footer">
+                    <span class="settings-footer-note">Your password is never displayed.</span>
+                    <button type="submit" class="pill-btn pill-btn-primary settings-submit">Change password</button>
+                </div>
+            }
+        </section>
     </div>
-
-    <!-- CHANGE PASSWORD -->
-    <div class="settings-card">
-        <h2>Change Password</h2>
-
-        @if (!string.IsNullOrWhiteSpace(passwordMessage))
-        {
-            <div class="@("alert alert-" + passwordKind)" role="alert">@passwordMessage</div>
-        }
-
-        @using (Html.BeginForm("ChangePassword", "FTQuiz2_MyAccount", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="form-field">
-                <label class="form-label" for="CurrentPassword">Current password</label>
-                <div class="password-field">
-                    @Html.PasswordFor(m => m.CurrentPassword, new
-                    {
-                        @class = "form-input",
-                        maxlength = "100",
-                        autocomplete = "current-password"
-                    })
-                    <button type="button" class="password-toggle" aria-label="Show password">
-                        <svg class="icon icon-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
-                        <svg class="icon icon-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18" /><path d="M10.6 5.2A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.7 17.7 0 0 1-3.2 4.1M6.6 6.6C4 8.3 2 12 2 12s3.6 7 10 7c1.4 0 2.7-.3 3.9-.8" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" /></svg>
-                    </button>
-                </div>
-                @Html.ValidationMessageFor(m => m.CurrentPassword, "", new { @class = "form-error" })
-            </div>
-
-            <div class="form-field">
-                <label class="form-label" for="txtNewPassword">New password</label>
-                <div class="password-field">
-                    @Html.PasswordFor(m => m.NewPassword, new
-                    {
-                        id = "txtNewPassword",              /* pinned: strength meter target */
-                        @class = "form-input",
-                        maxlength = "100",
-                        autocomplete = "new-password"
-                    })
-                    <button type="button" class="password-toggle" aria-label="Show password">
-                        <svg class="icon icon-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
-                        <svg class="icon icon-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18" /><path d="M10.6 5.2A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.7 17.7 0 0 1-3.2 4.1M6.6 6.6C4 8.3 2 12 2 12s3.6 7 10 7c1.4 0 2.7-.3 3.9-.8" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" /></svg>
-                    </button>
-                </div>
-                <div class="pwd-strength" data-strength-for="txtNewPassword">
-                    <div class="pwd-strength-track"><div class="pwd-strength-fill" data-strength-fill></div></div>
-                    <span class="pwd-strength-label" data-strength-label></span>
-                </div>
-                <p class="form-hint">At least 8 characters, with a letter and a number.</p>
-                @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "form-error" })
-            </div>
-
-            <div class="form-field">
-                <label class="form-label" for="ConfirmNewPassword">Confirm new password</label>
-                <div class="password-field">
-                    @Html.PasswordFor(m => m.ConfirmNewPassword, new
-                    {
-                        @class = "form-input",
-                        maxlength = "100",
-                        autocomplete = "new-password"
-                    })
-                    <button type="button" class="password-toggle" aria-label="Show password">
-                        <svg class="icon icon-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
-                        <svg class="icon icon-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18" /><path d="M10.6 5.2A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.7 17.7 0 0 1-3.2 4.1M6.6 6.6C4 8.3 2 12 2 12s3.6 7 10 7c1.4 0 2.7-.3 3.9-.8" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" /></svg>
-                    </button>
-                </div>
-                @Html.ValidationMessageFor(m => m.ConfirmNewPassword, "", new { @class = "form-error" })
-            </div>
-
-            <button type="submit" class="pill-btn pill-btn-primary settings-submit">Change password</button>
-        }
-    </div>
-
 </div>
 
 @section FTQuiz2_Scripts {
