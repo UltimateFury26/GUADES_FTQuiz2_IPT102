@@ -1,194 +1,263 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ReportsViewModel
 @using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 @{
-    // Admin reports (Site.Master shell comes from _ViewStart; the
-    // controller sets the FTQuiz2_admin body class). Charts are pure CSS: each .bar-fill gets an inline
-    // height computed in the view model. The split bar widths are inline too, like the source Style["width"].
     ViewBag.Title = "Reports";
 }
 
-<div class="admin-head">
+<div class="admin-head reports-hero">
     <div>
-        <h1 class="admin-title">Reports</h1>
-        <p class="admin-sub">Live statistics from the database: accounts, products, content and signed-in-user visits.</p>
+        <span class="reports-eyebrow">MOGU MOGU · ADMIN WORKSPACE</span>
+        <h1 class="admin-title">Reports &amp; insights</h1>
+        <p class="admin-sub">A clear overview of the activity and records currently available in your database.</p>
     </div>
+    <nav class="reports-jump" aria-label="Jump to report section">
+        <a href="#account-overview">Accounts</a>
+        <a href="#product-overview">Products</a>
+        <a href="#visit-overview">Visits</a>
+        <a href="#recent-signups">Latest signups</a>
+    </nav>
 </div>
 
 @if (!Model.Loaded)
 {
-    <div class="alert alert-error" role="alert">@Model.Message</div>
+    <div class="alert alert-error reports-error" role="alert">
+        <strong>Reports are temporarily unavailable.</strong>
+        <span>@Model.Message</span>
+    </div>
 }
 else
 {
-    <!-- SUMMARY CARDS -->
-    <div class="stat-grid">
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.Summary.TotalUsers)</p>
-            <p class="stat-label">Total users</p>
+    <section id="account-overview" class="reports-section" aria-labelledby="accountHeading">
+        <div class="reports-section-heading">
+            <div>
+                <span class="reports-kicker">ACCOUNT ACTIVITY</span>
+                <h2 id="accountHeading">Account overview</h2>
+                <p>Registration and account status figures from the database.</p>
+            </div>
         </div>
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.Summary.ActiveUsers)</p>
-            <p class="stat-label">Active</p>
-        </div>
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.Summary.InactiveUsers)</p>
-            <p class="stat-label">Inactive</p>
-        </div>
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.Summary.AdminUsers)</p>
-            <p class="stat-label">Admins</p>
-        </div>
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.Summary.NewThisMonth)</p>
-            <p class="stat-label">New this month</p>
-        </div>
-    </div>
 
-    <div class="report-grid">
+        <div class="stat-grid reports-stat-grid">
+            <article class="stat-card reports-stat-card reports-stat-primary">
+                <span class="reports-stat-caption">ALL ACCOUNTS</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.Summary.TotalUsers)</p>
+                <p class="stat-label">Total users</p>
+            </article>
+            <article class="stat-card reports-stat-card">
+                <span class="reports-stat-caption">CURRENT STATUS</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.Summary.ActiveUsers)</p>
+                <p class="stat-label">Active users</p>
+            </article>
+            <article class="stat-card reports-stat-card">
+                <span class="reports-stat-caption">CURRENT STATUS</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.Summary.InactiveUsers)</p>
+                <p class="stat-label">Inactive users</p>
+            </article>
+            <article class="stat-card reports-stat-card">
+                <span class="reports-stat-caption">ACCESS LEVEL</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.Summary.AdminUsers)</p>
+                <p class="stat-label">Administrators</p>
+            </article>
+            <article class="stat-card reports-stat-card">
+                <span class="reports-stat-caption">THIS MONTH</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.Summary.NewThisMonth)</p>
+                <p class="stat-label">New registrations</p>
+            </article>
+        </div>
 
-        <!-- SIGNUPS PER MONTH (pure CSS bars) -->
-        <section class="report-card" aria-labelledby="signupsHeading">
-            <h2 id="signupsHeading" class="report-title">Signups per month</h2>
-            <p class="report-sub">@Model.SignupTotalText</p>
-
-            <div class="bar-chart">
-                @foreach (FTQuiz2_ReportBar bar in Model.Signups)
+        <div class="report-grid reports-chart-grid">
+            <section class="report-card reports-panel" aria-labelledby="signupsHeading">
+                <div class="reports-panel-heading">
+                    <div>
+                        <span class="reports-kicker">REGISTRATION TREND</span>
+                        <h3 id="signupsHeading" class="report-title">Signups per month</h3>
+                    </div>
+                    <span class="reports-panel-tag">Last 12 months</span>
+                </div>
+                <p class="report-sub">@Model.SignupTotalText</p>
+                @if (Model.Signups.Count > 0)
                 {
-                    <div class="bar-col" title="@bar.Tooltip">
-                        <span class="bar-value">@bar.Value</span>
-                        <div class="bar-track">
-                            <div class="bar-fill" style="height: @(bar.HeightPercent)%"></div>
-                        </div>
-                        <span class="bar-label">@bar.Month<br />@bar.Year</span>
+                    <div class="bar-chart reports-bar-chart" role="img" aria-label="Monthly user signups for the last 12 months">
+                        @foreach (FTQuiz2_ReportBar bar in Model.Signups)
+                        {
+                            <div class="bar-col" title="@bar.Tooltip">
+                                <span class="bar-value">@bar.Value</span>
+                                <div class="bar-track"><div class="bar-fill" style="height: @(bar.HeightPercent)%"></div></div>
+                                <span class="bar-label">@bar.Month<br />@bar.Year</span>
+                            </div>
+                        }
                     </div>
                 }
-            </div>
-        </section>
+                else
+                {
+                    <p class="reports-empty">No monthly signup data is available.</p>
+                }
+            </section>
 
-        <!-- ACTIVE VS INACTIVE -->
-        <section class="report-card" aria-labelledby="statusHeading">
-            <h2 id="statusHeading" class="report-title">Active vs. inactive</h2>
-            <p class="report-sub">Share of all registered accounts.</p>
-
-            <div class="split-bar" role="img" aria-label="Active versus inactive accounts">
-                <div class="split-active" style="width: @(Model.ActivePercent)%" title="@Model.ActiveTooltip"></div>
-                <div class="split-inactive" style="width: @(Model.InactivePercent)%" title="@Model.InactiveTooltip"></div>
-            </div>
-
-            <ul class="split-legend">
-                <li><span class="legend-dot legend-active"></span>Active <strong>@Model.ActiveLegend</strong></li>
-                <li><span class="legend-dot legend-inactive"></span>Inactive <strong>@Model.InactiveLegend</strong></li>
-            </ul>
-        </section>
-
-    </div>
-
-    <!-- PRODUCTS -->
-    <h2 class="report-heading">Products</h2>
-    <p class="report-sub">Only published products are shown to signed-in users on the website.</p>
-    <div class="stat-grid">
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.ProductSummary.TotalProducts)</p>
-            <p class="stat-label">Total products</p>
-        </div>
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.ProductSummary.PublishedProducts)</p>
-            <p class="stat-label">Published</p>
-        </div>
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.ProductSummary.UnpublishedProducts)</p>
-            <p class="stat-label">Unpublished</p>
-        </div>
-    </div>
-
-    <!-- SIGNED-IN USER VISITS (Users only; the Admin's own visits are never counted) -->
-    <h2 class="report-heading">Home page visits by signed-in users</h2>
-    <p class="report-sub">@Model.VisitNote</p>
-
-    <div class="stat-grid">
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.VisitSummary.TotalVisits)</p>
-            <p class="stat-label">Total visits</p>
-        </div>
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.VisitSummary.UniqueVisitors)</p>
-            <p class="stat-label">Distinct users</p>
-        </div>
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.VisitSummary.VisitsToday)</p>
-            <p class="stat-label">Today</p>
-        </div>
-        <div class="stat-card">
-            <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.VisitSummary.VisitsThisMonth)</p>
-            <p class="stat-label">This month</p>
-        </div>
-    </div>
-
-    <section class="report-card" aria-labelledby="visitsHeading">
-        <h2 id="visitsHeading" class="report-title">Signed-in user visits per month</h2>
-        <p class="report-sub">@Model.VisitsTotalText</p>
-
-        <div class="bar-chart">
-            @foreach (FTQuiz2_ReportBar bar in Model.Visits)
-            {
-                <div class="bar-col" title="@bar.Tooltip">
-                    <span class="bar-value">@bar.Value</span>
-                    <div class="bar-track">
-                        <div class="bar-fill" style="height: @(bar.HeightPercent)%"></div>
+            <section class="report-card reports-panel" aria-labelledby="statusHeading">
+                <div class="reports-panel-heading">
+                    <div>
+                        <span class="reports-kicker">ACCOUNT HEALTH</span>
+                        <h3 id="statusHeading" class="report-title">Active vs. inactive</h3>
                     </div>
-                    <span class="bar-label">@bar.Month<br />@bar.Year</span>
                 </div>
-            }
+                <p class="report-sub">Share of all registered accounts.</p>
+                <div class="split-bar reports-split-bar" role="img" aria-label="Active versus inactive accounts">
+                    <div class="split-active" style="width: @(Model.ActivePercent)%;" title="@Model.ActiveTooltip"></div>
+                    <div class="split-inactive" style="width: @(Model.InactivePercent)%;" title="@Model.InactiveTooltip"></div>
+                </div>
+                <ul class="split-legend reports-split-legend">
+                    <li><span class="legend-dot legend-active"></span><span>Active</span><strong>@Model.ActiveLegend</strong></li>
+                    <li><span class="legend-dot legend-inactive"></span><span>Inactive</span><strong>@Model.InactiveLegend</strong></li>
+                </ul>
+            </section>
         </div>
     </section>
 
-    <!-- LATEST SIGNUPS -->
-    <h2 class="report-heading">Latest signups</h2>
-    <div class="table-scroll">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th scope="col">Username</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Role</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Joined</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model.Recent)
-                {
-                    <tr>
-                        <td class="cell-strong">@user.Username</td>
-                        <td class="cell-wrap">@user.Email</td>
-                        <td><span class="@Model.RoleBadgeClass(user.Role)">@user.Role</span></td>
-                        <td><span class="@Model.StatusBadgeClass(user.Status)">@user.Status</span></td>
-                        <td>@Model.FormatDate(user.CreatedAt)</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+    <section id="product-overview" class="reports-section" aria-labelledby="productsHeading">
+        <div class="reports-section-heading">
+            <div>
+                <span class="reports-kicker">CATALOGUE</span>
+                <h2 id="productsHeading">Product overview</h2>
+                <p>Publication status of products managed in the catalogue.</p>
+            </div>
+        </div>
+        <div class="stat-grid reports-stat-grid reports-product-grid">
+            <article class="stat-card reports-stat-card reports-stat-primary">
+                <span class="reports-stat-caption">CATALOGUE SIZE</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.ProductSummary.TotalProducts)</p>
+                <p class="stat-label">Total products</p>
+            </article>
+            <article class="stat-card reports-stat-card">
+                <span class="reports-stat-caption">VISIBLE ON WEBSITE</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.ProductSummary.PublishedProducts)</p>
+                <p class="stat-label">Published products</p>
+            </article>
+            <article class="stat-card reports-stat-card">
+                <span class="reports-stat-caption">NOT YET PUBLISHED</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.ProductSummary.UnpublishedProducts)</p>
+                <p class="stat-label">Unpublished products</p>
+            </article>
+        </div>
+    </section>
 
-    <!-- CONTENT SUMMARY -->
-    <h2 class="report-heading">Business content records</h2>
-    <div class="table-scroll">
-        <table class="data-table data-table-compact">
-            <thead>
-                <tr>
-                    <th scope="col">Section</th>
-                    <th scope="col">Records</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Content)
-                {
-                    <tr>
-                        <td class="cell-strong">@item.Section</td>
-                        <td>@item.Items</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+    <section id="visit-overview" class="reports-section" aria-labelledby="visitsHeading">
+        <div class="reports-section-heading">
+            <div>
+                <span class="reports-kicker">SIGNED-IN USER ACTIVITY</span>
+                <h2 id="visitsHeading">Home page visits</h2>
+                <p>@Model.VisitNote</p>
+            </div>
+        </div>
+        <div class="stat-grid reports-stat-grid reports-visit-grid">
+            <article class="stat-card reports-stat-card reports-stat-primary">
+                <span class="reports-stat-caption">RECORDED ACTIVITY</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.VisitSummary.TotalVisits)</p>
+                <p class="stat-label">Total visits</p>
+            </article>
+            <article class="stat-card reports-stat-card">
+                <span class="reports-stat-caption">UNIQUE ACCOUNTS</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.VisitSummary.UniqueVisitors)</p>
+                <p class="stat-label">Distinct users</p>
+            </article>
+            <article class="stat-card reports-stat-card">
+                <span class="reports-stat-caption">TODAY</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.VisitSummary.VisitsToday)</p>
+                <p class="stat-label">Visits today</p>
+            </article>
+            <article class="stat-card reports-stat-card">
+                <span class="reports-stat-caption">THIS MONTH</span>
+                <p class="stat-value">@FTQuiz2_ReportsViewModel.Number(Model.VisitSummary.VisitsThisMonth)</p>
+                <p class="stat-label">Visits this month</p>
+            </article>
+        </div>
+        <section class="report-card reports-panel reports-visits-panel" aria-labelledby="monthlyVisitsHeading">
+            <div class="reports-panel-heading">
+                <div>
+                    <span class="reports-kicker">VISIT TREND</span>
+                    <h3 id="monthlyVisitsHeading" class="report-title">Visits per month</h3>
+                </div>
+                <span class="reports-panel-tag">Last 12 months</span>
+            </div>
+            <p class="report-sub">@Model.VisitsTotalText</p>
+            @if (Model.Visits.Count > 0)
+            {
+                <div class="bar-chart reports-bar-chart" role="img" aria-label="Monthly Home page visits by signed-in users for the last 12 months">
+                    @foreach (FTQuiz2_ReportBar bar in Model.Visits)
+                    {
+                        <div class="bar-col" title="@bar.Tooltip">
+                            <span class="bar-value">@bar.Value</span>
+                            <div class="bar-track"><div class="bar-fill" style="height: @(bar.HeightPercent)%"></div></div>
+                            <span class="bar-label">@bar.Month<br />@bar.Year</span>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="reports-empty">No monthly visit data is available.</p>
+            }
+        </section>
+    </section>
+
+    <section id="recent-signups" class="reports-section" aria-labelledby="recentHeading">
+        <div class="reports-section-heading">
+            <div>
+                <span class="reports-kicker">NEWEST ACCOUNTS</span>
+                <h2 id="recentHeading">Latest signups</h2>
+                <p>Recently created user accounts.</p>
+            </div>
+        </div>
+        <div class="table-scroll reports-table-wrap">
+            <table class="data-table reports-data-table">
+                <thead><tr><th scope="col">Username</th><th scope="col">Email</th><th scope="col">Role</th><th scope="col">Status</th><th scope="col">Joined</th></tr></thead>
+                <tbody>
+                    @if (Model.Recent.Count > 0)
+                    {
+                        foreach (var user in Model.Recent)
+                        {
+                            <tr>
+                                <td class="cell-strong">@user.Username</td>
+                                <td class="cell-wrap">@user.Email</td>
+                                <td><span class="@Model.RoleBadgeClass(user.Role)">@user.Role</span></td>
+                                <td><span class="@Model.StatusBadgeClass(user.Status)">@user.Status</span></td>
+                                <td>@Model.FormatDate(user.CreatedAt)</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="5" class="reports-table-empty">No recent signups are available.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="reports-section" aria-labelledby="contentHeading">
+        <div class="reports-section-heading">
+            <div>
+                <span class="reports-kicker">SITE CONTENT</span>
+                <h2 id="contentHeading">Business content records</h2>
+                <p>Records currently stored for the site's editable business information.</p>
+            </div>
+        </div>
+        <div class="table-scroll reports-table-wrap reports-content-table-wrap">
+            <table class="data-table data-table-compact reports-data-table">
+                <thead><tr><th scope="col">Section</th><th scope="col">Records</th></tr></thead>
+                <tbody>
+                    @if (Model.Content.Count > 0)
+                    {
+                        foreach (var item in Model.Content)
+                        {
+                            <tr><td class="cell-strong">@item.Section</td><td>@item.Items</td></tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="2" class="reports-table-empty">No business content records are available.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
 }
