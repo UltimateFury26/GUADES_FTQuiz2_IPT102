@@ -1466,3 +1466,124 @@ a.mm-product__btn:hover {
     }
 
 }
+
+/* ===========================================================
+   PRODUCTS LISTING (redesign Phase 04)
+   Scoped to .mm-products-page so the "other products" strip on the
+   Product details page (Phase 05) is left untouched.
+   =========================================================== */
+.mm-products-page .mm-page-head {
+    max-width: none;
+    padding-top: 16px;
+}
+.mm-products-page .mm-page-head__title {
+    line-height: 1.1;
+    letter-spacing: -.01em;
+}
+.mm-products-page .mm-page-head__title::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 5px;
+    margin-top: 14px;
+    border-radius: 999px;
+    background: var(--mm-secondary);
+}
+.mm-products-count {
+    margin: 14px 0 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--mm-ink-soft);
+}
+.mm-products-page .mm-section {
+    padding-top: 32px;
+}
+.mm-products-page .mm-product-grid {
+    gap: 28px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+.mm-products-page .mm-product {
+    border-radius: 24px;
+    box-shadow: 0 6px 18px rgba(43, 27, 46, .08);
+    transition: transform var(--mm-dur) var(--mm-ease), box-shadow var(--mm-dur) var(--mm-ease);
+}
+.mm-products-page .mm-product:hover,
+.mm-products-page .mm-product:focus-within {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+}
+.mm-products-page .mm-product__btn:focus-visible {
+    outline-offset: -4px;      /* the card clips overflow, so keep the ring inside it */
+}
+.mm-products-page .mm-product__media {
+    overflow: hidden;
+    padding: 24px;
+}
+.mm-products-page .mm-product__media img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform .35s var(--mm-ease);
+}
+.mm-products-page .mm-product:hover .mm-product__media img,
+.mm-products-page .mm-product:focus-within .mm-product__media img {
+    transform: scale(1.06);
+}
+.mm-products-page .mm-product__body {
+    gap: 8px;
+    padding: 20px 22px 22px;
+}
+.mm-products-page .mm-product__name {
+    font-size: 19px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+.mm-products-page .mm-product__desc {
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.mm-products-page .mm-product__more {
+    padding-top: 10px;
+}
+.mm-products-page .mm-product__more::after {
+    content: "\2192";
+    display: inline-block;
+    margin-left: 6px;
+    transition: transform var(--mm-dur) var(--mm-ease);
+}
+.mm-products-page .mm-product:hover .mm-product__more::after,
+.mm-products-page .mm-product:focus-within .mm-product__more::after {
+    transform: translateX(4px);
+}
+@media (max-width: 480px) {
+.mm-products-page .mm-product-grid {
+        gap: 14px;
+    }
+.mm-products-page .mm-product__media {
+        padding: 14px;
+    }
+.mm-products-page .mm-product__body {
+        padding: 12px 14px 16px;
+    }
+.mm-products-page .mm-product__name {
+        font-size: 15px;
+    }
+.mm-products-page .mm-product__desc {
+        display: -webkit-box;      /* overrides the older rule that hid it on phones */
+        -webkit-line-clamp: 2;
+        font-size: 13px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+.mm-products-page .mm-product:hover,
+.mm-products-page .mm-product:focus-within,
+.mm-products-page .mm-product:hover .mm-product__media img,
+.mm-products-page .mm-product:focus-within .mm-product__media img,
+.mm-products-page .mm-product:hover .mm-product__more::after,
+.mm-products-page .mm-product:focus-within .mm-product__more::after {
+        transform: none;
+    }
+}
