@@ -1792,3 +1792,136 @@ a.mm-product__btn:hover {
         transform: none;
     }
 }
+
+/* ===========================================================
+   ABOUT / OUR STORY PAGE (redesign Phase 06)
+   Scoped to .mm-about-page; the homepage story section keeps its own
+   .mm-home rules from Phase 03.
+   =========================================================== */
+.mm-about-page .mm-page-head {
+    max-width: 760px;
+    padding-top: 16px;
+    animation: mm-about-in .45s var(--mm-ease) both;
+}
+.mm-about-page .mm-page-head__title {
+    line-height: 1.05;
+    letter-spacing: -.01em;
+}
+.mm-about-page .mm-page-head__title::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 5px;
+    margin-top: 14px;
+    border-radius: 999px;
+    background: var(--mm-secondary);
+}
+.mm-about-page .mm-page-head__lead {
+    margin-top: 18px;
+    font-size: clamp(18px, 2.4vw, 22px);
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--mm-ink);
+}
+
+/* Story: readable text column beside a framed picture */
+.mm-about-page .mm-section {
+    padding-top: 56px;
+}
+.mm-about-page .mm-story {
+    gap: clamp(24px, 5vw, 56px);
+}
+.mm-about-page .mm-story__text .mm-section__title {
+    margin-top: 0;
+    line-height: 1.1;
+}
+.mm-about-page .mm-story__body {
+    max-width: 60ch;
+    margin-top: 16px;
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+}
+.mm-about-page .mm-story__media {
+    overflow: hidden;
+    border: 6px solid #fff;
+    border-radius: 28px;
+    box-shadow: var(--mm-shadow-lg);
+}
+.mm-about-page .mm-story__media img {
+    display: block;
+    aspect-ratio: 4 / 3;
+    max-height: none;
+    border-radius: 0;
+    box-shadow: none;
+    transition: transform .5s var(--mm-ease);
+}
+.mm-about-page .mm-story__media:hover img {
+    transform: scale(1.04);
+}
+
+/* Mission / vision */
+.mm-about-page .mm-highlights {
+    gap: 24px;
+    margin-top: 0;
+}
+.mm-about-page .mm-highlight {
+    padding: 28px;
+    border-radius: 24px;
+    border-top-color: var(--mm-primary);
+}
+.mm-about-page .mm-highlight:nth-child(even) {
+    border-top-color: var(--mm-leaf);
+}
+.mm-about-page .mm-highlight h3 {
+    margin-bottom: 10px;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--mm-ink);
+}
+.mm-about-page .mm-highlight p {
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+/* Closing call to action */
+.mm-about-page .mm-actions {
+    justify-content: center;
+    margin-top: 56px;
+    padding: 36px 20px;
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at 100% 0%, rgba(255, 180, 0, .22) 0, rgba(255, 180, 0, 0) 45%),
+        var(--mm-peach);
+}
+@keyframes mm-about-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+}
+@media (max-width: 900px) {
+.mm-about-page .mm-section {
+        padding-top: 40px;
+    }
+.mm-about-page .mm-story__media {
+        max-width: 560px;
+    }
+.mm-about-page .mm-actions {
+        margin-top: 40px;
+    }
+}
+@media (max-width: 480px) {
+.mm-about-page .mm-highlight {
+        padding: 22px;
+    }
+.mm-about-page .mm-actions {
+        padding: 24px 16px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+.mm-about-page .mm-page-head {
+        animation: none;
+    }
+.mm-about-page .mm-story__media:hover img {
+        transform: none;
+    }
+}
