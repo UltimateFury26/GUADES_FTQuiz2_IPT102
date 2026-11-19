@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Web;
 using System.Web.Hosting;
+using GUADES_FTQuiz2_IPT102.FTQuiz2_Data;
+using GUADES_FTQuiz2_IPT102.FTQuiz2_Models;
 
 namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers
 {
@@ -138,6 +140,62 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers
             catch (UnauthorizedAccessException)
             {
             }
+        }
+
+        /// <summary>
+        /// Deletes an uploaded file only when NO business record still points at it (business profile
+        /// hero/about image, owner photos, product images). Call it AFTER the database change succeeded.
+        /// If the database cannot be checked the file is kept: a leftover file is harmless, a deleted
+        /// image that is still shown is not. Seeded images in FTQuiz2_Media are never touched.
+        /// </summary>
+        public static void DeleteIfUnreferenced(string relativePath)
+        {
+            if (string.IsNullOrWhiteSpace(relativePath)) { return; }
+
+            try
+            {
+                if (IsReferenced(relativePath)) { return; }
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
+            DeleteIfUploaded(relativePath);
+        }
+
+        private static bool IsReferenced(string relativePath)
+        {
+            string target = NormalizePath(relativePath);
+
+            using (var db = new FTQuiz2_Db())
+            {
+                var business = new FTQuiz2_BusinessRepository(db);
+
+                FTQuiz2_BusinessProfile profile = business.GetBusinessProfile();
+                if (profile != null
+                    && (NormalizePath(profile.HeroImagePath) == target || NormalizePath(profile.AboutImagePath) == target))
+                {
+                    return true;
+                }
+
+                foreach (FTQuiz2_OwnerInfo owner in business.GetOwners())
+                {
+                    if (NormalizePath(owner.PhotoPath) == target) { return true; }
+                }
+
+                foreach (FTQuiz2_Product product in new FTQuiz2_ProductRepository(db).GetProducts())
+                {
+                    if (NormalizePath(product.ImagePath) == target) { return true; }
+                }
+            }
+
+            return false;
+        }
+
+        private static string NormalizePath(string path)
+        {
+            return (path ?? string.Empty).Trim().Replace('\\', '/').TrimStart('~', '/').ToLowerInvariant();
         }
 
         /// <summary>Maps an extension to "jpg", "png" or "gif", or null when it is not an allowed image type.</summary>

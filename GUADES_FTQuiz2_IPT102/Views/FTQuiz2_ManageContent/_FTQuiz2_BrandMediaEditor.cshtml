@@ -1,0 +1,54 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_BrandMediaEditorViewModel
+
+@* Brand Media: the homepage hero image and the About page image. Choosing no file keeps the current image. *@
+@using (Html.BeginForm("SaveBrandMedia", "FTQuiz2_ManageContent", FormMethod.Post,
+    new { @class = "editor-card", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <h2>Brand Media</h2>
+    <p class="editor-intro">Upload or replace the large brand pictures. Use only images you are permitted to use. Product pictures are managed under Admin &rsaquo; Products and owner photos on the Owners tab.</p>
+
+    if (!string.IsNullOrWhiteSpace(Model.Message))
+    {
+        <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error")" role="alert">@Model.Message</div>
+    }
+
+    <div class="form-field">
+        <span class="form-label">Homepage hero image</span>
+        <div class="avatar-edit">
+            @if (!string.IsNullOrEmpty(Model.HeroUrl))
+            {
+                <div><img class="photo-preview" src="@Model.HeroUrl" alt="Current hero image" /></div>
+            }
+            else
+            {
+                <div class="photo-preview avatar-placeholder">No image</div>
+            }
+            <div class="avatar-controls">
+                <input type="file" name="heroImage" class="form-file" accept=".jpg,.jpeg,.png,.gif" />
+                <p class="form-hint">JPG, PNG or GIF, up to 5 MB. Leave empty to keep the current image.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-field">
+        <span class="form-label">Our Story (About) image</span>
+        <div class="avatar-edit">
+            @if (!string.IsNullOrEmpty(Model.AboutUrl))
+            {
+                <div><img class="photo-preview" src="@Model.AboutUrl" alt="Current About image" /></div>
+            }
+            else
+            {
+                <div class="photo-preview avatar-placeholder">No image</div>
+            }
+            <div class="avatar-controls">
+                <input type="file" name="aboutImage" class="form-file" accept=".jpg,.jpeg,.png,.gif" />
+                <p class="form-hint">JPG, PNG or GIF, up to 5 MB. When empty, the About page uses the hero image.</p>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="pill-btn pill-btn-primary settings-submit">Upload images</button>
+}

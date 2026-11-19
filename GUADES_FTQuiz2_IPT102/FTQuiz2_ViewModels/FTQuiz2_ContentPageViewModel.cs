@@ -1,41 +1,50 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 using GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers;
 using GUADES_FTQuiz2_IPT102.FTQuiz2_Models;
-using GUADES_FTQuiz2_IPT102.FTQuiz2_Security;
 
 namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 {
-    /// <summary>One tab on the Manage Content page (source ContentTab: key, label).</summary>
+    /// <summary>One tab on the Manage Content page.</summary>
     public sealed class FTQuiz2_ContentTab
     {
         public string Key { get; set; }
         public string Title { get; set; }
     }
 
-    /// <summary>Text helpers the six editors share (the source editors each carried their own copy).</summary>
+    /// <summary>Limits, patterns, messages and text helpers shared by the business editors and the product editor.</summary>
     public static class FTQuiz2_ContentFormat
     {
         public const string Dash = "\u2014";
 
-        // Validation patterns copied from the source RangeValidators / RegularExpressionValidators.
-        public const string YearPattern = @"^(19[5-9][0-9]|20[0-9]{2}|2100)$";   // 1950 - 2100
+        // Maximum lengths. They match the SQL columns (or are a deliberate, smaller app limit for NVARCHAR(MAX)).
+        public const int BusinessNameMax = 100;
+        public const int TaglineMax = 200;
+        public const int StoryMax = 4000;            // BrandStory is NVARCHAR(MAX); the app keeps it to 4000
+        public const int MissionMax = 500;
+        public const int VisionMax = 500;
+        public const int EmailMax = 100;
+        public const int PhoneMax = 20;
+        public const int AddressMax = 250;
+        public const int UrlMax = 250;
+        public const int OwnerNameMax = 100;
+        public const int OwnerPositionMax = 100;
+        public const int OwnerBioMax = 1000;
+        public const int ProductNameMax = 100;
+        public const int FlavorMax = 50;
+        public const int ShortDescriptionMax = 250;
+        public const int FullDescriptionMax = 4000;  // FullDescription is NVARCHAR(MAX); the app keeps it to 4000
+
+        // Patterns (the shape is checked by the pattern, the real rule by FTQuiz2_BusinessFormat / FTQuiz2_UrlGuard).
         public const string SortOrderPattern = @"^[0-9]{1,4}$";                  // 0 - 9999
         public const string EmailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
         public const string PhonePattern = @"^[0-9+()\- ]{7,20}$";
         public const string HttpUrlPattern = @"^https?://\S+$";
 
-        public const string YearMessage = "Enter a year between 1950 and 2100.";
         public const string SortOrderMessage = "Enter a whole number from 0 to 9999.";
+        public const string EmailMessage = "Enter a valid email, like name@example.com.";
+        public const string PhoneMessage = "Use 7 to 20 digits (spaces, +, - and brackets are fine).";
         public const string HttpUrlMessage = "Start the link with http:// or https://";
-
-        public static readonly string[] SkillCategories =
-        {
-            FTQuiz2_Constants.SkillCategories.Frontend,
-            FTQuiz2_Constants.SkillCategories.Backend,
-            FTQuiz2_Constants.SkillCategories.Tools
-        };
 
         /// <summary>The text, or a dash when the optional field is empty.</summary>
         public static string OrDash(string value)
@@ -44,25 +53,12 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
             return text.Length == 0 ? Dash : text;
         }
 
-        /// <summary>The start of a description for the list, or a dash when there is none.</summary>
+        /// <summary>The start of a longer text for a list, or a dash when there is none.</summary>
         public static string Preview(string value, int length)
         {
             string text = (value ?? string.Empty).Trim();
             if (text.Length == 0) { return Dash; }
             return text.Length <= length ? text : text.Substring(0, length).TrimEnd() + "\u2026";
-        }
-
-        /// <summary>The board a category feeds: "Tools" is shown as "Tools &amp; Platforms".</summary>
-        public static string CategoryLabel(string category)
-        {
-            return category == FTQuiz2_Constants.SkillCategories.Tools ? "Tools & Platforms" : category;
-        }
-
-        /// <summary>"2022 – 2024", "2024 – Present", or a dash when the years are not known.</summary>
-        public static string FormatYears(short? startYear, short? endYear)
-        {
-            if (!startYear.HasValue) { return Dash; }
-            return startYear.Value + " \u2013 " + (endYear.HasValue ? endYear.Value.ToString() : "Present");
         }
 
         /// <summary>URL of an image that really exists on disk, or "" (the page then shows an empty square).</summary>
@@ -73,10 +69,10 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
     }
 
     /// <summary>
-    /// State every editor shares: the alert above the form (source pnlMessage), whether the add/edit
-    /// form is open (pnlForm), and whether the list could be loaded. Each editor's view model also
-    /// carries that editor's form fields, so the same class is both the Razor model and the POST
-    /// model (the MyAccount pattern), and the field names stay plain ("SchoolName", not "Form.SchoolName").
+    /// State every editor shares: the alert above the form, whether the add/edit form is open (list hidden),
+    /// and whether the list could be loaded. Each editor's view model also carries that editor's form fields,
+    /// so the same class is both the Razor model and the POST model and the field names stay plain
+    /// ("FullName", not "Form.FullName").
     /// </summary>
     public abstract class FTQuiz2_EditorViewModelBase
     {
@@ -87,158 +83,87 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
         public bool IsEdit { get; set; }
         public bool LoadFailed { get; set; }         // database unreachable: list and empty state hidden
 
-        /// <summary>Current avatar / photo shown above the file input (empty when none is on disk).</summary>
+        /// <summary>Current photo / image shown above the file input (empty when none is on disk).</summary>
         public string CurrentPhotoUrl { get; set; }
     }
 
-    // ---- Personal Info (singleton row, no list) -------------------------------------------------
+    // ---- Business Profile (singleton row, no list) ----------------------------------------------
 
-    public class FTQuiz2_PersonalInfoEditorViewModel : FTQuiz2_EditorViewModelBase
+    public class FTQuiz2_BusinessProfileEditorViewModel : FTQuiz2_EditorViewModelBase
     {
-        [Required(ErrorMessage = "Enter the full name.")]
-        public string FullName { get; set; }
+        [Required(ErrorMessage = "Enter the business name.")]
+        [StringLength(FTQuiz2_ContentFormat.BusinessNameMax, ErrorMessage = "The business name can be up to 100 characters.")]
+        public string BusinessName { get; set; }
 
+        [StringLength(FTQuiz2_ContentFormat.TaglineMax, ErrorMessage = "The tagline can be up to 200 characters.")]
         public string Tagline { get; set; }
-        public string Bio { get; set; }
 
-        [RegularExpression(FTQuiz2_ContentFormat.EmailPattern, ErrorMessage = "Enter a valid email, like name@example.com.")]
-        public string Email { get; set; }
+        [StringLength(FTQuiz2_ContentFormat.StoryMax, ErrorMessage = "The brand story can be up to 4000 characters.")]
+        public string BrandStory { get; set; }
 
-        [RegularExpression(FTQuiz2_ContentFormat.PhonePattern, ErrorMessage = "Use 7 to 20 digits (spaces, +, - and brackets are fine).")]
-        public string Phone { get; set; }
+        [StringLength(FTQuiz2_ContentFormat.MissionMax, ErrorMessage = "The mission can be up to 500 characters.")]
+        public string Mission { get; set; }
 
-        public string Address { get; set; }
+        [StringLength(FTQuiz2_ContentFormat.VisionMax, ErrorMessage = "The vision can be up to 500 characters.")]
+        public string Vision { get; set; }
 
-        [RegularExpression(FTQuiz2_ContentFormat.HttpUrlPattern, ErrorMessage = FTQuiz2_ContentFormat.HttpUrlMessage)]
-        public string GitHubUrl { get; set; }
-
-        [RegularExpression(FTQuiz2_ContentFormat.HttpUrlPattern, ErrorMessage = FTQuiz2_ContentFormat.HttpUrlMessage)]
-        public string LinkedInUrl { get; set; }
-    }
-
-    // ---- Education ------------------------------------------------------------------------------
-
-    public class FTQuiz2_EducationEditorViewModel : FTQuiz2_EditorViewModelBase
-    {
-        public List<FTQuiz2_Education> Items { get; set; }
-
-        public int EducationId { get; set; }
-
-        [Required(ErrorMessage = "Enter the school name.")]
-        public string SchoolName { get; set; }
-
-        [Required(ErrorMessage = "Enter the level.")]
-        public string Level { get; set; }
-
-        public string Program { get; set; }
-
-        [RegularExpression(FTQuiz2_ContentFormat.YearPattern, ErrorMessage = FTQuiz2_ContentFormat.YearMessage)]
-        public string StartYear { get; set; }
-
-        [RegularExpression(FTQuiz2_ContentFormat.YearPattern, ErrorMessage = FTQuiz2_ContentFormat.YearMessage)]
-        public string EndYear { get; set; }
-
-        public string Description { get; set; }
-
-        [RegularExpression(FTQuiz2_ContentFormat.SortOrderPattern, ErrorMessage = FTQuiz2_ContentFormat.SortOrderMessage)]
-        public string SortOrder { get; set; }
-
-        public FTQuiz2_EducationEditorViewModel() { Items = new List<FTQuiz2_Education>(); }
-    }
-
-    // ---- Skills ---------------------------------------------------------------------------------
-
-    public class FTQuiz2_SkillsEditorViewModel : FTQuiz2_EditorViewModelBase
-    {
-        public List<FTQuiz2_Skill> Items { get; set; }
-
-        public int SkillId { get; set; }
-
-        [Required(ErrorMessage = "Enter the skill name.")]
-        public string Name { get; set; }
-
-        public string Category { get; set; }
-        public string Description { get; set; }
-
-        [RegularExpression(FTQuiz2_ContentFormat.SortOrderPattern, ErrorMessage = FTQuiz2_ContentFormat.SortOrderMessage)]
-        public string SortOrder { get; set; }
-
-        public FTQuiz2_SkillsEditorViewModel() { Items = new List<FTQuiz2_Skill>(); }
-
-        /// <summary>The three category choices, in source order (Frontend, Backend, Tools &amp; Platforms).</summary>
-        public IEnumerable<SelectListItem> CategoryOptions
+        /// <summary>True while the brand story is still the seed's "[Placeholder ...]" text.</summary>
+        public bool StoryIsPlaceholder
         {
-            get
-            {
-                foreach (string category in FTQuiz2_ContentFormat.SkillCategories)
-                {
-                    yield return new SelectListItem
-                    {
-                        Value = category,
-                        Text = FTQuiz2_ContentFormat.CategoryLabel(category),
-                        Selected = category == Category
-                    };
-                }
-            }
+            get { return FTQuiz2_BusinessFormat.IsPlaceholder(BrandStory); }
         }
     }
 
-    // ---- Hobbies --------------------------------------------------------------------------------
+    // ---- Contact Information (singleton row, no list) -------------------------------------------
 
-    public class FTQuiz2_HobbiesEditorViewModel : FTQuiz2_EditorViewModelBase
+    public class FTQuiz2_ContactEditorViewModel : FTQuiz2_EditorViewModelBase
     {
-        public List<FTQuiz2_Hobby> Items { get; set; }
+        [StringLength(FTQuiz2_ContentFormat.EmailMax, ErrorMessage = "The email can be up to 100 characters.")]
+        [RegularExpression(FTQuiz2_ContentFormat.EmailPattern, ErrorMessage = FTQuiz2_ContentFormat.EmailMessage)]
+        public string Email { get; set; }
 
-        public int HobbyId { get; set; }
+        [StringLength(FTQuiz2_ContentFormat.PhoneMax, ErrorMessage = "The phone number can be up to 20 characters.")]
+        [RegularExpression(FTQuiz2_ContentFormat.PhonePattern, ErrorMessage = FTQuiz2_ContentFormat.PhoneMessage)]
+        public string Phone { get; set; }
 
-        [Required(ErrorMessage = "Enter a title for this hobby.")]
-        public string Title { get; set; }
+        [StringLength(FTQuiz2_ContentFormat.AddressMax, ErrorMessage = "The address can be up to 250 characters.")]
+        public string Address { get; set; }
 
-        public string Description { get; set; }
-
-        [RegularExpression(FTQuiz2_ContentFormat.SortOrderPattern, ErrorMessage = FTQuiz2_ContentFormat.SortOrderMessage)]
-        public string SortOrder { get; set; }
-
-        public FTQuiz2_HobbiesEditorViewModel() { Items = new List<FTQuiz2_Hobby>(); }
-    }
-
-    // ---- Projects (no photo, so no upload) ------------------------------------------------------
-
-    public class FTQuiz2_ProjectsEditorViewModel : FTQuiz2_EditorViewModelBase
-    {
-        public List<FTQuiz2_Project> Items { get; set; }
-
-        public int ProjectId { get; set; }
-
-        [Required(ErrorMessage = "Enter the project title.")]
-        public string Title { get; set; }
-
-        public string TechStack { get; set; }
-        public string Role { get; set; }
-        public string Details { get; set; }
-
+        [StringLength(FTQuiz2_ContentFormat.UrlMax, ErrorMessage = "The link can be up to 250 characters.")]
         [RegularExpression(FTQuiz2_ContentFormat.HttpUrlPattern, ErrorMessage = FTQuiz2_ContentFormat.HttpUrlMessage)]
-        public string RepoUrl { get; set; }
+        public string FacebookUrl { get; set; }
 
-        [RegularExpression(FTQuiz2_ContentFormat.SortOrderPattern, ErrorMessage = FTQuiz2_ContentFormat.SortOrderMessage)]
-        public string SortOrder { get; set; }
-
-        public FTQuiz2_ProjectsEditorViewModel() { Items = new List<FTQuiz2_Project>(); }
+        [StringLength(FTQuiz2_ContentFormat.UrlMax, ErrorMessage = "The link can be up to 250 characters.")]
+        [RegularExpression(FTQuiz2_ContentFormat.HttpUrlPattern, ErrorMessage = FTQuiz2_ContentFormat.HttpUrlMessage)]
+        public string InstagramUrl { get; set; }
     }
 
-    // ---- Gallery --------------------------------------------------------------------------------
+    // ---- Owners (list + add/edit form) ----------------------------------------------------------
 
-    public class FTQuiz2_GalleryEditorViewModel : FTQuiz2_EditorViewModelBase
+    public class FTQuiz2_OwnersEditorViewModel : FTQuiz2_EditorViewModelBase
     {
-        public List<FTQuiz2_GalleryItem> Items { get; set; }
+        public List<FTQuiz2_OwnerInfo> Items { get; set; }
 
-        public int GalleryId { get; set; }
-        public string Caption { get; set; }
+        public int OwnerId { get; set; }
+
+        [Required(ErrorMessage = "Enter the owner's full name.")]
+        [StringLength(FTQuiz2_ContentFormat.OwnerNameMax, ErrorMessage = "The name can be up to 100 characters.")]
+        public string FullName { get; set; }
+
+        [StringLength(FTQuiz2_ContentFormat.OwnerPositionMax, ErrorMessage = "The position can be up to 100 characters.")]
+        public string Position { get; set; }
+
+        [StringLength(FTQuiz2_ContentFormat.OwnerBioMax, ErrorMessage = "The bio can be up to 1000 characters.")]
+        public string Bio { get; set; }
+
+        [StringLength(FTQuiz2_ContentFormat.EmailMax, ErrorMessage = "The email can be up to 100 characters.")]
+        [RegularExpression(FTQuiz2_ContentFormat.EmailPattern, ErrorMessage = FTQuiz2_ContentFormat.EmailMessage)]
+        public string Email { get; set; }
 
         [RegularExpression(FTQuiz2_ContentFormat.SortOrderPattern, ErrorMessage = FTQuiz2_ContentFormat.SortOrderMessage)]
         public string SortOrder { get; set; }
 
-        public FTQuiz2_GalleryEditorViewModel() { Items = new List<FTQuiz2_GalleryItem>(); }
+        public FTQuiz2_OwnersEditorViewModel() { Items = new List<FTQuiz2_OwnerInfo>(); }
 
         public string PhotoHint
         {
@@ -251,20 +176,35 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
         }
     }
 
+    // ---- Brand Media (the two profile images; no list) ------------------------------------------
+
+    public class FTQuiz2_BrandMediaEditorViewModel : FTQuiz2_EditorViewModelBase
+    {
+        /// <summary>Current homepage hero image (empty when none is set or the file is missing).</summary>
+        public string HeroUrl { get; set; }
+
+        /// <summary>Current About page image (empty when none is set or the file is missing).</summary>
+        public string AboutUrl { get; set; }
+
+        public FTQuiz2_BrandMediaEditorViewModel()
+        {
+            HeroUrl = string.Empty;
+            AboutUrl = string.Empty;
+        }
+    }
+
     // ---- The page -------------------------------------------------------------------------------
 
-    /// <summary>Everything ManageContent.aspx fed to its markup: the tab strip and the one active editor.</summary>
+    /// <summary>Everything Manage Content needs: the tab strip and the one active editor.</summary>
     public class FTQuiz2_ContentPageViewModel
     {
         public string ActiveTab { get; set; }
         public IList<FTQuiz2_ContentTab> Tabs { get; set; }
 
-        // Only the editor for ActiveTab is filled in (the source loaded one user control per request).
-        public FTQuiz2_PersonalInfoEditorViewModel Personal { get; set; }
-        public FTQuiz2_EducationEditorViewModel Education { get; set; }
-        public FTQuiz2_SkillsEditorViewModel Skills { get; set; }
-        public FTQuiz2_HobbiesEditorViewModel Hobbies { get; set; }
-        public FTQuiz2_ProjectsEditorViewModel Projects { get; set; }
-        public FTQuiz2_GalleryEditorViewModel Gallery { get; set; }
+        // Only the editor for ActiveTab is filled in.
+        public FTQuiz2_BusinessProfileEditorViewModel Business { get; set; }
+        public FTQuiz2_ContactEditorViewModel Contact { get; set; }
+        public FTQuiz2_OwnersEditorViewModel Owners { get; set; }
+        public FTQuiz2_BrandMediaEditorViewModel Media { get; set; }
     }
 }

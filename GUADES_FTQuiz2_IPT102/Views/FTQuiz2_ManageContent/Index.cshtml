@@ -1,16 +1,19 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ContentPageViewModel
 @using GUADES_FTQuiz2_IPT102.FTQuiz2_Security
 @{
-    // Port of Admin/ManageContent.aspx (Site.Master shell comes from _ViewStart; the controller sets the
-    // FTQuiz2_admin body class). The source loaded one editor user control per ?tab=; here the controller
-    // fills only the active editor's view model and this page renders the matching partial.
+    // Manage Business Content (the Mogu Mogu replacement for the portfolio editors). The controller fills only
+    // the active editor's view model and this page renders the matching partial. Products are managed on
+    // their own page (Admin > Products).
     ViewBag.Title = "Manage Content";
 }
 
 <div class="admin-head">
     <div>
         <h1 class="admin-title">Manage Content</h1>
-        <p class="admin-sub">The website's own content. Signed-in users see exactly what you save here.</p>
+        <p class="admin-sub">The Mogu Mogu business information. Signed-in users see exactly what you save here. Products have their own page under Admin &rsaquo; Products.</p>
+    </div>
+    <div class="admin-head-actions">
+        <a class="pill-btn pill-btn-secondary" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManageProducts")">Manage products</a>
     </div>
 </div>
 
@@ -22,29 +25,21 @@
     }
 </nav>
 
-@if (Model.ActiveTab == FTQuiz2_Constants.ContentTabs.Education)
+@if (Model.ActiveTab == FTQuiz2_Constants.ContentTabs.Contact)
 {
-    @Html.Partial("_FTQuiz2_EducationEditor", Model.Education)
+    @Html.Partial("_FTQuiz2_ContactEditor", Model.Contact)
 }
-else if (Model.ActiveTab == FTQuiz2_Constants.ContentTabs.Skills)
+else if (Model.ActiveTab == FTQuiz2_Constants.ContentTabs.Owners)
 {
-    @Html.Partial("_FTQuiz2_SkillsEditor", Model.Skills)
+    @Html.Partial("_FTQuiz2_OwnersEditor", Model.Owners)
 }
-else if (Model.ActiveTab == FTQuiz2_Constants.ContentTabs.Hobbies)
+else if (Model.ActiveTab == FTQuiz2_Constants.ContentTabs.Media)
 {
-    @Html.Partial("_FTQuiz2_HobbiesEditor", Model.Hobbies)
-}
-else if (Model.ActiveTab == FTQuiz2_Constants.ContentTabs.Projects)
-{
-    @Html.Partial("_FTQuiz2_ProjectsEditor", Model.Projects)
-}
-else if (Model.ActiveTab == FTQuiz2_Constants.ContentTabs.Gallery)
-{
-    @Html.Partial("_FTQuiz2_GalleryEditor", Model.Gallery)
+    @Html.Partial("_FTQuiz2_BrandMediaEditor", Model.Media)
 }
 else
 {
-    @Html.Partial("_FTQuiz2_PersonalInfoEditor", Model.Personal)
+    @Html.Partial("_FTQuiz2_BusinessProfileEditor", Model.Business)
 }
 
 @section FTQuiz2_Scripts {

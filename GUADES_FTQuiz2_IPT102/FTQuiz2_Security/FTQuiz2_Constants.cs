@@ -91,15 +91,25 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Security
             public const string Saved = "saved";
         }
 
-        /// <summary>Keys of the Manage Content tabs (one per website-content section).</summary>
+        /// <summary>Keys of the Manage Content tabs (one per business-content section).</summary>
         public static class ContentTabs
         {
-            public const string Personal = "personal";
-            public const string Education = "education";
-            public const string Skills = "skills";
-            public const string Hobbies = "hobbies";
-            public const string Projects = "projects";
-            public const string Gallery = "gallery";
+            public const string Business = "business";
+            public const string Contact = "contact";
+            public const string Owners = "owners";
+            public const string Media = "media";
+        }
+
+        /// <summary>Query-string key and result codes used by the Manage Products page after a change.</summary>
+        public static class ProductQuery
+        {
+            public const string Done = "done";
+            public const string Created = "created";
+            public const string Updated = "updated";
+            public const string Published = "published";
+            public const string Unpublished = "unpublished";
+            public const string Moved = "moved";
+            public const string Deleted = "deleted";
         }
 
         /// <summary>Query-string key and result codes used by the Manage Posts page after a change.</summary>

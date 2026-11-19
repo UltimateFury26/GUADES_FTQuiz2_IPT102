@@ -113,3 +113,37 @@ body.FTQuiz2_admin .inline-form {
     display: inline;
     margin: 0;
 }
+
+/* Manage Products (Phase 5): product pictures are tall bottles, so they are shown whole (contain), not cropped;
+   the display-order cell holds the number and the two move buttons. Scoped to the admin pages only. */
+body.FTQuiz2_admin .thumb-product {
+    width: 48px;
+    height: 64px;
+    object-fit: contain;
+}
+
+body.FTQuiz2_admin .thumb-product-preview {
+    width: 90px;
+    height: 120px;
+    object-fit: contain;
+}
+
+body.FTQuiz2_admin .order-cell {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+body.FTQuiz2_admin .order-cell .inline-form {
+    display: inline-block;
+}
+
+body.FTQuiz2_admin .order-cell .row-btn {
+    margin-right: 0;
+    padding: 0 10px;
+}
+
+body.FTQuiz2_admin .order-number {
+    min-width: 32px;
+    font-weight: 600;
+}

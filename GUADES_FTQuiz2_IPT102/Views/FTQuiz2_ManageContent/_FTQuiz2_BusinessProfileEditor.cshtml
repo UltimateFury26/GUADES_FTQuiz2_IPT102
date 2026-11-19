@@ -1,0 +1,56 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_BusinessProfileEditorViewModel
+
+@* Business Profile: one row, one form, no list. Feeds the Home hero text, Our Story and the site name. *@
+@using (Html.BeginForm("SaveBusinessProfile", "FTQuiz2_ManageContent", FormMethod.Post, new { @class = "editor-card" }))
+{
+    @Html.AntiForgeryToken()
+
+    <h2>Business Profile</h2>
+    <p class="editor-intro">The brand name, tagline and story shown on Home and Our Story. Hero and About pictures are on the Brand Media tab.</p>
+
+    if (!string.IsNullOrWhiteSpace(Model.Message))
+    {
+        <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error")" role="alert">@Model.Message</div>
+    }
+
+    if (Model.StoryIsPlaceholder)
+    {
+        <div class="alert alert-error" role="note">The brand story is still the placeholder text. Replace it with the approved Mogu Mogu story.</div>
+    }
+
+    <div class="form-field">
+        <label class="form-label" for="BusinessName">Business name</label>
+        @Html.TextBoxFor(m => m.BusinessName, new { @class = "form-input", maxlength = 100 })
+        @Html.ValidationMessageFor(m => m.BusinessName, "", new { @class = "form-error" })
+    </div>
+
+    <div class="form-field">
+        <label class="form-label" for="Tagline">Tagline</label>
+        @Html.TextBoxFor(m => m.Tagline, new { @class = "form-input", maxlength = 200 })
+        @Html.ValidationMessageFor(m => m.Tagline, "", new { @class = "form-error" })
+        <p class="form-hint">One short line. It is the headline on the Home page.</p>
+    </div>
+
+    <div class="form-field">
+        <label class="form-label" for="BrandStory">Brand story</label>
+        @Html.TextAreaFor(m => m.BrandStory, 8, 20, new { @class = "form-input form-textarea", maxlength = 4000 })
+        @Html.ValidationMessageFor(m => m.BrandStory, "", new { @class = "form-error" })
+        <p class="form-hint">Up to 4000 characters. Use only approved, verified brand information.</p>
+    </div>
+
+    <div class="form-row">
+        <div class="form-field">
+            <label class="form-label" for="Mission">Mission (optional)</label>
+            @Html.TextAreaFor(m => m.Mission, 3, 20, new { @class = "form-input form-textarea", maxlength = 500 })
+            @Html.ValidationMessageFor(m => m.Mission, "", new { @class = "form-error" })
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" for="Vision">Vision (optional)</label>
+            @Html.TextAreaFor(m => m.Vision, 3, 20, new { @class = "form-input form-textarea", maxlength = 500 })
+            @Html.ValidationMessageFor(m => m.Vision, "", new { @class = "form-error" })
+        </div>
+    </div>
+
+    <button type="submit" class="pill-btn pill-btn-primary settings-submit">Save changes</button>
+}

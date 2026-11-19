@@ -1,0 +1,197 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ManageProductsViewModel
+@using GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
+@{
+    // Manage Products: the whole product catalogue (published and unpublished). The list is in display
+    // order, so the arrows change the order shown to users. Every row button is a POST form.
+    ViewBag.Title = "Manage Products";
+    string listUrl = Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManageProducts");
+    string addUrl = Url.Action("Index", "FTQuiz2_ManageProducts", new { add = "1" });
+    bool anyProducts = !Model.LoadFailed && Model.Products.Count > 0;
+}
+
+<div class="admin-head">
+    <div>
+        <h1 class="admin-title">Manage Products</h1>
+        <p class="admin-sub">The Mogu Mogu product catalogue. Only published products appear on Home and the Products page; drafts stay hidden.</p>
+    </div>
+    <div class="admin-head-actions">
+        <span class="admin-count">@Model.CountText</span>
+        @if (!Model.ShowForm)
+        {
+            <a class="pill-btn pill-btn-primary" href="@addUrl">Add product</a>
+        }
+    </div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+    <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error")" role="alert">@Model.Message</div>
+}
+
+@if (Model.ShowForm)
+{
+    <!-- ADD / EDIT FORM -->
+    using (Html.BeginForm("Save", "FTQuiz2_ManageProducts", FormMethod.Post,
+        new { @class = "editor-card editor-form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ProductId)
+        <h2>@Model.FormTitle</h2>
+
+        <div class="form-row">
+            <div class="form-field">
+                <label class="form-label" for="ProductName">Product name</label>
+                @Html.TextBoxFor(m => m.ProductName, new { @class = "form-input", maxlength = 100 })
+                @Html.ValidationMessageFor(m => m.ProductName, "", new { @class = "form-error" })
+            </div>
+
+            <div class="form-field">
+                <label class="form-label" for="Flavor">Flavor / variant (optional)</label>
+                @Html.TextBoxFor(m => m.Flavor, new { @class = "form-input", maxlength = 50 })
+                @Html.ValidationMessageFor(m => m.Flavor, "", new { @class = "form-error" })
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" for="ShortDescription">Short description (optional)</label>
+            @Html.TextBoxFor(m => m.ShortDescription, new { @class = "form-input", maxlength = 250 })
+            @Html.ValidationMessageFor(m => m.ShortDescription, "", new { @class = "form-error" })
+            <p class="form-hint">One line shown on the product card. Up to 250 characters.</p>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" for="FullDescription">Full description (optional)</label>
+            @Html.TextAreaFor(m => m.FullDescription, 6, 20, new { @class = "form-input form-textarea", maxlength = 4000 })
+            @Html.ValidationMessageFor(m => m.FullDescription, "", new { @class = "form-error" })
+            <p class="form-hint">Shown on the product details page. Up to 4000 characters. Only add facts you have verified.</p>
+        </div>
+
+        <div class="form-field">
+            <span class="form-label">Product image (optional)</span>
+            <div class="avatar-edit">
+                @if (!string.IsNullOrEmpty(Model.CurrentPhotoUrl))
+                {
+                    <div><img class="photo-preview thumb-product-preview" src="@Model.CurrentPhotoUrl" alt="Current product image" /></div>
+                }
+                <div class="avatar-controls">
+                    <input type="file" name="image" class="form-file" accept=".jpg,.jpeg,.png,.gif" />
+                    <p class="form-hint">@Model.ImageHint</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-field form-field-narrow">
+            <label class="form-label" for="SortOrder">Display order (optional)</label>
+            @Html.TextBoxFor(m => m.SortOrder, new { @class = "form-input", maxlength = 4, inputmode = "numeric" })
+            @Html.ValidationMessageFor(m => m.SortOrder, "", new { @class = "form-error" })
+            <p class="form-hint">Lower numbers come first. Empty puts a new product last, or keeps the current position when editing. You can also use the arrows in the list.</p>
+        </div>
+
+        <div class="form-field">
+            <span class="form-check">
+                @Html.CheckBoxFor(m => m.IsPublished)
+                <label for="IsPublished">Publish (visible to users)</label>
+            </span>
+            <p class="form-hint">Leave unchecked to save as a draft. You can publish it later from the list.</p>
+        </div>
+
+        <div class="editor-actions">
+            <button type="submit" class="pill-btn pill-btn-primary">Save product</button>
+            <a class="pill-btn pill-btn-secondary" href="@listUrl">Cancel</a>
+        </div>
+    }
+}
+else if (anyProducts)
+{
+    <!-- LIST -->
+    <div class="table-scroll">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Variant</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Order</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Products.Count; i++)
+                {
+                    var product = Model.Products[i];
+                    bool isFirst = i == 0;
+                    bool isLast = i == Model.Products.Count - 1;
+                    string thumb = FTQuiz2_ContentFormat.ThumbUrl(product.ImagePath);
+                    <tr>
+                        <td>
+                            @if (thumb.Length == 0) { <span class="thumb thumb-product thumb-empty"></span> }
+                            else { <img class="thumb thumb-product" src="@thumb" alt="" /> }
+                        </td>
+                        <td class="cell-strong cell-wrap">
+                            @product.ProductName
+                            <p class="post-preview">@FTQuiz2_ContentFormat.Preview(product.ShortDescription, 80)</p>
+                        </td>
+                        <td>@FTQuiz2_ContentFormat.OrDash(product.Flavor)</td>
+                        <td><span class="@Model.StatusBadgeClass(product.IsPublished)">@Model.StatusText(product.IsPublished)</span></td>
+                        <td>
+                            <div class="order-cell">
+                                <span class="order-number">@product.SortOrder</span>
+                                @using (Html.BeginForm("Move", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="productId" value="@product.ProductId" />
+                                    <input type="hidden" name="direction" value="up" />
+                                    <button type="submit" class="row-btn" aria-label="@("Move " + product.ProductName + " up")" disabled="@(isFirst ? "disabled" : null)">&#9650;</button>
+                                }
+                                @using (Html.BeginForm("Move", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="productId" value="@product.ProductId" />
+                                    <input type="hidden" name="direction" value="down" />
+                                    <button type="submit" class="row-btn" aria-label="@("Move " + product.ProductName + " down")" disabled="@(isLast ? "disabled" : null)">&#9660;</button>
+                                }
+                            </div>
+                        </td>
+                        <td class="cell-actions">
+                            @using (Html.BeginForm("Index", "FTQuiz2_ManageProducts", FormMethod.Get, new { @class = "inline-form" }))
+                            {
+                                <input type="hidden" name="edit" value="@product.ProductId" />
+                                <button type="submit" class="row-btn">Edit</button>
+                            }
+
+                            @using (Html.BeginForm("SetPublished", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                <input type="hidden" name="publish" value="@(product.IsPublished ? "false" : "true")" />
+                                <button type="submit" class="row-btn">@(product.IsPublished ? "Unpublish" : "Publish")</button>
+                            }
+
+                            @using (Html.BeginForm("Delete", "FTQuiz2_ManageProducts", FormMethod.Post, new { @class = "inline-form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                <button type="submit" class="row-btn row-btn-danger"
+                                        data-confirm="@("Delete " + product.ProductName + "? Its image will be removed too. This can't be undone.")"
+                                        onclick="return confirm(this.getAttribute('data-confirm'));">Delete</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else if (!Model.LoadFailed)
+{
+    <!-- EMPTY STATE -->
+    <div class="empty-state">
+        <p class="empty-title">No products yet</p>
+        <p class="empty-text">Click &ldquo;Add product&rdquo; to create the first one. Until one is published, Home and the Products page show a &ldquo;being updated&rdquo; message.</p>
+    </div>
+}
+
+@section FTQuiz2_Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

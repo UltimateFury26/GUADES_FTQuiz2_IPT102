@@ -1,0 +1,52 @@
+@model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ContactEditorViewModel
+
+@* Contact Information: one row, one form. Only the fields that are filled in appear on the Contact page. *@
+@using (Html.BeginForm("SaveContact", "FTQuiz2_ManageContent", FormMethod.Post, new { @class = "editor-card" }))
+{
+    @Html.AntiForgeryToken()
+
+    <h2>Contact Information</h2>
+    <p class="editor-intro">Shown on the Contact page and in the Home contact section. Leave a field empty to hide it. Enter only verified details.</p>
+
+    if (!string.IsNullOrWhiteSpace(Model.Message))
+    {
+        <div class="@(Model.MessageKind == "success" ? "alert alert-success" : "alert alert-error")" role="alert">@Model.Message</div>
+    }
+
+    <div class="form-row">
+        <div class="form-field">
+            <label class="form-label" for="Email">Business email</label>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-input", maxlength = 100, type = "email", autocapitalize = "none", spellcheck = "false" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "form-error" })
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" for="Phone">Business phone</label>
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-input", maxlength = 20, type = "tel" })
+            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "form-error" })
+        </div>
+    </div>
+
+    <div class="form-field">
+        <label class="form-label" for="Address">Address / location</label>
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-input", maxlength = 250 })
+        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "form-error" })
+    </div>
+
+    <div class="form-row">
+        <div class="form-field">
+            <label class="form-label" for="FacebookUrl">Facebook page</label>
+            @Html.TextBoxFor(m => m.FacebookUrl, new { @class = "form-input", maxlength = 250, type = "url", placeholder = "https://www.facebook.com/..." })
+            @Html.ValidationMessageFor(m => m.FacebookUrl, "", new { @class = "form-error" })
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" for="InstagramUrl">Instagram page</label>
+            @Html.TextBoxFor(m => m.InstagramUrl, new { @class = "form-input", maxlength = 250, type = "url", placeholder = "https://www.instagram.com/..." })
+            @Html.ValidationMessageFor(m => m.InstagramUrl, "", new { @class = "form-error" })
+        </div>
+    </div>
+    <p class="form-hint">Links must start with http:// or https://.</p>
+
+    <button type="submit" class="pill-btn pill-btn-primary settings-submit">Save changes</button>
+}
