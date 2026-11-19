@@ -1,59 +1,121 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ContactViewModel
 @{
-    // Contact information from the database (usp_ContactInfo_Get) through HomeController.Contact.
-    // A line is drawn only when its value exists; links are already checked (http/https only, safe mailto).
-    // This page is display only: there is no contact form, so nothing here pretends to send a message.
+    // Contact information is loaded from the database through HomeController.Contact.
+    // This page intentionally displays verified business details; it does not submit a message form.
     ViewBag.Title = "Contact";
+    var businessName = String.IsNullOrWhiteSpace(Model.BusinessName) ? "Mogu Mogu" : Model.BusinessName;
 }
 
-<header class="mm-page-head">
-    <span class="mm-eyebrow">Contact</span>
-    <h1 class="mm-page-head__title">Get in touch with @Model.BusinessName</h1>
-</header>
+<main class="mm-contact-page">
+    <header class="mm-contact-hero">
+        <div class="mm-contact-hero__copy">
+            <span class="mm-eyebrow">We'd love to hear from you</span>
+            <h1 class="mm-contact-hero__title">Let's talk <span>good vibes.</span></h1>
+            <p class="mm-contact-hero__lead">
+                Have a question about @businessName? Find the right way to get in touch using the contact details below.
+            </p>
+            <div class="mm-contact-hero__chips" aria-label="Contact highlights">
+                <span><span aria-hidden="true">&#9993;</span> Email</span>
+                <span><span aria-hidden="true">&#8982;</span> Visit</span>
+                <span><span aria-hidden="true">&#9825;</span> Follow</span>
+            </div>
+        </div>
+        <div class="mm-contact-hero__art" aria-hidden="true">
+            <span class="mm-contact-hero__spark mm-contact-hero__spark--one">&#10022;</span>
+            <span class="mm-contact-hero__spark mm-contact-hero__spark--two">&#10037;</span>
+            <div class="mm-contact-hero__fruit mm-contact-hero__fruit--back"></div>
+            <div class="mm-contact-hero__fruit mm-contact-hero__fruit--front">
+                <span>mogu<br />mogu</span>
+            </div>
+            <span class="mm-contact-hero__bubble mm-contact-hero__bubble--one"></span>
+            <span class="mm-contact-hero__bubble mm-contact-hero__bubble--two"></span>
+            <span class="mm-contact-hero__bubble mm-contact-hero__bubble--three"></span>
+        </div>
+    </header>
 
-<section class="mm-section" aria-label="Contact details">
-    @if (Model.HasContact)
-    {
-        <ul class="mm-contact-list">
-            @if (Model.Email.Length > 0)
-            {
-                <li><span class="mm-contact-list__label">Email</span><a href="@("mailto:" + Model.Email)">@Model.Email</a></li>
-            }
-            @if (Model.PhoneDisplay.Length > 0)
-            {
-                <li>
-                    <span class="mm-contact-list__label">Phone</span>
-                    @if (Model.PhoneHref.Length > 0)
-                    {
-                        <a href="@("tel:" + Model.PhoneHref)">@Model.PhoneDisplay</a>
-                    }
-                    else
-                    {
-                        <span>@Model.PhoneDisplay</span>
-                    }
-                </li>
-            }
-            @if (Model.Address.Length > 0)
-            {
-                <li><span class="mm-contact-list__label">Address</span><span class="mm-prose">@Model.Address</span></li>
-            }
-            @if (Model.FacebookUrl.Length > 0)
-            {
-                <li><span class="mm-contact-list__label">Facebook</span><a href="@Model.FacebookUrl" target="_blank" rel="noopener noreferrer">@GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_BusinessFormat.DisplayUrl(Model.FacebookUrl)</a></li>
-            }
-            @if (Model.InstagramUrl.Length > 0)
-            {
-                <li><span class="mm-contact-list__label">Instagram</span><a href="@Model.InstagramUrl" target="_blank" rel="noopener noreferrer">@GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_BusinessFormat.DisplayUrl(Model.InstagramUrl)</a></li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p class="mm-empty">Contact details will be available soon.</p>
-    }
+    <section class="mm-contact-content" aria-labelledby="mm-contact-details-title">
+        <div class="mm-contact-content__intro">
+            <span class="mm-eyebrow">Get in touch</span>
+            <h2 id="mm-contact-details-title">Here&#39;s how to reach us</h2>
+            <p>Choose the contact channel that works best for you.</p>
+        </div>
 
-    <div class="mm-actions">
-        <a class="pill-btn pill-btn-secondary" href="@Url.Action("Owners", "FTQuiz2_Business")">Owners / Company</a>
-        <a class="pill-btn pill-btn-secondary" href="@Url.Action("Index", "FTQuiz2_Products")">Our products</a>
-    </div>
-</section>
+        @if (Model != null && Model.HasContact)
+        {
+            <div class="mm-contact-grid">
+                @if (!String.IsNullOrWhiteSpace(Model.Email))
+                {
+                    <article class="mm-contact-card mm-contact-card--email">
+                        <span class="mm-contact-card__icon" aria-hidden="true">&#9993;</span>
+                        <span class="mm-contact-card__label">Email us</span>
+                        <a class="mm-contact-card__value" href="@("mailto:" + Model.Email)">@Model.Email</a>
+                        <span class="mm-contact-card__hint">Send us your questions and enquiries</span>
+                    </article>
+                }
+                @if (!String.IsNullOrWhiteSpace(Model.PhoneDisplay))
+                {
+                    <article class="mm-contact-card mm-contact-card--phone">
+                        <span class="mm-contact-card__icon" aria-hidden="true">&#9742;</span>
+                        <span class="mm-contact-card__label">Call us</span>
+                        @if (!String.IsNullOrWhiteSpace(Model.PhoneHref))
+                        {
+                            <a class="mm-contact-card__value" href="@("tel:" + Model.PhoneHref)">@Model.PhoneDisplay</a>
+                        }
+                        else
+                        {
+                            <span class="mm-contact-card__value">@Model.PhoneDisplay</span>
+                        }
+                        <span class="mm-contact-card__hint">We&#39;re happy to help with your enquiries</span>
+                    </article>
+                }
+                @if (!String.IsNullOrWhiteSpace(Model.Address))
+                {
+                    <article class="mm-contact-card mm-contact-card--address">
+                        <span class="mm-contact-card__icon" aria-hidden="true">&#8982;</span>
+                        <span class="mm-contact-card__label">Find us</span>
+                        <span class="mm-contact-card__value mm-contact-card__value--static mm-prose">@Model.Address</span>
+                        <span class="mm-contact-card__hint">Business address</span>
+                    </article>
+                }
+                @if (!String.IsNullOrWhiteSpace(Model.FacebookUrl))
+                {
+                    <article class="mm-contact-card mm-contact-card--social">
+                        <span class="mm-contact-card__icon" aria-hidden="true">f</span>
+                        <span class="mm-contact-card__label">Facebook</span>
+                        <a class="mm-contact-card__value" href="@Model.FacebookUrl" target="_blank" rel="noopener noreferrer">@GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_BusinessFormat.DisplayUrl(Model.FacebookUrl)</a>
+                        <span class="mm-contact-card__hint">Follow our updates and announcements</span>
+                    </article>
+                }
+                @if (!String.IsNullOrWhiteSpace(Model.InstagramUrl))
+                {
+                    <article class="mm-contact-card mm-contact-card--social">
+                        <span class="mm-contact-card__icon" aria-hidden="true">&#9673;</span>
+                        <span class="mm-contact-card__label">Instagram</span>
+                        <a class="mm-contact-card__value" href="@Model.InstagramUrl" target="_blank" rel="noopener noreferrer">@GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_BusinessFormat.DisplayUrl(Model.InstagramUrl)</a>
+                        <span class="mm-contact-card__hint">See more from the Mogu Mogu world</span>
+                    </article>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="mm-contact-empty" role="status">
+                <span class="mm-contact-empty__icon" aria-hidden="true">&#9993;</span>
+                <h3>Contact details coming soon</h3>
+                <p>There are no public contact details available right now. Please check back later.</p>
+            </div>
+        }
+    </section>
+
+    <section class="mm-contact-next" aria-label="Explore more">
+        <div>
+            <span class="mm-eyebrow">Keep exploring</span>
+            <h2>There&#39;s more to discover.</h2>
+            <p>Get to know the people behind the business or explore the Mogu Mogu product range.</p>
+        </div>
+        <div class="mm-contact-next__actions">
+            <a class="pill-btn pill-btn-primary" href="@Url.Action("Owners", "FTQuiz2_Business")">Owners / Company <span aria-hidden="true">&#8594;</span></a>
+            <a class="pill-btn pill-btn-secondary" href="@Url.Action("Index", "FTQuiz2_Products")">Explore products</a>
+        </div>
+    </section>
+</main>
