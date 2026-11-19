@@ -16,22 +16,26 @@
             <p class="mm-hero__lead">@Model.Mission</p>
         }
         <div class="mm-hero__actions">
-            <a class="pill-btn pill-btn-primary" href="#products">See our products</a>
+            <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">See our products <span aria-hidden="true">&rarr;</span></a>
             <a class="pill-btn pill-btn-secondary" href="#our-story">Our story</a>
         </div>
     </div>
-    <div class="mm-hero__visual" aria-hidden="@(Model.HeroUrl.Length > 0 ? "false" : "true")">
-        @if (Model.HeroUrl.Length > 0)
-        {
-            <img src="@Model.HeroUrl" alt="@Model.BusinessName drinks" />
-        }
-        else
-        {
+    @if (Model.HeroUrl.Length > 0)
+    {
+        <div class="mm-hero__visual">
+            <figure class="mm-hero__frame">
+                <img src="@Model.HeroUrl" alt="@Model.BusinessName drinks" decoding="async" />
+            </figure>
+        </div>
+    }
+    else
+    {
+        <div class="mm-hero__visual mm-hero__visual--ph" aria-hidden="true">
             <span class="mm-bubble mm-bubble--lg"></span>
             <span class="mm-bubble mm-bubble--md"></span>
             <span class="mm-bubble mm-bubble--sm"></span>
-        }
-    </div>
+        </div>
+    }
 </section>
 
 <!-- FEATURED PRODUCTS -->
