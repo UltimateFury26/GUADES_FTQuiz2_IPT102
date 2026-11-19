@@ -91,6 +91,36 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
+    // ---- Mogu Mogu / BrewedOps-inspired motion layer (Phases 04–19) ----
+    // Staggered list entrance + scroll-triggered reveal. Content remains visible
+    // if IntersectionObserver is unavailable or reduced motion is requested.
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduceMotion && "IntersectionObserver" in window) {
+        var revealTargets = document.querySelectorAll(
+            ".mm-product, .mm-story, .mm-highlight, .mm-contact-card, .mm-owner, .mm-owners-card, " +
+            ".posts-list-panel, .posts-editor-panel, .users-list-panel, .reports-panel, .stat-card, " +
+            ".manage-products-list, .manage-products-empty, .settings-card, .editor-card"
+        );
+        revealTargets.forEach(function (item, index) {
+            item.classList.add("mm-motion-ready");
+            item.style.setProperty("--mm-motion-delay", Math.min(index % 8, 7) * 65 + "ms");
+        });
+        var revealObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("mm-motion-in");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+        revealTargets.forEach(function (item) { revealObserver.observe(item); });
+    }
+
+    // Arrow-slide micro-interaction, attached only to existing controls.
+    document.querySelectorAll(".pill-btn, .mm-owners-hero__link, .mm-product__more").forEach(function (control) {
+        control.classList.add("mm-motion-arrow");
+    });
+
     // ---- Product modal focus handling (redesign Phase 05) ----
     // FTQuiz2_Portfolio.js opens/closes the dialog (adds/removes .open). This only manages focus:
     // focus goes to the close button on open, Tab stays inside the dialog, and focus returns to the trigger on close.

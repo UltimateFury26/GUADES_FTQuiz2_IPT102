@@ -2017,3 +2017,93 @@ a.mm-product__btn:hover {
     .mm-owners-card, .mm-owners-hero__link { transition: none; }
     .mm-owners-card:hover, .mm-owners-hero__link:hover { transform: none; }
 }
+
+
+/* ================================================================
+   MOGU MOGU VISUAL PASS — PHASES 04–08
+   Reference direction: official Mogu Mogu blue-sky campaign/product
+   pages + Mogu Mogu Manila's flavor-led product storytelling.
+   Uses the project's local bottle lineup; no remote assets/fonts.
+   ================================================================ */
+:root{
+  --mm-sky:#08a9df;--mm-sky-deep:#0787c5;--mm-navy:#101d68;
+  --mm-coral:#f05a85;--mm-lemon:#ffd54b;--mm-lime:#75c94a;
+  --mm-paper:#fffdf8;--mm-blue-pale:#eaf8ff;
+}
+body.mm-site{background:#fffdf8;color:var(--mm-navy)}
+.mm-page-head,.mm-contact-hero,.mm-owners-hero{
+  position:relative;isolation:isolate;overflow:hidden;
+}
+.mm-page-head{
+  min-height:300px;margin:0 0 42px;padding:58px clamp(24px,6vw,88px) 48px;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  background:linear-gradient(120deg,#aeeaff 0%,#d9f5ff 48%,#ffe4ef 100%);
+  border-radius:0 0 42px 42px;
+}
+.mm-page-head:before{content:"";position:absolute;z-index:-1;right:-5%;bottom:-62%;width:min(62vw,760px);height:115%;background:url('../FTQuiz2_Media/Brand/mogu-mogu-hero.jpg') center 44%/cover no-repeat;border-radius:50%;opacity:.95;transform:rotate(-5deg);}
+.mm-page-head:after{content:"";position:absolute;z-index:-1;right:9%;top:22px;width:78px;height:78px;border-radius:26px;background:rgba(255,255,255,.42);box-shadow:110px 92px 0 -18px rgba(255,255,255,.55),-90px 160px 0 -27px rgba(255,255,255,.65);transform:rotate(22deg)}
+.mm-eyebrow{color:#087eae;font-size:.76rem;font-weight:1000;letter-spacing:.16em;text-transform:uppercase}
+.mm-page-head__title{max-width:700px;margin:10px 0 12px;color:var(--mm-navy);font-size:clamp(2.7rem,6.2vw,5.8rem);font-weight:1000;letter-spacing:-.065em;line-height:.98;text-transform:uppercase}
+.mm-page-head__lead{max-width:540px;margin:0;color:#263b85;font-size:clamp(1rem,1.8vw,1.22rem);font-weight:700;line-height:1.65}
+.mm-products-count{display:inline-flex;margin:8px 0 0;padding:8px 15px;border-radius:99px;background:#fff;color:var(--mm-navy);font-size:.82rem;font-weight:900;box-shadow:0 5px 0 rgba(16,29,104,.08)}
+.mm-section{margin:0 auto 64px;padding-inline:clamp(18px,4vw,54px);max-width:1440px}
+.mm-section__head{margin-bottom:24px}
+.mm-section__title{color:var(--mm-navy);font-size:clamp(1.8rem,3.4vw,3.2rem);font-weight:1000;letter-spacing:-.045em;text-transform:uppercase}
+.mm-product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.mm-product{position:relative;min-width:0;border:0;border-radius:26px;background:#fff;box-shadow:0 10px 28px rgba(16,29,104,.08);overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.mm-product:nth-child(4n+1){--flavor-bg:#e9f8ff}.mm-product:nth-child(4n+2){--flavor-bg:#fff1e2}.mm-product:nth-child(4n+3){--flavor-bg:#ffeaf2}.mm-product:nth-child(4n){--flavor-bg:#f0f8df}
+.mm-product:hover{transform:translateY(-9px) rotate(-.5deg);box-shadow:0 22px 38px rgba(16,29,104,.15)}
+.mm-product__btn{display:flex;height:100%;flex-direction:column;color:inherit;text-decoration:none}
+.mm-product__media{position:relative;display:grid;place-items:center;min-height:280px;padding:22px 18px 10px;background:var(--flavor-bg);overflow:hidden}
+.mm-product__media:before{content:"";position:absolute;width:190px;height:190px;border:2px dashed rgba(16,29,104,.12);border-radius:50%;transition:transform .7s ease}
+.mm-product__media:after{content:"";position:absolute;right:12%;top:14%;width:20px;height:20px;border-radius:6px;background:rgba(255,255,255,.9);transform:rotate(25deg);box-shadow:-165px 145px 0 5px rgba(255,255,255,.65)}
+.mm-product__media img{position:relative;z-index:1;width:100%;height:250px;object-fit:contain;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.mm-product:hover .mm-product__media:before{transform:scale(1.18) rotate(24deg)}
+.mm-product:hover .mm-product__media img{transform:translateY(-7px) scale(1.055)}
+.mm-product__body{display:flex;flex:1;flex-direction:column;align-items:flex-start;padding:20px 22px 23px}
+.mm-badge{display:inline-flex;padding:6px 12px;border-radius:99px;background:#e8f7ff;color:#087eae;font-size:.7rem;font-weight:1000;letter-spacing:.08em;text-transform:uppercase}
+.mm-product__name{margin:12px 0 5px;color:var(--mm-navy);font-size:1.35rem;font-weight:1000;letter-spacing:-.035em}
+.mm-product__desc{color:#58628e;font-size:.91rem;line-height:1.55}
+.mm-product__more{display:inline-flex;align-items:center;gap:10px;margin-top:auto;padding-top:18px;color:#0787c5;font-size:.85rem;font-weight:1000;text-transform:uppercase;letter-spacing:.06em}
+.mm-product__more:after{content:'→';font-size:1.15rem;transition:transform .25s ease}.mm-product:hover .mm-product__more:after{transform:translateX(6px)}
+.mm-empty{padding:30px;border:2px dashed #a9dff2;border-radius:22px;background:#f1fbff;color:#31427e;font-weight:800}
+.mm-product-page{padding:26px clamp(16px,4vw,56px) 70px}
+.mm-crumbs{max-width:1320px;margin:0 auto 22px;color:#64719e;font-size:.86rem;font-weight:800}.mm-crumbs a{color:#0787c5}
+.mm-detail{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(28px,6vw,84px);align-items:center;max-width:1320px;margin:0 auto 72px;padding:clamp(24px,5vw,64px);border-radius:36px;background:linear-gradient(135deg,#dff6ff,#fff0f5 70%,#fff7d9);overflow:hidden}
+.mm-detail:after{content:"";position:absolute;right:-60px;top:-100px;width:260px;height:260px;border:2px dashed rgba(16,29,104,.14);border-radius:50%}
+.mm-detail__media{position:relative;display:grid;place-items:center;min-height:430px;border-radius:30px;background:rgba(255,255,255,.54)}
+.mm-detail__media img{width:100%;height:410px;object-fit:contain;animation:mm-bottle-float 5s ease-in-out infinite}
+.mm-detail__body{position:relative;z-index:1}.mm-detail__title{margin:16px 0;color:var(--mm-navy);font-size:clamp(2.7rem,5vw,5.4rem);font-weight:1000;line-height:.98;letter-spacing:-.07em;text-transform:uppercase}.mm-detail__text{max-width:590px;color:#35437e;font-size:1.06rem;line-height:1.8}
+.mm-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.mm-actions .pill-btn{min-height:50px;border-radius:99px;font-weight:1000;text-transform:uppercase;letter-spacing:.035em}
+.mm-about-page,.mm-contact-page,.mm-owners-page{padding-bottom:72px}
+.mm-story{display:grid;grid-template-columns:1fr .9fr;gap:36px;align-items:center;padding:clamp(24px,4vw,54px);border-radius:32px;background:#e9f8ff}
+.mm-story__text{padding:8px}.mm-story__body{color:#35437e;font-size:1.05rem;line-height:1.9;white-space:pre-line}
+.mm-story__media{min-height:300px;border-radius:26px;overflow:hidden;background:#fff}.mm-story__media img{width:100%;height:100%;min-height:300px;object-fit:cover}
+.mm-highlights{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.mm-highlight{padding:30px;border-radius:24px;background:#fff0f5;border-bottom:7px solid var(--mm-coral)}.mm-highlight:nth-child(2){background:#fff7dc;border-color:var(--mm-lemon)}.mm-highlight h3{color:var(--mm-navy);font-size:1.4rem;font-weight:1000;text-transform:uppercase}.mm-highlight p{color:#4c5684;line-height:1.75}
+.mm-contact-hero,.mm-owners-hero{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;min-height:390px;padding:clamp(32px,6vw,82px);background:linear-gradient(115deg,#bdeeff,#e7f8ff 55%,#ffe6ef);border-radius:0 0 42px 42px}
+.mm-contact-hero__title,.mm-owners-hero__title{max-width:760px;margin:12px 0;color:var(--mm-navy);font-size:clamp(2.8rem,6vw,5.7rem);font-weight:1000;letter-spacing:-.07em;line-height:.98;text-transform:uppercase}.mm-contact-hero__title span,.mm-owners-hero__title span{color:var(--mm-coral)}
+.mm-contact-hero__lead,.mm-owners-hero__lead{max-width:540px;color:#35437e;font-size:1.08rem;line-height:1.7}
+.mm-contact-hero__art,.mm-owners-hero__art{min-height:270px;position:relative;background:url('../FTQuiz2_Media/Brand/mogu-mogu-hero.jpg') center/contain no-repeat;filter:drop-shadow(0 16px 14px rgba(16,29,104,.12))}
+.mm-contact-card,.mm-owner,.mm-owners-card{border:0!important;border-radius:25px!important;background:#fff!important;box-shadow:0 12px 34px rgba(16,29,104,.09)!important}
+.mm-owners-content{max-width:1400px;margin:0 auto;padding:54px clamp(18px,4vw,54px)}.mm-owners-section-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:28px}.mm-owners-section-head h2{margin:8px 0;color:var(--mm-navy);font-size:clamp(1.9rem,4vw,3.3rem);font-weight:1000;letter-spacing:-.05em;text-transform:uppercase}.mm-owners-section-head p{max-width:370px;color:#64719e;line-height:1.6}
+.mm-owner-grid,.mm-owners-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.mm-owners-card{padding:25px!important}.mm-owners-card__photo,.mm-owner__photo{border:5px solid #e5f7ff;box-shadow:0 5px 0 #bcecff}.mm-owners-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:20px clamp(18px,4vw,54px) 0;padding:clamp(26px,4vw,46px);border-radius:28px;background:#101d68;color:#fff}.mm-owners-cta h2{color:#fff;font-size:clamp(1.7rem,3vw,2.7rem);font-weight:1000}.mm-owners-cta p{color:#dbeaff}
+.mm-footer{background:#101d68!important;color:#fff!important}.mm-footer a{color:#fff!important}
+@keyframes mm-bottle-float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-13px) rotate(1deg)}}
+@media(max-width:980px){.mm-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mm-detail,.mm-story,.mm-contact-hero,.mm-owners-hero{grid-template-columns:1fr}.mm-contact-hero__art,.mm-owners-hero__art{min-height:220px}.mm-owner-grid,.mm-owners-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.mm-page-head{min-height:260px;padding:38px 22px;border-radius:0 0 26px 26px}.mm-page-head:before{right:-35%;bottom:-28%;width:95%;height:60%;opacity:.42}.mm-page-head__title{font-size:clamp(2.5rem,13vw,4rem)}.mm-product-grid{grid-template-columns:1fr;gap:16px}.mm-product__media{min-height:245px}.mm-product__media img{height:220px}.mm-detail{padding:18px;border-radius:24px}.mm-detail__media{min-height:290px}.mm-detail__media img{height:280px}.mm-detail__title{font-size:2.8rem}.mm-highlights,.mm-owner-grid,.mm-owners-grid{grid-template-columns:1fr}.mm-owners-section-head,.mm-owners-cta{align-items:flex-start;flex-direction:column}.mm-contact-hero,.mm-owners-hero{padding:34px 22px;border-radius:0 0 26px 26px}}
+@media(prefers-reduced-motion:reduce){.mm-detail__media img{animation:none!important}.mm-product,.mm-product__media img,.mm-product__media:before{transition:none!important}}
+
+/* Contact page's information tiles: a simple fruit-colour sequence, not generic cards. */
+.mm-contact-content{max-width:1360px;margin:0 auto;padding:46px clamp(18px,4vw,54px)}
+.mm-contact-content__intro{max-width:700px;color:#35437e;font-size:1.05rem;line-height:1.75}
+.mm-contact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:26px}
+.mm-contact-card{position:relative;min-width:0;padding:25px 25px 25px 82px;border-radius:22px;background:#fff;box-shadow:0 10px 28px rgba(16,29,104,.075);transition:transform .28s ease,box-shadow .28s ease}
+.mm-contact-card:hover{transform:translateY(-5px);box-shadow:0 17px 34px rgba(16,29,104,.12)}
+.mm-contact-card__icon{position:absolute;left:22px;top:23px;display:grid;width:42px;height:42px;place-items:center;border-radius:14px;background:#e5f7ff;color:#087eae;font-size:1.2rem}
+.mm-contact-card:nth-child(2n) .mm-contact-card__icon{background:#ffeaf1;color:#bd3158}
+.mm-contact-card__label{color:#087eae;font-size:.72rem;font-weight:1000;letter-spacing:.13em;text-transform:uppercase}
+.mm-contact-card__value{display:block;margin-top:7px;color:#101d68;font-weight:900;overflow-wrap:anywhere}
+.mm-contact-card__hint{margin:7px 0 0;color:#68769a;font-size:.84rem;line-height:1.5}
+.mm-contact-next{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 clamp(18px,4vw,54px);padding:28px;border-radius:24px;background:#101d68;color:#fff}
+.mm-contact-next h2{color:#fff;font-size:clamp(1.5rem,3vw,2.4rem);font-weight:1000}.mm-contact-next p{color:#dbeaff}
+@media(max-width:650px){.mm-contact-grid{grid-template-columns:1fr}.mm-contact-next{align-items:flex-start;flex-direction:column}}
