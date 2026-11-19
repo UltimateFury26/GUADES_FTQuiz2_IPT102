@@ -1,115 +1,52 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_ChromeViewModel
 
-<!-- ICON RAIL -->
-<nav id="iconRail" aria-label="Primary">
-    <a class="rail-logo" href="@Url.Content("~/")" title="Home">@Model.Initials</a>
+<!-- MOGU MOGU HEADER (replaces the portfolio icon rail + top bar) -->
+<header class="mm-header" id="mmHeader">
+    <div class="mm-header__inner">
 
-    <button type="button" class="rail-close" id="railClose" aria-label="Close menu">
-        <svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12" /><path d="M18 6 6 18" /></svg>
-    </button>
-
-    <div class="rail-links">
-        <a class="@("rail-btn" + Model.HomeActiveClass())" href="@Url.Content("~/")" title="Home">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5" /><path d="M6 10v9a1 1 0 0 0 1 1h3v-5h4v5h3a1 1 0 0 0 1-1v-9" /></svg>
-            <span class="rail-label">Home</span>
+        <a class="mm-brand" href="@Url.Content("~/")" aria-label="Mogu Mogu - home">
+            @Html.Partial("_FTQuiz2_BrandLogo")
         </a>
-        <a class="rail-btn" href="@(Url.Content("~/") + "#boards")" title="Boards">
-            <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5" /><rect x="13" y="4" width="7" height="7" rx="1.5" /><rect x="4" y="13" width="7" height="7" rx="1.5" /><rect x="13" y="13" width="7" height="7" rx="1.5" /></svg>
-            <span class="rail-label">Boards</span>
-        </a>
-        <a class="@("rail-btn" + Model.ActiveClass("FTQuiz2_MyAccount"))" href="@Url.Content("~/FTQuiz2_MyAccount")" title="My Account">
-            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" /></svg>
-            <span class="rail-label">My Account</span>
-        </a>
-    </div>
 
-    @if (Model.IsAdmin)
-    {
-        <div class="rail-divider"></div>
-        <div class="rail-links">
-            <a class="@("rail-btn" + Model.ActiveClass("FTQuiz2_ManageUsers"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManageUsers")" title="Users">
-                <svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" /><path d="M16 4.5a3.5 3.5 0 0 1 0 7" /><path d="M18 14.3c2 .7 3.5 2.6 3.5 5.7" /></svg>
-                <span class="rail-label">Users</span>
-            </a>
-            <a class="@("rail-btn" + Model.ActiveClass("FTQuiz2_ManageContent"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManageContent")" title="Content">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z" /><path d="M13.5 6.5l4 4" /></svg>
-                <span class="rail-label">Content</span>
-            </a>
-            <a class="@("rail-btn" + Model.ActiveClass("FTQuiz2_ManagePosts"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManagePosts")" title="Posts">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h3l6 4V6L7 10H4a1 1 0 0 0-1 1z" /><path d="M16.5 8.5a5 5 0 0 1 0 7" /></svg>
-                <span class="rail-label">Posts</span>
-            </a>
-            <a class="@("rail-btn" + Model.ActiveClass("FTQuiz2_Reports"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_Reports")" title="Reports">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M4 20V10" /><path d="M10 20V4" /><path d="M16 20v-7" /><path d="M22 20H2" /></svg>
-                <span class="rail-label">Reports</span>
-            </a>
-        </div>
-    }
+        <nav class="mm-nav" id="mmNav" aria-label="Primary">
+            <a class="@("mm-nav__link" + Model.HomeActiveClass())" href="@Url.Content("~/")">Home</a>
+            <button type="button" class="mm-nav__link" data-modal="contactModal">Contact</button>
 
-    <div class="rail-spacer"></div>
+            @if (Model.IsAdmin)
+            {
+                <details class="mm-menu" id="adminMenu">
+                    <summary class="mm-nav__link mm-menu__toggle">
+                        Admin
+                        <svg class="icon mm-menu__caret" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
+                    </summary>
+                    <div class="mm-menu__panel">
+                        <a class="@("mm-menu__item" + Model.ActiveClass("FTQuiz2_ManageUsers"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManageUsers")">Users</a>
+                        <a class="@("mm-menu__item" + Model.ActiveClass("FTQuiz2_ManageContent"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManageContent")">Content</a>
+                        <a class="@("mm-menu__item" + Model.ActiveClass("FTQuiz2_ManagePosts"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_ManagePosts")">Posts</a>
+                        <a class="@("mm-menu__item" + Model.ActiveClass("FTQuiz2_Reports"))" href="@Url.Content("~/FTQuiz2_Admin/FTQuiz2_Reports")">Reports</a>
+                    </div>
+                </details>
+            }
+        </nav>
 
-    <div class="rail-links">
-        @if (Model.GitHubUrl.Length > 0)
-        {
-            <a class="rail-btn" href="@Model.GitHubUrl" target="_blank" rel="noopener" title="GitHub">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M9 18 3 12l6-6" /><path d="M15 6l6 6-6 6" /></svg>
-                <span class="rail-label">GitHub</span>
-            </a>
-        }
-        @if (Model.LinkedInUrl.Length > 0)
-        {
-            <a class="rail-btn" href="@Model.LinkedInUrl" target="_blank" rel="noopener" title="LinkedIn">
-                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2" /><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><path d="M3 13h18" /></svg>
-                <span class="rail-label">LinkedIn</span>
-            </a>
-        }
-        @if (Model.Email.Length > 0)
-        {
-            <a class="rail-btn" href="@("mailto:" + Model.Email)" title="Email">
-                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M4 7l8 6 8-6" /></svg>
-                <span class="rail-label">Email</span>
-            </a>
-        }
-        <button type="button" class="rail-btn" data-modal="contactModal" title="Contact">
-            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="12" r="2" /><path d="M14 10h5" /><path d="M14 14h5" /></svg>
-            <span class="rail-label">Contact</span>
+        <details class="account-menu" id="accountMenu">
+            <summary class="account-toggle" aria-label="Account menu">
+                <span class="account-initial">@Model.AccountInitial</span>
+                <span class="account-name">@Model.AccountName</span>
+            </summary>
+            <div class="account-dropdown">
+                <p class="account-role">Signed in as @Model.AccountName (@Model.AccountRole)</p>
+                <a class="account-item" href="@Url.Content("~/FTQuiz2_MyAccount")">My Account</a>
+                @* Sign-out stays a POST with an anti-forgery token so a GET (prefetch, crawler, <img>) cannot log anyone out. *@
+                <form method="post" action="@Url.Content("~/FTQuiz2_Logout")" class="account-logout-form">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="account-item">Log out</button>
+                </form>
+            </div>
+        </details>
+
+        <button type="button" class="mm-nav-toggle" id="mmNavToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mmNav">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16" /><path d="M4 12h16" /><path d="M4 17h16" /></svg>
         </button>
     </div>
-</nav>
-
-<!-- Backdrop behind the rail on phone width. Clicking it, or Esc, closes the rail. -->
-<div class="rail-backdrop" id="railBackdrop"></div>
-
-<!-- TOP BAR -->
-<div id="topBar">
-    <button type="button" id="railToggle" class="rail-toggle" aria-label="Toggle menu">
-        <svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16" /><path d="M4 12h16" /><path d="M4 17h16" /></svg>
-    </button>
-
-    @if (Model.ShowSearch)
-    {
-        <div class="search-form">
-            <span class="search-icon">
-                <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>
-            </span>
-            <input type="text" id="boardSearch" placeholder="Search boards" autocomplete="off" />
-        </div>
-    }
-
-    <details class="account-menu" id="accountMenu">
-        <summary class="account-toggle" aria-label="Account menu">
-            <span class="account-initial">@Model.AccountInitial</span>
-            <span class="account-name">@Model.AccountName</span>
-        </summary>
-        <div class="account-dropdown">
-            <p class="account-role">Signed in as @Model.AccountName (@Model.AccountRole)</p>
-            <a class="account-item" href="@Url.Content("~/FTQuiz2_MyAccount")">My Account</a>
-            @* Source: asp:LinkButton postback. A POST form keeps sign-out a state change that
-               cannot be triggered by a GET (prefetch, crawler, <img>). *@
-            <form method="post" action="@Url.Content("~/FTQuiz2_Logout")" class="account-logout-form">
-                @Html.AntiForgeryToken()
-                <button type="submit" class="account-item">Log out</button>
-            </form>
-        </div>
-    </details>
-</div>
+</header>

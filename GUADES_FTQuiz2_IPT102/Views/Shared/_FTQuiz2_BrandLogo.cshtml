@@ -1,0 +1,19 @@
+@{
+    // Mogu Mogu logo, served from the project's own files (never from mogumogu.com).
+    // Drop the logo you are permitted to use at FTQuiz2_Media/Brand/mogu-mogu-logo.svg (or .png / .webp).
+    // Until that file exists, a plain text wordmark is shown, so the page never has a broken image.
+    string logoUrl = string.Empty;
+    foreach (string ext in new[] { "svg", "png", "webp" })
+    {
+        logoUrl = GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers.FTQuiz2_ImagePath.Resolve("FTQuiz2_Media/Brand/mogu-mogu-logo." + ext);
+        if (logoUrl.Length > 0) { break; }
+    }
+}
+@if (logoUrl.Length > 0)
+{
+    <img class="mm-logo-img" src="@logoUrl" alt="Mogu Mogu" />
+}
+else
+{
+    <span class="mm-logo-text">Mogu<span class="mm-logo-text__accent">Mogu</span></span>
+}

@@ -215,6 +215,8 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="FTQuiz2_Content\FTQuiz2_MoguMogu.css" />
+    <Content Include="FTQuiz2_Scripts\FTQuiz2_MoguMogu.js" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -284,6 +286,7 @@
     <Content Include="Views\Shared\_FTQuiz2_BoardModal.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_Lightbox.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_PinModal.cshtml" />
+    <Content Include="Views\Shared\_FTQuiz2_BrandLogo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FTQuiz2_Data\.gitkeep" />
@@ -291,6 +294,10 @@
     <None Include="FTQuiz2_Models\.gitkeep" />
     <None Include="FTQuiz2_Security\.gitkeep" />
     <None Include="FTQuiz2_ViewModels\.gitkeep" />
+    <None Include="FTQuiz2_Media\Brand\.gitkeep" />
+    <None Include="FTQuiz2_Media\Brand\README.txt" />
+    <None Include="FTQuiz2_Media\Products\.gitkeep" />
+    <None Include="FTQuiz2_Media\Company\.gitkeep" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -325,7 +332,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="FTQuiz2_Media\Brand\" />
+    <Folder Include="FTQuiz2_Media\Company\" />
+    <Folder Include="FTQuiz2_Media\Products\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
