@@ -73,10 +73,11 @@ else
                     </div>
                     <span class="reports-panel-tag">Last 12 months</span>
                 </div>
-                <p class="report-sub">@Model.SignupTotalText</p>
+                <p class="report-sub reports-chart-summary" id="signupChartSummary">@Model.SignupTotalText</p>
                 @if (Model.Signups.Count > 0)
                 {
-                    <div class="bar-chart reports-bar-chart" role="img" aria-label="Monthly user signups for the last 12 months">
+                    <div class="reports-chart-scroll" tabindex="0" aria-label="Scrollable monthly signup chart">
+                        <div class="bar-chart reports-bar-chart" role="img" aria-describedby="signupChartSummary" aria-label="Monthly user signups for the last 12 months">
                         @foreach (FTQuiz2_ReportBar bar in Model.Signups)
                         {
                             <div class="bar-col" title="@bar.Tooltip">
@@ -85,6 +86,7 @@ else
                                 <span class="bar-label">@bar.Month<br />@bar.Year</span>
                             </div>
                         }
+                        </div>
                     </div>
                 }
                 else
@@ -100,7 +102,7 @@ else
                         <h3 id="statusHeading" class="report-title">Active vs. inactive</h3>
                     </div>
                 </div>
-                <p class="report-sub">Share of all registered accounts.</p>
+                <p class="report-sub reports-chart-summary">Share of all registered accounts.</p>
                 <div class="split-bar reports-split-bar" role="img" aria-label="Active versus inactive accounts">
                     <div class="split-active" style="width: @(Model.ActivePercent)%;" title="@Model.ActiveTooltip"></div>
                     <div class="split-inactive" style="width: @(Model.InactivePercent)%;" title="@Model.InactiveTooltip"></div>
@@ -178,10 +180,11 @@ else
                 </div>
                 <span class="reports-panel-tag">Last 12 months</span>
             </div>
-            <p class="report-sub">@Model.VisitsTotalText</p>
+            <p class="report-sub reports-chart-summary" id="visitChartSummary">@Model.VisitsTotalText</p>
             @if (Model.Visits.Count > 0)
             {
-                <div class="bar-chart reports-bar-chart" role="img" aria-label="Monthly Home page visits by signed-in users for the last 12 months">
+                <div class="reports-chart-scroll" tabindex="0" aria-label="Scrollable monthly visit chart">
+                    <div class="bar-chart reports-bar-chart" role="img" aria-describedby="visitChartSummary" aria-label="Monthly Home page visits by signed-in users for the last 12 months">
                     @foreach (FTQuiz2_ReportBar bar in Model.Visits)
                     {
                         <div class="bar-col" title="@bar.Tooltip">
@@ -190,6 +193,7 @@ else
                             <span class="bar-label">@bar.Month<br />@bar.Year</span>
                         </div>
                     }
+                    </div>
                 </div>
             }
             else

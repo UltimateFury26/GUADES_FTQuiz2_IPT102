@@ -2043,3 +2043,75 @@ body.FTQuiz2_admin .users-page select:focus-visible {
         animation-iteration-count: 1 !important;
     }
 }
+
+
+/* ===========================================================
+   PHASE 18 — REPORTS PRESENTATION REFINEMENTS
+   Keeps report queries, values, filters, and calculations intact.
+   =========================================================== */
+body.FTQuiz2_admin .reports-section-heading {
+    padding-bottom: 11px;
+    border-bottom: 1px solid #f1e4dc;
+}
+
+body.FTQuiz2_admin .reports-panel-heading {
+    min-height: 42px;
+}
+
+body.FTQuiz2_admin .reports-chart-summary {
+    min-height: 22px;
+    margin: 9px 0 13px;
+    color: #796779;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+body.FTQuiz2_admin .reports-chart-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 1px 9px;
+    border-radius: 10px;
+    scrollbar-color: #d9a8b8 #fff3f0;
+    scrollbar-width: thin;
+}
+
+body.FTQuiz2_admin .reports-chart-scroll:focus-visible {
+    outline: 3px solid rgba(209, 38, 87, .28);
+    outline-offset: 3px;
+}
+
+body.FTQuiz2_admin .reports-chart-scroll .reports-bar-chart {
+    min-width: 590px;
+    margin-bottom: 0;
+}
+
+body.FTQuiz2_admin .reports-data-table th,
+body.FTQuiz2_admin .reports-data-table td {
+    padding: 13px 15px;
+    vertical-align: middle;
+}
+
+body.FTQuiz2_admin .reports-data-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+body.FTQuiz2_admin .reports-table-empty {
+    min-height: 68px;
+}
+
+@media (max-width: 760px) {
+    body.FTQuiz2_admin .reports-section-heading {
+        align-items: flex-start;
+    }
+
+    body.FTQuiz2_admin .reports-panel-heading {
+        flex-wrap: wrap;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.FTQuiz2_admin .reports-chart-scroll {
+        scroll-behavior: auto;
+    }
+}
