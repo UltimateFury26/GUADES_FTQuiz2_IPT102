@@ -1,56 +1,8 @@
+// Shared behavior for every page: product modal, account menu, notices, password fields, user filter.
+// (Header/menu behavior lives in FTQuiz2_MoguMogu.js.)
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ---- Mobile icon-rail toggle ----
-    var railToggle = document.getElementById("railToggle");
-    var iconRail = document.getElementById("iconRail");
-    var railClose = document.getElementById("railClose");
-    var railBackdrop = document.getElementById("railBackdrop");
-
-    function openRail() {
-        if (!iconRail) { return; }
-        iconRail.classList.add("open");
-        if (railBackdrop) { railBackdrop.classList.add("open"); }
-    }
-
-    function closeRail() {
-        if (!iconRail) { return; }
-        iconRail.classList.remove("open");
-        if (railBackdrop) { railBackdrop.classList.remove("open"); }
-    }
-
-    if (railToggle && iconRail) {
-        railToggle.addEventListener("click", function () {
-            if (iconRail.classList.contains("open")) {
-                closeRail();
-            } else {
-                openRail();
-            }
-        });
-    }
-
-    if (railClose) {
-        railClose.addEventListener("click", closeRail);
-    }
-
-    if (railBackdrop) {
-        railBackdrop.addEventListener("click", closeRail);
-    }
-
-    // A tap on any rail link/button closes the rail too, so it doesn't stay open after navigating.
-    if (iconRail) {
-        iconRail.querySelectorAll("a, button").forEach(function (control) {
-            if (control === railClose) { return; }
-            control.addEventListener("click", closeRail);
-        });
-    }
-
-    document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && iconRail && iconRail.classList.contains("open")) {
-            closeRail();
-        }
-    });
-
-    // ---- Generic overlay open/close (used for board overlays, pin modals, lightbox) ----
+    // ---- Overlay open/close (the product detail modal on the Home page) ----
     function openOverlay(overlay) {
         if (!overlay) { return; }
         overlay.classList.add("open");
@@ -66,12 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("[data-modal]").forEach(function (trigger) {
         trigger.addEventListener("click", function () {
             openOverlay(document.getElementById(trigger.getAttribute("data-modal")));
-        });
-    });
-
-    document.querySelectorAll("[data-board]").forEach(function (trigger) {
-        trigger.addEventListener("click", function () {
-            openOverlay(document.getElementById(trigger.getAttribute("data-board") + "Board"));
         });
     });
 
@@ -95,52 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ---- Lightbox (used inside the Gallery and Interests board overlays) ----
-    var lightboxModal = document.getElementById("lightboxModal");
-    var lightboxImage = document.getElementById("lightboxImage");
-    var lightboxCaption = document.getElementById("lightboxCaption");
-
-    document.querySelectorAll("[data-lightbox]").forEach(function (img) {
-        img.addEventListener("click", function () {
-            lightboxImage.src = img.getAttribute("data-lightbox");
-
-            // Show the photo's caption under it when it has one (only Gallery photos carry data-caption).
-            if (lightboxCaption) {
-                var caption = img.getAttribute("data-caption") || "";
-                lightboxCaption.textContent = caption;
-                lightboxCaption.style.display = caption ? "" : "none";
-            }
-
-            openOverlay(lightboxModal);
-        });
-    });
-
-    // ---- Board search: filters the board grid by title as you type ----
-    var boardSearch = document.getElementById("boardSearch");
-    var boardTiles = document.querySelectorAll(".board-tile");
-    var boardsCount = document.getElementById("boardsCount");
-    var totalBoards = boardTiles.length;
-
-    if (boardSearch) {
-        boardSearch.addEventListener("input", function () {
-            var query = boardSearch.value.trim().toLowerCase();
-            var visible = 0;
-
-            boardTiles.forEach(function (tile) {
-                var title = tile.getAttribute("data-title").toLowerCase();
-                var match = title.indexOf(query) !== -1;
-                tile.style.display = match ? "" : "none";
-                if (match) { visible++; }
-            });
-
-            if (boardsCount) {
-                boardsCount.textContent = query
-                    ? visible + " of " + totalBoards + " boards"
-                    : totalBoards + " boards";
-            }
-        });
-    }
-
     // ---- Account menu: close when clicking elsewhere or pressing Esc ----
     var accountMenu = document.getElementById("accountMenu");
 
@@ -157,7 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
 
     // ---- Auto-dismiss save/update success banners after 5 seconds ----
     document.querySelectorAll(".alert-success").forEach(function (box) {

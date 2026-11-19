@@ -5,7 +5,7 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
 {
     /// <summary>
     /// Business profile (About), contact information and owners, all on stored procedures
-    /// through FTQuiz2_Db (ADR-001), same pattern as FTQuiz2_ContentRepository.
+    /// through FTQuiz2_Db (ADR-001), same pattern as the other repositories.
     ///
     /// Pass null (never "") for an image path when no new file was uploaded: the procedure keeps the
     /// current image. sortOrder null = "place last" on insert, "keep current" on update.

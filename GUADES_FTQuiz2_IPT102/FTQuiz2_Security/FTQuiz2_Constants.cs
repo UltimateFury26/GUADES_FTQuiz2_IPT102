@@ -21,14 +21,6 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Security
             public const string Inactive = "Inactive";
         }
 
-        /// <summary>Skill categories (Skills.Category); each one becomes a board.</summary>
-        public static class SkillCategories
-        {
-            public const string Frontend = "Frontend";
-            public const string Backend = "Backend";
-            public const string Tools = "Tools";
-        }
-
         /// <summary>Query-string keys used for one-time notices between pages.</summary>
         public static class Notices
         {

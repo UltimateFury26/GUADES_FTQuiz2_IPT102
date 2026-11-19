@@ -1,4 +1,4 @@
-﻿using System.Data.Entity;
+using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using GUADES_FTQuiz2_IPT102.FTQuiz2_Data.FTQuiz2_Configurations;
 using GUADES_FTQuiz2_IPT102.FTQuiz2_Helpers;
@@ -26,16 +26,10 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
         }
 
         public DbSet<FTQuiz2_User> Users { get; set; }
-        public DbSet<FTQuiz2_PersonalInfo> PersonalInfos { get; set; }
-        public DbSet<FTQuiz2_Education> Educations { get; set; }
-        public DbSet<FTQuiz2_Skill> Skills { get; set; }
-        public DbSet<FTQuiz2_Hobby> Hobbies { get; set; }
-        public DbSet<FTQuiz2_Project> Projects { get; set; }
-        public DbSet<FTQuiz2_GalleryItem> GalleryItems { get; set; }
         public DbSet<FTQuiz2_Post> Posts { get; set; }
         public DbSet<FTQuiz2_PageVisit> PageVisits { get; set; }
 
-        // Mogu Mogu business content (Phase 2). The portfolio sets above stay until the final cleanup phase.
+        // Mogu Mogu business content.
         public DbSet<FTQuiz2_BusinessProfile> BusinessProfiles { get; set; }
         public DbSet<FTQuiz2_ContactInfo> ContactInfos { get; set; }
         public DbSet<FTQuiz2_OwnerInfo> Owners { get; set; }
@@ -47,12 +41,6 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Configurations.Add(new FTQuiz2_UserConfiguration());
-            modelBuilder.Configurations.Add(new FTQuiz2_PersonalInfoConfiguration());
-            modelBuilder.Configurations.Add(new FTQuiz2_EducationConfiguration());
-            modelBuilder.Configurations.Add(new FTQuiz2_SkillConfiguration());
-            modelBuilder.Configurations.Add(new FTQuiz2_HobbyConfiguration());
-            modelBuilder.Configurations.Add(new FTQuiz2_ProjectConfiguration());
-            modelBuilder.Configurations.Add(new FTQuiz2_GalleryItemConfiguration());
             modelBuilder.Configurations.Add(new FTQuiz2_PostConfiguration());
             modelBuilder.Configurations.Add(new FTQuiz2_PageVisitConfiguration());
             modelBuilder.Configurations.Add(new FTQuiz2_BusinessProfileConfiguration());

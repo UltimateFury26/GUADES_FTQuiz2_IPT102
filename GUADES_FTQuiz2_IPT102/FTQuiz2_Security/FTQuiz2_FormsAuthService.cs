@@ -6,7 +6,7 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Security
 {
     /// <summary>
     /// One place that issues and clears the Forms Authentication ticket (ADR-003).
-    /// Cookie name (.PORTFOLIOAUTH), timeout, sliding expiration, protection and
+    /// Cookie name (.MOGUMOGUAUTH), timeout, sliding expiration, protection and
     /// requireSSL all come from Web.config &lt;forms&gt; (set in Phase 12); nothing is hard-coded here.
     /// </summary>
     public static class FTQuiz2_FormsAuthService

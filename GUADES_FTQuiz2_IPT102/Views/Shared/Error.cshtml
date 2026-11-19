@@ -1,13 +1,14 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
-</head>
-<body>
-    <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
-    </hgroup>
-</body>
-</html>
+@{
+    // Shown by HandleErrorAttribute for an unhandled exception inside an action. The layout is set here
+    // on purpose: the normal site shell reads the database, and the database may be what failed.
+    Layout = "~/Views/Shared/_FTQuiz2_AuthLayout.cshtml";
+    ViewBag.Title = "Something went wrong";
+}
+
+<h1 class="auth-title">Something went wrong</h1>
+<p class="auth-sub">
+    We couldn't finish that request. Nothing you did caused it, so please try again in a moment.
+</p>
+<div class="auth-actions">
+    <a class="pill-btn pill-btn-primary" href="~/">Back to Home</a>
+</div>

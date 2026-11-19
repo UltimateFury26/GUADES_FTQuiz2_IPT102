@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.5.2\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
@@ -142,16 +142,10 @@
     <Compile Include="FTQuiz2_Data\FTQuiz2_BusinessRepository.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_BusinessProfileConfiguration.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_ContactInfoConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_EducationConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_GalleryItemConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_HobbyConfiguration.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_OwnerInfoConfiguration.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PageVisitConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PersonalInfoConfiguration.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_PostConfiguration.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_ProductConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_ProjectConfiguration.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_SkillConfiguration.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_Configurations\FTQuiz2_UserConfiguration.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_ProductRepository.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_BusinessProfile.cs" />
@@ -167,9 +161,7 @@
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ManagePostsViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_ReportsViewModel.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_MyAccountViewModel.cs" />
-    <Compile Include="FTQuiz2_ViewModels\FTQuiz2_PartialViewModels.cs" />
     <Compile Include="FTQuiz2_ViewModels\FTQuiz2_SignupViewModel.cs" />
-    <Compile Include="FTQuiz2_ViewModels\FTQuiz2_SkillBoardViewModel.cs" />
     <Compile Include="FTQuiz2_Helpers\FTQuiz2_AppSettings.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_PortfolioDbContext.cs" />
     <Compile Include="FTQuiz2_Migrations\202611172202304_FTQuiz2_Baseline.cs" />
@@ -177,16 +169,9 @@
       <DependentUpon>202611172202304_FTQuiz2_Baseline.cs</DependentUpon>
     </Compile>
     <Compile Include="FTQuiz2_Migrations\Configuration.cs" />
-    <Compile Include="FTQuiz2_Models\FTQuiz2_Education.cs" />
-    <Compile Include="FTQuiz2_Models\FTQuiz2_GalleryItem.cs" />
-    <Compile Include="FTQuiz2_Models\FTQuiz2_Hobby.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_PageVisit.cs" />
-    <Compile Include="FTQuiz2_Models\FTQuiz2_PersonalInfo.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_Post.cs" />
-    <Compile Include="FTQuiz2_Models\FTQuiz2_Project.cs" />
-    <Compile Include="FTQuiz2_Models\FTQuiz2_Skill.cs" />
     <Compile Include="FTQuiz2_Models\FTQuiz2_User.cs" />
-    <Compile Include="FTQuiz2_Data\FTQuiz2_ContentRepository.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_Db.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_PostRepository.cs" />
     <Compile Include="FTQuiz2_Data\FTQuiz2_ReportRepository.cs" />
@@ -256,13 +241,6 @@
     <Content Include="FTQuiz2_Content\FTQuiz2_Portfolio.css" />
     <Content Include="FTQuiz2_Scripts\FTQuiz2_Portfolio.js" />
     <Content Include="App_Data\.gitkeep" />
-    <Content Include="FTQuiz2_Media\dclc.jpg" />
-    <Content Include="FTQuiz2_Media\gallery-1.jpg" />
-    <Content Include="FTQuiz2_Media\gallery-2.jpg" />
-    <Content Include="FTQuiz2_Media\gallery-3.jpg" />
-    <Content Include="FTQuiz2_Media\headshot.jpg" />
-    <Content Include="FTQuiz2_Media\interest-1.jpg" />
-    <Content Include="FTQuiz2_Media\interest-2.jpg" />
     <Content Include="FTQuiz2_Uploads\42697be7060b479e806cc6760c420936.jpg" />
     <Content Include="FTQuiz2_Uploads\d302badd3d12468e9dc79e8566deee1d.jpg" />
     <Content Include="Views\Shared\_FTQuiz2_AuthLayout.cshtml" />
@@ -280,7 +258,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -301,9 +278,6 @@
     <Content Include="Views\FTQuiz2_ManageProducts\Index.cshtml" />
     <Content Include="Views\FTQuiz2_MyAccount\Index.cshtml" />
     <Content Include="Views\FTQuiz2_Signup\Index.cshtml" />
-    <Content Include="Views\Shared\_FTQuiz2_BoardModal.cshtml" />
-    <Content Include="Views\Shared\_FTQuiz2_Lightbox.cshtml" />
-    <Content Include="Views\Shared\_FTQuiz2_PinModal.cshtml" />
     <Content Include="Views\Shared\_FTQuiz2_BrandLogo.cshtml" />
   </ItemGroup>
   <ItemGroup>

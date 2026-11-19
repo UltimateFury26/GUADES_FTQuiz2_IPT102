@@ -16,7 +16,7 @@ namespace GUADES_FTQuiz2_IPT102.Controllers
     /// Home?notice=noaccess, deactivated -> signed out) and sets the FTQuiz2_admin body class (D-11..D-16).
     /// The stored procedures repeat the rules (no self-action, no action on an Admin), so the
     /// disabled buttons in the view are a convenience, not the only protection.
-    /// Search and the status filter stay client-side (Portfolio.js), so every user is always loaded.
+    /// Search and the status filter stay client-side (FTQuiz2_Portfolio.js), so every user is always loaded.
     /// </summary>
     public class FTQuiz2_ManageUsersController : FTQuiz2_AdminController
     {
