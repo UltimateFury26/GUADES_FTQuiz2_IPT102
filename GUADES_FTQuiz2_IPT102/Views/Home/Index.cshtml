@@ -208,6 +208,20 @@
                     <span class="mm-touch-card__hint">Come say hi at the plant.</span>
                 </div>
             }
+            @if (Model.FacebookUrl.Length > 0)
+            {
+                <a class="mm-touch-card mm-touch-card--social" href="@Model.FacebookUrl" target="_blank" rel="noopener noreferrer">
+                    <span class="mm-touch-card__label">Facebook</span>
+                    <span class="mm-touch-card__value">@Model.FacebookUrl</span>
+                </a>
+            }
+            @if (Model.InstagramUrl.Length > 0)
+            {
+                <a class="mm-touch-card mm-touch-card--social" href="@Model.InstagramUrl" target="_blank" rel="noopener noreferrer">
+                    <span class="mm-touch-card__label">Instagram</span>
+                    <span class="mm-touch-card__value">@Model.InstagramUrl</span>
+                </a>
+            }
         </div>
     }
     else

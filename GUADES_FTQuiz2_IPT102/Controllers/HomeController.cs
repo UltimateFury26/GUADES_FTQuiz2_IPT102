@@ -126,7 +126,8 @@ namespace GUADES_FTQuiz2_IPT102.Controllers
             model.Mission = profile.Mission ?? string.Empty;
             model.Vision = profile.Vision ?? string.Empty;
             model.HeroUrl = FTQuiz2_ImagePath.Resolve(profile.HeroImagePath);
-            model.AboutImageUrl = FTQuiz2_ImagePath.Resolve(profile.AboutImagePath);
+            string aboutImage = FTQuiz2_ImagePath.Resolve(profile.AboutImagePath);
+            model.AboutImageUrl = aboutImage.Length > 0 ? aboutImage : model.HeroUrl;
         }
 
         // usp_ContactInfo_Get. Links are only kept when they are real http/https addresses.

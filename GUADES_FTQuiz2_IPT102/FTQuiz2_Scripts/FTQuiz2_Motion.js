@@ -99,16 +99,27 @@
 
             var track = group.parentNode;
             if (wrapper.dataset.mgCloned !== "1") {
-                track.appendChild(group.cloneNode(true));
+                var seamlessCopy = group.cloneNode(true);
+                seamlessCopy.setAttribute("aria-hidden", "true");
+                track.appendChild(seamlessCopy);
                 wrapper.dataset.mgCloned = "1";
             }
 
             var duration = parseFloat(wrapper.getAttribute("data-mg-duration"), 10);
             if (!duration || duration < 1000) {
-                duration = wrapper.classList.contains("mg-band") ? 26000 : 34000;
+                duration = 34000;
             }
 
+            // Force one continuous row. The negative epoch-based delay means a
+            // full navigation lands at the current point in the same animation,
+            // rather than replaying from the left edge on every page.
+            track.style.display = "flex";
+            track.style.flexDirection = "row";
+            track.style.flexWrap = "nowrap";
+            track.style.width = "max-content";
             track.style.animationDuration = duration + "ms";
+            track.style.animationTimingFunction = "linear";
+            track.style.animationIterationCount = "infinite";
             track.style.animationDelay = "-" + (Date.now() % duration) + "ms";
         });
     }

@@ -1,83 +1,68 @@
 @model GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_AboutViewModel
 @{
-    // Our Story: the business profile record (usp_BusinessProfile_Get). Empty parts are hidden by the view.
+    // Our Story: business profile content is supplied by SQL Server.
     ViewBag.Title = "Our Story";
 }
 
-<div class="mm-about-page">
-
-    <header class="mm-page-head">
-        <p class="mm-page-head__kicker">Since the first bottle</p>
-        <h1 class="mm-page-head__title">Our Story</h1>
-        @if (Model.Tagline.Length > 0)
-        {
-            <p class="mm-page-head__lead">@Model.Tagline</p>
-        }
-        <p class="mm-page-head__meta">@Model.BusinessName</p>
-    </header>
-
-    <section class="mm-story-section" aria-labelledby="storyBodyTitle">
-        <div class="mm-story-section__inner">
-
-            @if (Model.ImageUrl.Length > 0)
+<div class="mm-about-page mm-story-page" data-mg-reveal>
+    <section class="mm-story-page__feature @(Model.ImageUrl.Length > 0 ? "" : "mm-story-page__feature--no-media")" aria-labelledby="storyBodyTitle">
+        <div class="mm-story-page__copy">
+            <span class="mm-story-page__kicker">Our story</span>
+            <h1 class="mm-story-page__title" id="storyBodyTitle">The brand story</h1>
+            @if (Model.HasStory)
             {
-                <div class="mm-story-section__media">
-                    <img src="@Model.ImageUrl" alt="@Model.BusinessName" loading="lazy" />
+                <div class="mm-story-page__text">
+                    <p>@Model.BrandStory</p>
                 </div>
+                if (Model.StoryIsPlaceholder)
+                {
+                    <p class="mm-note">This story is still a placeholder in the content records.</p>
+                }
             }
-
-            <div class="mm-story-section__text">
-                <span class="mm-story-section__kicker">How it started</span>
-                <h2 class="mm-story-section__title" id="storyBodyTitle">A drink you chew</h2>
-
-                @if (Model.HasStory)
-                {
-                    <p class="mm-story-section__body">@Model.BrandStory</p>
-                    if (Model.StoryIsPlaceholder)
-                    {
-                        <p class="mm-note">This story is still a placeholder in the content records.</p>
-                    }
-                }
-                else
-                {
-                    <p class="mm-empty">The brand story will be added soon.</p>
-                }
-            </div>
-
+            else
+            {
+                <p class="mm-empty">The brand story will be added soon.</p>
+            }
+            @if (Model.Tagline.Length > 0)
+            {
+                <p class="mm-story-page__text"><strong>@Model.Tagline</strong></p>
+            }
+            <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">Explore our products</a>
         </div>
+
+        @if (Model.ImageUrl.Length > 0)
+        {
+            <div class="mm-story-page__media">
+                <img src="@Model.ImageUrl" alt="@Model.BusinessName brand story" loading="lazy" decoding="async" />
+            </div>
+        }
     </section>
 
     @if (Model.HasHighlights)
     {
-        <section class="mm-section" aria-label="Mission and vision">
-            <div class="mm-highlights">
-                @if (Model.Mission.Length > 0)
-                {
-                    <article class="mm-highlight">
-                        <h3>Our mission</h3>
-                        <p>@Model.Mission</p>
-                    </article>
-                }
-                @if (Model.Vision.Length > 0)
-                {
-                    <article class="mm-highlight">
-                        <h3>Our vision</h3>
-                        <p>@Model.Vision</p>
-                    </article>
-                }
-            </div>
+        <section class="mm-highlights" aria-label="Mission and vision">
+            @if (Model.Mission.Length > 0)
+            {
+                <article class="mm-highlight">
+                    <h2>Our mission</h2>
+                    <p>@Model.Mission</p>
+                </article>
+            }
+            @if (Model.Vision.Length > 0)
+            {
+                <article class="mm-highlight">
+                    <h2>Our vision</h2>
+                    <p>@Model.Vision</p>
+                </article>
+            }
         </section>
     }
 
     <section class="mm-aboutus-cta">
         <div>
-            <h2>Meet the people</h2>
-            <p>Who makes it, where to find us, and how to get in touch — all on one page.</p>
+            <h2>Keep the good vibes going</h2>
+            <p>Discover the flavours and find your next chewy favourite.</p>
         </div>
-        <div class="mm-actions">
-            <a class="pill-btn pill-btn-primary" href="@Url.Action("AboutUs", "Home")">About Us</a>
-            <a class="pill-btn pill-btn-secondary" href="@Url.Action("Index", "FTQuiz2_Products")">See the products</a>
-        </div>
+        <a class="pill-btn pill-btn-primary" href="@Url.Action("Index", "FTQuiz2_Products")">See the products</a>
     </section>
-
 </div>

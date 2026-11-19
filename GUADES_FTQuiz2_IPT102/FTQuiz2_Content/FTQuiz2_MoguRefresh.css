@@ -2567,3 +2567,272 @@ body.FTQuiz2_admin svg:not([data-mg-icon]) {
 @media (max-width: 720px) {
     .mm-aboutus-cta .mm-actions { justify-content: flex-start; }
 }
+
+
+/* --------------------------------------------------------------
+   20. VISUAL REFINEMENTS — screenshot reference pass (changes 1–7)
+   Keep the ticker a single horizontal, continuously phased track.
+   -------------------------------------------------------------- */
+.mg-ticker {
+    height: 42px;
+    min-height: 42px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.mg-ticker__track {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: center;
+    width: max-content !important;
+    height: 100%;
+    white-space: nowrap;
+    animation-name: mg-marquee !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
+}
+.mg-ticker__group {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    flex-flow: row nowrap !important;
+    align-items: center;
+    width: max-content;
+    height: 100%;
+    white-space: nowrap;
+}
+.mg-ticker__item {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    line-height: 1;
+}
+.mg-band,
+.mg-static-band,
+[data-mg-static-banner] { display: none !important; }
+
+/* Homepage hero: preserve the entire supplied 16:9 banner artwork. */
+.mm-hero__inner {
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+    gap: clamp(24px, 3.8vw, 54px);
+}
+.mm-hero__visual {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border-radius: 28px;
+    background: #dff5fb;
+    box-shadow: 12px 12px 0 var(--mg-cyan);
+}
+.mm-hero__visual::after { display: none; }
+.mm-hero__visual img {
+    object-fit: contain;
+    object-position: center;
+}
+.mm-hero__sticker {
+    left: 14px;
+    bottom: 14px;
+    font-size: 13px;
+    padding: 8px 14px;
+}
+.mm-hero__facts { margin-top: 22px; }
+
+/* The homepage featured range follows the Manila product-card rhythm. */
+.mm-home #products .mm-section__head { text-align: center; }
+.mm-home #products .mm-section__title {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 16px;
+}
+.mm-home #products .mm-section__title::after {
+    content: "";
+    position: absolute;
+    width: 46px;
+    height: 4px;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    border-radius: 4px;
+    background: var(--mg-yellow);
+}
+.mm-home #products .mm-product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+    gap: clamp(14px, 2vw, 22px);
+}
+.mm-home #products .mm-product { border-radius: 20px; }
+.mm-home #products .mm-product__media {
+    aspect-ratio: 1 / 1;
+    padding: 18px;
+    background: #fffaf3;
+}
+.mm-home #products .mm-product__body {
+    padding: 14px 16px 18px;
+    border-top: 1px solid #e8e2d8;
+}
+.mm-home #products .mm-product__name { font-size: clamp(16px, 1.45vw, 19px); }
+.mm-home #products .mm-badge {
+    background: var(--mg-yellow);
+    color: var(--mg-navy);
+    padding: 4px 9px;
+    font-size: 9px;
+}
+.mm-home #products .mm-product__more { color: var(--mg-red); }
+
+/* Story feature: pale-blue panel, copy first and complete product image second. */
+.mm-home .mm-story-section {
+    padding: clamp(24px, 3.5vw, 42px);
+    margin: clamp(34px, 5vw, 64px) 0;
+    background: #e8f7fd;
+    border: 0;
+}
+.mm-home .mm-story-section__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, .95fr);
+    gap: clamp(26px, 4vw, 48px);
+}
+.mm-home .mm-story-section__text { order: 1; max-width: 620px; }
+.mm-home .mm-story-section__media { order: 2; aspect-ratio: 4 / 3; border-radius: 22px; box-shadow: 8px 8px 0 #fff; }
+.mm-home .mm-story-section__media img { object-fit: contain; background: #fff; }
+.mm-home .mm-story-section__title {
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1;
+}
+.mm-home .mm-story-section__body { font-size: 14px; line-height: 1.7; }
+.mm-home .mm-highlights { margin-top: 24px; gap: 16px; }
+.mm-home .mm-highlight {
+    border-radius: 18px;
+    padding: 20px 22px;
+}
+.mm-home .mm-highlight h3 { font-size: 17px; }
+
+/* Contact cards: clean white cards with the yellow left accent in the reference. */
+.mm-home #contact { padding-top: clamp(40px, 6vw, 72px); }
+.mm-home #contact .mm-section__head { text-align: center; }
+.mm-home #contact .mm-section__title {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 15px;
+}
+.mm-home #contact .mm-section__title::after {
+    content: "";
+    position: absolute;
+    width: 44px;
+    height: 4px;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    background: var(--mg-yellow);
+    border-radius: 4px;
+}
+.mm-home .mm-touch-grid { max-width: 1060px; gap: 14px; }
+.mm-home .mm-touch-card {
+    min-height: 116px;
+    padding: 18px 20px;
+    border: 1.5px solid var(--mg-navy);
+    border-left: 5px solid var(--mg-yellow);
+    border-radius: 14px;
+    box-shadow: none;
+    gap: 5px;
+}
+.mm-home .mm-touch-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(21,31,109,.08);
+}
+.mm-home .mm-touch-card__icon { display: none; }
+.mm-home .mm-touch-card__value {
+    font-family: var(--mg-font-body);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.5;
+}
+.mm-home #contact .mm-actions { justify-content: center; margin-top: 28px; }
+.mm-home #contact .pill-btn-primary { min-width: 150px; justify-content: center; }
+
+/* Compact navy footer: brand left, useful links right, one clear copyright row. */
+.mm-footer {
+    grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(110px, .65fr));
+    gap: clamp(20px, 3vw, 38px);
+    padding: clamp(30px, 4vw, 48px) clamp(22px, 4vw, 56px) 22px;
+    border-radius: 28px 28px 0 0;
+    border-top: 0;
+}
+.mm-footer__brand .mm-logo-img { height: 34px; }
+.mm-footer__tagline { max-width: 34ch; font-size: 12px; }
+.mm-footer__col h2 { font-size: 10px; }
+.mm-footer__col a { font-size: 12px; }
+.mm-footer__bottom { margin-top: 0; padding-top: 16px; }
+
+/* Our Story page: use the same blue feature panel as the homepage reference. */
+.mm-story-page .mm-story-page__feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, .95fr);
+    align-items: center;
+    gap: clamp(26px, 4vw, 50px);
+    padding: clamp(24px, 4vw, 46px);
+    background: #e8f7fd;
+    margin: 18px 0 34px;
+}
+.mm-story-page__copy { max-width: 66ch; }
+.mm-story-page__kicker {
+    display: block;
+    margin: 0 0 12px;
+    color: var(--mg-red);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+.mm-story-page__title {
+    margin: 0 0 18px;
+    color: var(--mg-navy);
+    font-family: var(--mg-font-display);
+    font-size: clamp(34px, 4.6vw, 58px);
+    line-height: .98;
+    text-transform: uppercase;
+}
+.mm-story-page__text { color: var(--mg-muted); font-size: 14px; line-height: 1.8; }
+.mm-story-page__media {
+    overflow: hidden;
+    border: 2px solid var(--mg-navy);
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 8px 8px 0 #fff;
+}
+.mm-story-page__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-height: 360px;
+    object-fit: contain;
+}
+.mm-story-page .mm-highlights { margin-top: 0; }
+.mm-story-page .mm-highlight { border-radius: 18px; padding: 22px; }
+.mm-story-page .mm-highlight h3 { font-size: 18px; }
+
+@media (max-width: 900px) {
+    .mm-hero__inner { grid-template-columns: 1fr; }
+    .mm-hero__visual { width: 100%; }
+    .mm-story-page .mm-story-page__feature { grid-template-columns: 1fr; }
+    .mm-story-page__media { order: -1; }
+}
+@media (max-width: 720px) {
+    .mg-ticker { height: 38px; min-height: 38px; }
+    .mg-ticker__item { padding: 8px 16px; font-size: 10px; }
+    .mm-home .mm-story-section { padding: 20px; }
+    .mm-home .mm-story-section__inner { grid-template-columns: 1fr; }
+    .mm-home .mm-story-section__media { order: 1; }
+    .mm-home .mm-story-section__text { order: 2; }
+    .mm-footer { grid-template-columns: 1fr 1fr; }
+    .mm-footer__brand { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) {
+    .mm-footer { grid-template-columns: 1fr; }
+    .mm-footer__brand { grid-column: auto; }
+    .mm-hero__visual { border-radius: 20px; box-shadow: 7px 7px 0 var(--mg-cyan); }
+}
+
+.mm-story-page .mm-highlight h2 {
+    margin: 0 0 10px;
+    color: var(--mg-navy);
+    font-family: var(--mg-font-display);
+    font-size: 18px;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+.mm-story-page__feature--no-media { grid-template-columns: minmax(0, 1fr) !important; }
