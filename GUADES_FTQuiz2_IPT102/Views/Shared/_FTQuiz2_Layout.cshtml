@@ -70,60 +70,60 @@
 
             @RenderBody()
 
-            <!-- FOOTER -->
-            <footer class="mm-footer">
-                <div class="mm-footer__brand">
-                    @Html.Partial("_FTQuiz2_BrandLogo")
-                    <p class="mm-footer__tagline">Nata de coco fruit drinks. Chewy little bottles of sunshine, bottled in Manila.</p>
-                    <div class="mm-footer__social">
-                        <a href="@Url.Action("AboutUs", "Home")" aria-label="About Mogu Mogu">
-                            <svg data-mg-icon viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><path d="M12 7.5h.01" /></svg>
-                        </a>
-                        <a href="@Url.Action("Index", "FTQuiz2_Products")" aria-label="Our products">
-                            <svg data-mg-icon viewBox="0 0 24 24"><path d="M8 3h8v3l2 3v10a2 2 0 01-2 2H8a2 2 0 01-2-2V9l2-3z" /><path d="M6 12h12" /></svg>
-                        </a>
-                        <a href="@Url.Content("~/FTQuiz2_MyAccount")" aria-label="My account">
-                            <svg data-mg-icon viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4" /><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6" /></svg>
-                        </a>
-                    </div>
-                </div>
-
-                <nav class="mm-footer__col" aria-label="Explore">
-                    <h2>Explore</h2>
-                    <ul>
-                        <li><a href="@Url.Content("~/")">Home</a></li>
-                        <li><a href="@Url.Action("About", "Home")">Our Story</a></li>
-                        <li><a href="@Url.Action("Index", "FTQuiz2_Products")">Products</a></li>
-                        <li><a href="@Url.Action("AboutUs", "Home")">About Us</a></li>
-                    </ul>
-                </nav>
-
-                <nav class="mm-footer__col" aria-label="Products">
-                    <h2>Products</h2>
-                    <ul>
-                        <li><a href="@Url.Action("Index", "FTQuiz2_Products")">All flavours</a></li>
-                        <li><a href="@Url.Content("~/")#products">Featured</a></li>
-                        <li><a href="@Url.Content("~/")#our-story">Our story</a></li>
-                    </ul>
-                </nav>
-
-                <nav class="mm-footer__col" aria-label="Account">
-                    <h2>Account</h2>
-                    <ul>
-                        <li><a href="@Url.Content("~/FTQuiz2_MyAccount")">My account</a></li>
-                        <li><a href="@Url.Action("AboutUs", "Home")">About Us / Contact</a></li>
-                    </ul>
-                </nav>
-
-                <div class="mm-footer__bottom">
-                    <p class="mm-footer__copy">
-                        &copy; @DateTime.Now.Year Mogu Mogu. Academic project; brand names and images belong to their respective owners.
-                    </p>
-                    <a class="mm-footer__top" href="#top">Back to top</a>
-                </div>
-            </footer>
-
         </div>
+
+        <!-- FOOTER: sits outside .page-inner so it spans the full width of the page -->
+        <footer class="mm-footer">
+            <div class="mm-footer__brand">
+                @Html.Partial("_FTQuiz2_BrandLogo")
+                <p class="mm-footer__tagline">Nata de coco fruit drinks. Chewy little bottles of sunshine, bottled in Manila.</p>
+                <div class="mm-footer__social">
+                    <a href="@Url.Action("AboutUs", "Home")" aria-label="About Mogu Mogu">
+                        <svg data-mg-icon viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><path d="M12 7.5h.01" /></svg>
+                    </a>
+                    <a href="@Url.Action("Index", "FTQuiz2_Products")" aria-label="Our products">
+                        <svg data-mg-icon viewBox="0 0 24 24"><path d="M8 3h8v3l2 3v10a2 2 0 01-2 2H8a2 2 0 01-2-2V9l2-3z" /><path d="M6 12h12" /></svg>
+                    </a>
+                    <a href="@Url.Content("~/FTQuiz2_MyAccount")" aria-label="My account">
+                        <svg data-mg-icon viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4" /><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6" /></svg>
+                    </a>
+                </div>
+            </div>
+
+            <nav class="mm-footer__col" aria-label="Explore">
+                <h2>Explore</h2>
+                <ul>
+                    <li><a href="@Url.Content("~/")">Home</a></li>
+                    <li><a href="@Url.Action("About", "Home")">Our Story</a></li>
+                    <li><a href="@Url.Action("Index", "FTQuiz2_Products")">Products</a></li>
+                    <li><a href="@Url.Action("AboutUs", "Home")">About Us</a></li>
+                </ul>
+            </nav>
+
+            <nav class="mm-footer__col" aria-label="Products">
+                <h2>Products</h2>
+                <ul>
+                    <li><a href="@Url.Action("Index", "FTQuiz2_Products")">All flavours</a></li>
+                    <li><a href="@Url.Content("~/")#products">Featured</a></li>
+                    <li><a href="@Url.Content("~/")#our-story">Our story</a></li>
+                </ul>
+            </nav>
+
+            <nav class="mm-footer__col" aria-label="Account">
+                <h2>Account</h2>
+                <ul>
+                    <li><a href="@Url.Content("~/FTQuiz2_MyAccount")">My account</a></li>
+                    <li><a href="@Url.Action("AboutUs", "Home")">About Us / Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="mm-footer__bottom">
+                <p class="mm-footer__copy">
+                    &copy; @DateTime.Now.Year Mogu Mogu. Academic project; brand names and images belong to their respective owners.
+                </p>
+                <a class="mm-footer__top" href="#top">Back to top</a>
+            </div>
+        </footer>
     </main>
 
     @Scripts.Render("~/bundles/jquery")

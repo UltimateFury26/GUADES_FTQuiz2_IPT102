@@ -15,5 +15,6 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Models
         public bool IsPublished { get; set; }            // BIT NOT NULL, default 1
         public DateTime CreatedAt { get; set; }          // DATETIME2(0) NOT NULL, default SYSDATETIME()
         public DateTime? UpdatedAt { get; set; }         // DATETIME2(0) NULL
+        public string BackgroundColor { get; set; }      // NVARCHAR(7) NULL, "#RRGGBB"; null = automatic
     }
 }

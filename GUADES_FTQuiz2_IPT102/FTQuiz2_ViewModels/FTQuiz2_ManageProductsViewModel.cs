@@ -34,10 +34,30 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
 
         public bool IsPublished { get; set; }
 
+        // Background colour of the product's slide on the Products page, as "#RRGGBB".
+        // "Use automatic" leaves the colour unset and the site falls back to its default pastel rotation.
+        [RegularExpression(@"^#[0-9A-Fa-f]{6}$", ErrorMessage = "Pick a background colour from the colour picker.")]
+        public string BackgroundColor { get; set; }
+
+        public bool UseDefaultBackground { get; set; }
+
+        public const string DefaultPickerColor = "#FDE3A3";
+
         public FTQuiz2_ManageProductsViewModel()
         {
             Products = new List<FTQuiz2_Product>();
             IsPublished = true;
+            UseDefaultBackground = true;
+        }
+
+        /// <summary>Value the colour picker opens with (it needs a valid colour even when the background is automatic).</summary>
+        public string PickerColor
+        {
+            get
+            {
+                string safe = FTQuiz2_BusinessFormat.SafeColor(BackgroundColor);
+                return safe.Length > 0 ? safe : DefaultPickerColor;
+            }
         }
 
         public string FormTitle { get { return IsEdit ? "Edit product" : "Add a product"; } }

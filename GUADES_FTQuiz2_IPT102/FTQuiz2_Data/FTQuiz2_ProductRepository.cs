@@ -7,6 +7,7 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
     /// Product catalogue on stored procedures through FTQuiz2_Db (ADR-001).
     /// Public pages call GetPublishedProducts / GetPublishedProductById; the admin pages call GetProducts
     /// (published and unpublished). Pass null (never "") for imagePath when no new file was uploaded.
+    /// BackgroundColor on update: null keeps the stored colour, "" clears it (automatic), "#RRGGBB" sets it.
     /// </summary>
     public class FTQuiz2_ProductRepository
     {
@@ -50,7 +51,8 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
                 FTQuiz2_Db.P("@FullDescription", product.FullDescription),
                 FTQuiz2_Db.P("@ImagePath", product.ImagePath),
                 FTQuiz2_Db.P("@SortOrder", sortOrder),
-                FTQuiz2_Db.P("@IsPublished", product.IsPublished)).NewId;
+                FTQuiz2_Db.P("@IsPublished", product.IsPublished),
+                FTQuiz2_Db.P("@BackgroundColor", product.BackgroundColor)).NewId;
         }
 
         /// <summary>Returns rows affected (0 = the product no longer exists). Status and order are updated too.</summary>
@@ -64,7 +66,8 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data
                 FTQuiz2_Db.P("@FullDescription", product.FullDescription),
                 FTQuiz2_Db.P("@ImagePath", product.ImagePath),
                 FTQuiz2_Db.P("@SortOrder", sortOrder),
-                FTQuiz2_Db.P("@IsPublished", product.IsPublished)).Affected;
+                FTQuiz2_Db.P("@IsPublished", product.IsPublished),
+                FTQuiz2_Db.P("@BackgroundColor", product.BackgroundColor)).Affected;
         }
 
         public int SetPublished(int productId, bool isPublished)

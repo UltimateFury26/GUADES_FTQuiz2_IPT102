@@ -50,6 +50,27 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
             return value.Length == 0 ? "M" : value.Substring(0, 1).ToUpperInvariant();
         }
 
+        private static readonly Regex HexColorPattern = new Regex(@"^#[0-9A-Fa-f]{6}$", RegexOptions.Compiled);
+
+        /// <summary>The colour as upper-case "#RRGGBB" when it is a plain hex colour, otherwise "" (safe to put in a style attribute).</summary>
+        public static string SafeColor(string color)
+        {
+            string value = (color ?? string.Empty).Trim();
+            return HexColorPattern.IsMatch(value) ? value.ToUpperInvariant() : string.Empty;
+        }
+
+        /// <summary>True for a dark "#RRGGBB" colour (perceived brightness below about 55%), so text on it should be light.</summary>
+        public static bool IsDarkColor(string color)
+        {
+            string value = SafeColor(color);
+            if (value.Length == 0) { return false; }
+
+            int r = Convert.ToInt32(value.Substring(1, 2), 16);
+            int g = Convert.ToInt32(value.Substring(3, 2), 16);
+            int b = Convert.ToInt32(value.Substring(5, 2), 16);
+            return (r * 299 + g * 587 + b * 114) / 1000 < 140;
+        }
+
         /// <summary>Turns a product row into the card the pages draw (the same card the homepage uses).</summary>
         public static FTQuiz2_ProductCardView ToCard(FTQuiz2_Product product)
         {
@@ -60,7 +81,8 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
                 Flavor = product.Flavor ?? string.Empty,
                 ShortDescription = product.ShortDescription ?? string.Empty,
                 FullDescription = product.FullDescription ?? string.Empty,
-                ImageUrl = FTQuiz2_ImagePath.Resolve(product.ImagePath)
+                ImageUrl = FTQuiz2_ImagePath.Resolve(product.ImagePath),
+                BackgroundColor = SafeColor(product.BackgroundColor)
             };
         }
     }

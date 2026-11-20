@@ -473,6 +473,7 @@
             var previous = carousel.querySelector("[data-flavor-prev]");
             var next = carousel.querySelector("[data-flavor-next]");
             var currentLabel = carousel.querySelector("[data-flavor-current]");
+            var band = carousel.querySelector(".mm-flavor-carousel");
             if (slides.length < 2) {
                 if (previous) { previous.hidden = true; }
                 if (next) { next.hidden = true; }
@@ -495,6 +496,14 @@
                     dot.setAttribute("aria-pressed", selected ? "true" : "false");
                 });
                 if (currentLabel) { currentLabel.textContent = String(active + 1).padStart(2, "0"); }
+
+                // The strips around the slide (and the arrows) follow the active drink's colour.
+                if (band) {
+                    var bg = slides[active].getAttribute("data-bg");
+                    if (bg) { band.style.setProperty("--carousel-bg", bg); }
+                    else { band.style.removeProperty("--carousel-bg"); }
+                    band.classList.toggle("is-dark", slides[active].classList.contains("is-dark"));
+                }
             }
 
             if (previous) { previous.addEventListener("click", function () { show(active - 1); }); }

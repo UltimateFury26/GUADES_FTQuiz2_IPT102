@@ -88,6 +88,8 @@ namespace GUADES_FTQuiz2_IPT102.Controllers
                     model.FullDescription = product.FullDescription;
                     model.SortOrder = product.SortOrder.ToString(CultureInfo.InvariantCulture);
                     model.IsPublished = product.IsPublished;
+                    model.BackgroundColor = FTQuiz2_BusinessFormat.SafeColor(product.BackgroundColor);
+                    model.UseDefaultBackground = model.BackgroundColor.Length == 0;
                     model.CurrentPhotoUrl = FTQuiz2_ImagePath.Resolve(product.ImagePath);
                     return View(model);
                 }
@@ -140,7 +142,11 @@ namespace GUADES_FTQuiz2_IPT102.Controllers
                 ShortDescription = NullIfBlank(model.ShortDescription),
                 FullDescription = NullIfBlank(model.FullDescription),
                 ImagePath = newImagePath,           // null = keep the current image
-                IsPublished = model.IsPublished
+                IsPublished = model.IsPublished,
+                // "" = automatic (clears the colour); "#RRGGBB" = the admin's pick; null = keep the stored colour.
+                BackgroundColor = model.UseDefaultBackground
+                    ? string.Empty
+                    : NullIfBlank(FTQuiz2_BusinessFormat.SafeColor(model.BackgroundColor))
             };
 
             int? sortOrder = ParseNumber(model.SortOrder);

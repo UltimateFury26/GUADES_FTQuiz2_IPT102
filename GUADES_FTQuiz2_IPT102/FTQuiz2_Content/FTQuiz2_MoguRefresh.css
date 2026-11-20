@@ -2984,3 +2984,151 @@ body.FTQuiz2_admin .reports-stat-card.reports-stat-primary .reports-stat-caption
     .mm-aboutus-hero { padding: 18px; }
     .mm-aboutus-team { grid-template-columns: 1fr; }
 }
+
+
+/* ============================================================================
+   20. FULL-WIDTH LAYOUT
+   ----------------------------------------------------------------------------
+   Pages, header and footer now stretch edge to edge instead of sitting in a
+   centred column. Side spacing comes from --mg-gutter. Keep this block LAST so
+   it overrides the fixed max-widths set earlier in this file and in the
+   MoguMogu / Portfolio sheets. Long reading text keeps its own ch-based limit.
+   ========================================================================== */
+:root { --mg-max: none; --mg-gutter: clamp(18px, 3.5vw, 56px); }
+
+/* Header + page frame */
+.mm-header__inner { max-width: none; padding-inline: var(--mg-gutter); }
+.page-inner { max-width: none; }
+.mm-hero,
+.mm-hero__inner,
+.mm-page-hero { max-width: none; }
+
+/* Page sections and blocks that were capped at 960-1440px */
+.mm-section,
+.mm-crumbs,
+.mm-detail,
+.mm-product-page .mm-detail,
+.mm-product-page .mm-detail-related,
+.mm-contact-page,
+.mm-contact-hero,
+.mm-contact-content,
+.mm-contact-next,
+.mm-owners-content,
+.mm-touch-grid,
+.mm-home .mm-touch-grid,
+.mm-contact-list,
+.mm-aboutus-contact-grid,
+.mm-aboutus-team,
+.mm-aboutus-team-section .mm-aboutus-section-heading,
+.mm-flavor-carousel,
+body.FTQuiz2_account .settings-page { max-width: none; }
+
+/* Footer: full-bleed band that sits outside .page-inner (see _FTQuiz2_Layout.cshtml) */
+.mm-footer {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: var(--mg-gutter);
+    border-radius: 0;
+}
+@media (max-width: 720px) {
+    .mm-footer { border-radius: 0; }
+}
+
+/* Footer logo: the brand file is a full-colour image on an opaque white background, so the
+   old white-silhouette filter turned it into a solid white square. Show it as-is on a white badge,
+   cropped to the artwork (object-view-box trims the empty margin; older browsers just show it uncropped). */
+.mm-footer__brand .mm-logo-img {
+    filter: none;
+    width: 112px;
+    height: 74px;
+    object-fit: contain;
+    object-view-box: inset(19% 4% 19% 4%);
+    background: #fff;
+    border-radius: 16px;
+}
+@media (max-width: 720px) {
+    .mm-footer__brand .mm-logo-img { width: 96px; height: 63px; }
+}
+
+/* ============================================================================
+   21. PRODUCT-COLOURED CAROUSEL + ADMIN COLOUR FIELD
+   ----------------------------------------------------------------------------
+   Each product can store a background colour (Admin > Products). The Products page puts it in
+   --slide-bg on that product's slide, so the slide AND the strips around the arrows are one colour and
+   it changes with the slide. (--carousel-bg / FTQuiz2_Motion.js only add the smooth fade and the
+   light arrows for dark colours.) Slides with no colour keep the old pastel rotation.
+   ========================================================================== */
+.mm-flavor-carousel {
+    background-color: var(--carousel-bg, #f0e2ec);
+    transition: background-color .4s var(--mg-ease);
+}
+/* Each slide paints its own colour (no script needed). The two box-shadows repeat that colour over the
+   arrow strips on either side, so the whole band changes as one when the slide changes. */
+.mm-flavor-carousel { --mg-strip: 64px; }
+.mm-flavor-carousel .mm-flavor-slide.has-bg {
+    background: var(--slide-bg);
+    box-shadow: calc(var(--mg-strip) * -1) 0 0 var(--slide-bg), var(--mg-strip) 0 0 var(--slide-bg);
+}
+@media (max-width: 600px) { .mm-flavor-carousel { --mg-strip: 38px; } }
+
+/* The bottle photos have a solid white background: multiply lets the colour show through it. */
+.mm-flavor-slide__visual img { mix-blend-mode: multiply; }
+
+/* Dark colours: light text, and the photo goes back to a white card so the bottle stays readable. */
+.mm-flavor-slide.is-dark .mm-flavor-slide__copy h2,
+.mm-flavor-slide.is-dark .mm-flavor-slide__copy h3 { color: #fff; }
+.mm-flavor-slide.is-dark .mm-flavor-slide__description { color: rgba(255, 255, 255, .86); }
+.mm-flavor-slide.is-dark .mm-flavor-slide__eyebrow,
+.mm-flavor-slide.is-dark .mm-flavor-slide__link { color: var(--mg-yellow); }
+.mm-flavor-slide.is-dark .mm-flavor-slide__visual img { mix-blend-mode: normal; background: #fff; border-radius: 22px; }
+.mm-flavor-carousel.is-dark .mm-flavor-carousel__arrow { color: #fff; }
+.mm-flavor-carousel.is-dark .mm-flavor-carousel__arrow:hover { background: rgba(255, 255, 255, .18); color: #fff; }
+.mm-flavor-carousel.is-dark .mm-flavor-carousel__count { color: rgba(255, 255, 255, .85); }
+.mm-flavor-carousel.is-dark .mm-flavor-carousel__dot { background: rgba(255, 255, 255, .4); }
+.mm-flavor-carousel.is-dark .mm-flavor-carousel__dot.is-active { background: #fff; }
+
+/* Admin > Products: colour picker row and the swatch in the list */
+body.FTQuiz2_admin .color-field { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+body.FTQuiz2_admin .color-field__picker {
+    width: 56px; height: 40px; padding: 3px; border: 2px solid var(--mg-navy); border-radius: 12px;
+    background: #fff; cursor: pointer;
+}
+body.FTQuiz2_admin .color-field__picker:disabled { opacity: .4; cursor: not-allowed; }
+body.FTQuiz2_admin .color-field__hex { min-width: 84px; font-size: 13px; font-weight: 800; letter-spacing: .04em; color: var(--mg-navy); }
+body.FTQuiz2_admin .color-field__auto { margin: 0; }
+body.FTQuiz2_admin .color-chip { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; letter-spacing: .04em; color: var(--mg-navy); white-space: nowrap; }
+body.FTQuiz2_admin .color-chip__swatch { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--mg-navy); }
+body.FTQuiz2_admin .color-chip--auto { color: var(--mg-muted); font-weight: 700; }
+
+/* ============================================================================
+   22. TIGHTER VERTICAL RHYTHM
+   ----------------------------------------------------------------------------
+   Gaps were stacking up: footer top margin (up to 110px) + page bottom padding (72px) + section
+   padding (up to 92px) left 150-180px of empty space above the footer and between sections.
+   Everything below is smaller and scales with screen width. Keep this block last.
+   ========================================================================== */
+
+/* Space between the end of a page and the footer */
+.mm-footer { margin-top: clamp(24px, 3vw, 40px); }
+.mm-about-page,
+.mm-contact-page,
+.mm-owners-page { padding-bottom: clamp(8px, 1.5vw, 20px); }
+.mm-aboutus-page { padding-bottom: clamp(8px, 1.5vw, 20px); }
+.mm-product-page { padding-bottom: clamp(8px, 1.5vw, 20px); }
+.mm-flavors-page { padding: clamp(18px, 2.5vw, 30px) 0 clamp(8px, 1.5vw, 20px); }
+
+/* Space between sections */
+.mm-section { padding: clamp(28px, 4vw, 52px) 0; }
+.mm-story-section { padding: clamp(32px, 4.5vw, 60px) 0; }
+.mm-home #contact { padding-top: clamp(20px, 3vw, 36px); padding-bottom: clamp(12px, 2vw, 24px); }
+.mm-section__head { margin-bottom: clamp(20px, 2.5vw, 28px); }
+.mm-section__head--center { margin-bottom: clamp(24px, 3vw, 36px); }
+.mm-highlights { margin-top: clamp(20px, 2.5vw, 30px); }
+.mm-aboutus-cta { margin-top: clamp(20px, 3vw, 32px); }
+
+/* Top of pages */
+.mm-hero__inner { padding-block: clamp(24px, 3.5vw, 46px) clamp(28px, 4vw, 52px); }
+.mm-page-hero { padding-top: clamp(24px, 3.5vw, 44px); padding-bottom: 20px; }
+.mm-detail { padding-block: clamp(24px, 3.5vw, 44px); }
+

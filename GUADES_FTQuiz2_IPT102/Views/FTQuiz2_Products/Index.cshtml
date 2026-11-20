@@ -18,7 +18,12 @@
     }
     else
     {
-        <section class="mm-flavor-carousel" aria-label="Browse Mogu Mogu flavors">
+        // The band behind the arrows takes the colour of the active slide (the script keeps it in step);
+        // this is the first slide's colour so the page is right before any script runs.
+        var firstProduct = Model.Products[0];
+        string bandStyle = firstProduct.HasBackground ? "--carousel-bg:" + firstProduct.BackgroundColor : null;
+
+        <section class="@("mm-flavor-carousel" + (firstProduct.IsDarkBackground ? " is-dark" : ""))" aria-label="Browse Mogu Mogu flavors" style="@bandStyle">
             <button class="mm-flavor-carousel__arrow mm-flavor-carousel__arrow--prev" type="button" data-flavor-prev aria-label="Previous flavor">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
             </button>
@@ -27,7 +32,7 @@
                 @for (int i = 0; i < Model.Products.Count; i++)
                 {
                     var product = Model.Products[i];
-                    <article class="mm-flavor-slide @(i == 0 ? "is-active" : "")" data-flavor-slide aria-hidden="@(i == 0 ? "false" : "true")" @(i == 0 ? null : "hidden")>
+                    <article class="mm-flavor-slide @(i == 0 ? "is-active" : "")@(product.HasBackground ? " has-bg" : "")@(product.IsDarkBackground ? " is-dark" : "")" style="@(product.HasBackground ? "--slide-bg:" + product.BackgroundColor : null)" data-bg="@product.BackgroundColor" data-flavor-slide aria-hidden="@(i == 0 ? "false" : "true")" @(i == 0 ? null : "hidden")>
                         <a class="mm-flavor-slide__visual" href="@Url.Action("Details", "FTQuiz2_Products", new { id = product.ProductId })" aria-label="View @product.Name details">
                             @if (product.ImageUrl.Length > 0)
                             {

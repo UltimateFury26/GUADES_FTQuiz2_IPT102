@@ -15,6 +15,15 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels
         public string ShortDescription { get; set; }    // empty when there is none
         public string FullDescription { get; set; }     // empty when there is none
         public string ImageUrl { get; set; }            // empty when there is no image on disk
+        public string BackgroundColor { get; set; }     // safe "#RRGGBB" chosen by the admin; empty = automatic
+
+        public bool HasBackground { get { return !string.IsNullOrEmpty(BackgroundColor); } }
+
+        /// <summary>True when the chosen background is dark enough that the slide needs light text.</summary>
+        public bool IsDarkBackground
+        {
+            get { return HasBackground && GUADES_FTQuiz2_IPT102.FTQuiz2_ViewModels.FTQuiz2_BusinessFormat.IsDarkColor(BackgroundColor); }
+        }
         public string ModalId { get { return "productModal" + ProductId; } }
 
         /// <summary>One letter for the picture placeholder when the product has no image.</summary>

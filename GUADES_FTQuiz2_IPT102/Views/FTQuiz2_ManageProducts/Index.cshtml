@@ -82,6 +82,22 @@
             </div>
         </div>
 
+        <div class="form-field">
+            <span class="form-label">Slide background color</span>
+            <div class="color-field" data-color-field>
+                <input type="color" id="BackgroundColor" name="BackgroundColor" class="color-field__picker"
+                       value="@Model.PickerColor" disabled="@(Model.UseDefaultBackground ? "disabled" : null)"
+                       aria-label="Slide background color" data-color-picker />
+                <code class="color-field__hex" data-color-hex>@(Model.UseDefaultBackground ? "Automatic" : Model.PickerColor)</code>
+                <span class="form-check color-field__auto">
+                    @Html.CheckBoxFor(m => m.UseDefaultBackground, new { data_color_auto = "1" })
+                    <label for="UseDefaultBackground">Use automatic color</label>
+                </span>
+            </div>
+            @Html.ValidationMessageFor(m => m.BackgroundColor, "", new { @class = "form-error" })
+            <p class="form-hint">Sets the background behind this drink on the Products page carousel, so it can match the bottle. Light, soft colors work best. Automatic uses the site&rsquo;s default pastel rotation.</p>
+        </div>
+
         <div class="form-field form-field-narrow">
             <label class="form-label" for="SortOrder">Display order (optional)</label>
             @Html.TextBoxFor(m => m.SortOrder, new { @class = "form-input", maxlength = 4, inputmode = "numeric" })
@@ -123,6 +139,7 @@ else if (anyProducts)
                             <th scope="col">Image</th>
                             <th scope="col">Product</th>
                             <th scope="col">Variant</th>
+                            <th scope="col">Background</th>
                             <th scope="col">Status</th>
                             <th scope="col">Display order</th>
                             <th scope="col">Actions</th>
@@ -153,6 +170,17 @@ else if (anyProducts)
                                     </div>
                                 </td>
                                 <td class="manage-product-variant-cell" data-label="Variant">@FTQuiz2_ContentFormat.OrDash(product.Flavor)</td>
+                                <td class="manage-product-color-cell" data-label="Background">
+                                    @{ string rowColor = FTQuiz2_BusinessFormat.SafeColor(product.BackgroundColor); }
+                                    @if (rowColor.Length > 0)
+                                    {
+                                        <span class="color-chip"><span class="color-chip__swatch" style="background:@rowColor" aria-hidden="true"></span>@rowColor</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="color-chip color-chip--auto">Automatic</span>
+                                    }
+                                </td>
                                 <td class="manage-product-status-cell" data-label="Status">
                                     <span class="manage-product-status @Model.StatusBadgeClass(product.IsPublished)">
                                         <span class="manage-product-status-dot" aria-hidden="true"></span>
@@ -226,4 +254,21 @@ else if (!Model.LoadFailed)
 
 @section FTQuiz2_Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        (function () {
+            var field = document.querySelector("[data-color-field]");
+            if (!field) { return; }
+            var picker = field.querySelector("[data-color-picker]");
+            var hex = field.querySelector("[data-color-hex]");
+            var auto = field.querySelector("[data-color-auto]");
+            function sync() {
+                // A disabled input is not posted, so "automatic" is simply "no colour sent".
+                picker.disabled = auto.checked;
+                hex.textContent = auto.checked ? "Automatic" : picker.value.toUpperCase();
+            }
+            picker.addEventListener("input", sync);
+            auto.addEventListener("change", sync);
+            sync();
+        })();
+    </script>
 }

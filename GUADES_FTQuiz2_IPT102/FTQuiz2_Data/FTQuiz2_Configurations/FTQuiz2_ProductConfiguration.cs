@@ -22,6 +22,7 @@ namespace GUADES_FTQuiz2_IPT102.FTQuiz2_Data.FTQuiz2_Configurations
             Property(p => p.IsPublished).IsRequired();                   // DB default 1
             Property(p => p.CreatedAt).IsRequired().HasPrecision(0);     // DATETIME2(0), default SYSDATETIME()
             Property(p => p.UpdatedAt).IsOptional().HasPrecision(0);     // DATETIME2(0) NULL
+            Property(p => p.BackgroundColor).IsOptional().HasMaxLength(7); // "#RRGGBB"
         }
     }
 }
